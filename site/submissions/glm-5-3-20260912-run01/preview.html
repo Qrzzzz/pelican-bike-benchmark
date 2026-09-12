@@ -1,0 +1,547 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>GLM 5.3 · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="GLM 5.3" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+&lt;meta name=&quot;theme-color&quot; content=&quot;#a6dcf9&quot;&gt;
+&lt;title&gt;鹈鹕骑行 · 会动的插画&lt;/title&gt;
+&lt;style&gt;
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #a6dcf9;
+    font-family: &quot;Segoe UI&quot;, system-ui, -apple-system, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif;
+  }
+  main { position: fixed; inset: 0; }
+  #scene { display: block; width: 100%; height: 100%; }
+
+  .hud {
+    position: absolute;
+    top: clamp(10px, 2.5vh, 24px);
+    left: clamp(10px, 3vw, 26px);
+    max-width: min(78vw, 460px);
+    padding: 12px 18px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.82);
+    border: 1px solid rgba(255,255,255,.95);
+    box-shadow: 0 6px 24px rgba(28,60,92,.18);
+  }
+  .hud h1 { margin: 0; font-size: clamp(15px, 2.3vw, 21px); line-height: 1.25; color: #22344a; letter-spacing: .4px; }
+  #status { margin: 5px 0 0; font-size: clamp(12px, 1.7vw, 14px); color: #5a6c80; }
+
+  .controls {
+    position: absolute;
+    right: clamp(10px, 3vw, 26px);
+    bottom: clamp(10px, 4vh, 28px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  #playBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 2px solid #1f6b64;
+    background: #2f9e97;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(18,80,75,.4);
+    transition: background .15s, transform .06s;
+  }
+  #playBtn:hover { background: #35b1a9; }
+  #playBtn:active { transform: translateY(1px); }
+  .ic { width: 16px; height: 16px; flex: none; fill: currentColor; }
+  body[data-play=&quot;0&quot;] .icPlay  { display: block; }
+  body[data-play=&quot;0&quot;] .icPause { display: none; }
+  body[data-play=&quot;1&quot;] .icPlay  { display: none; }
+  body[data-play=&quot;1&quot;] .icPause { display: block; }
+  .hint { margin: 0; font-size: 13px; color: #f3f7fb; text-shadow: 0 1px 4px rgba(15,35,55,.6); text-align: right; }
+
+  :focus-visible { outline: 3px solid #ffb84d; outline-offset: 3px; }
+
+  @media (max-width: 560px) {
+    .hud { max-width: 74vw; padding: 9px 14px; }
+    .controls { right: 50%; transform: translateX(50%); align-items: center; bottom: 14px; }
+    .hint { text-align: center; max-width: 84vw; }
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body data-play=&quot;0&quot;&gt;
+&lt;main&gt;
+  &lt;svg id=&quot;scene&quot; viewBox=&quot;65 126 1200 674&quot; preserveAspectRatio=&quot;xMidYMid meet&quot;
+       role=&quot;img&quot; aria-label=&quot;插画：一只白色鹈鹕骑着青绿色自行车，在海岸公路上前进，天空中有云和太阳&quot;&gt;
+    &lt;defs&gt;
+      &lt;linearGradient id=&quot;gSky&quot; gradientUnits=&quot;userSpaceOnUse&quot; x1=&quot;0&quot; y1=&quot;-620&quot; x2=&quot;0&quot; y2=&quot;528&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#a6dcf9&quot;/&gt;
+        &lt;stop offset=&quot;.45&quot; stop-color=&quot;#c9ecfd&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#f0fbff&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;gField&quot; gradientUnits=&quot;userSpaceOnUse&quot; x1=&quot;0&quot; y1=&quot;528&quot; x2=&quot;0&quot; y2=&quot;665&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#c2e2bc&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#b1daaa&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;gRoad&quot; gradientUnits=&quot;userSpaceOnUse&quot; x1=&quot;0&quot; y1=&quot;665&quot; x2=&quot;0&quot; y2=&quot;800&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#636d7d&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#4c5462&quot;/&gt;
+      &lt;/linearGradient&gt;
+
+      &lt;g id=&quot;cloud&quot;&gt;
+        &lt;ellipse cx=&quot;0&quot; cy=&quot;18&quot; rx=&quot;64&quot; ry=&quot;12&quot; fill=&quot;#ddecfb&quot;/&gt;
+        &lt;ellipse cx=&quot;-46&quot; cy=&quot;4&quot; rx=&quot;25&quot; ry=&quot;19&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;ellipse cx=&quot;-6&quot; cy=&quot;-6&quot; rx=&quot;31&quot; ry=&quot;25&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;ellipse cx=&quot;40&quot; cy=&quot;2&quot; rx=&quot;23&quot; ry=&quot;17&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;rect x=&quot;-62&quot; y=&quot;6&quot; width=&quot;120&quot; height=&quot;16&quot; rx=&quot;8&quot; fill=&quot;#fff&quot;/&gt;
+      &lt;/g&gt;
+      &lt;path id=&quot;hillFar&quot;  d=&quot;M -130,0 a 130,60 0 0 1 260,0 z&quot;  fill=&quot;#dfeee2&quot;/&gt;
+      &lt;path id=&quot;hillNear&quot; d=&quot;M -170,0 a 170,44 0 0 1 340,0 z&quot;  fill=&quot;#c7e6c1&quot;/&gt;
+      &lt;g id=&quot;bush&quot;&gt;
+        &lt;ellipse cx=&quot;-17&quot; cy=&quot;-7&quot; rx=&quot;19&quot; ry=&quot;13&quot; fill=&quot;#abd9a3&quot;/&gt;
+        &lt;ellipse cx=&quot;24&quot; cy=&quot;-5&quot; rx=&quot;15&quot; ry=&quot;11&quot; fill=&quot;#b2ddaa&quot;/&gt;
+        &lt;ellipse cx=&quot;6&quot; cy=&quot;-13&quot; rx=&quot;23&quot; ry=&quot;17&quot; fill=&quot;#a4d49c&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;tree&quot;&gt;
+        &lt;path d=&quot;M 0,0 C -2,-18 -4,-36 -3,-54&quot; fill=&quot;none&quot; stroke=&quot;#8a6b52&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;circle cx=&quot;-24&quot; cy=&quot;-56&quot; r=&quot;13&quot; fill=&quot;#93cb8f&quot;/&gt;
+        &lt;circle cx=&quot;12&quot; cy=&quot;-56&quot; r=&quot;16&quot; fill=&quot;#a5d89e&quot;/&gt;
+        &lt;circle cx=&quot;-8&quot; cy=&quot;-64&quot; r=&quot;20&quot; fill=&quot;#9cd096&quot;/&gt;
+        &lt;circle cx=&quot;1&quot; cy=&quot;-48&quot; r=&quot;11&quot; fill=&quot;#8cc789&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;pebble&quot; fill=&quot;#7d8796&quot;&gt;
+        &lt;ellipse cx=&quot;0&quot; cy=&quot;0&quot; rx=&quot;7&quot; ry=&quot;4.5&quot;/&gt;
+        &lt;ellipse cx=&quot;9&quot; cy=&quot;3&quot; rx=&quot;5&quot; ry=&quot;3&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;tuft&quot; fill=&quot;none&quot; stroke=&quot;#8fc98b&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;&gt;
+        &lt;path d=&quot;M0,3 C -1,-5 -4,-10 -9,-15&quot;/&gt;
+        &lt;path d=&quot;M0,3 C 0,-6 1,-12 2,-19&quot;/&gt;
+        &lt;path d=&quot;M1,3 C 4,-3 8,-8 12,-12&quot;/&gt;
+      &lt;/g&gt;
+      &lt;path id=&quot;fbird&quot; d=&quot;M -11,0 Q -5,-7 0,0 Q 5,-7 11,0&quot; fill=&quot;none&quot; stroke=&quot;#7f93a8&quot; stroke-width=&quot;2.2&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+      &lt;g id=&quot;crankGeo&quot;&gt;
+        &lt;line x1=&quot;612&quot; y1=&quot;624&quot; x2=&quot;647&quot; y2=&quot;624&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;footGeo&quot;&gt;
+        &lt;path d=&quot;M -17,2 L -9,7 L -4,3 L 4,8 L 10,3 L 17,8 L 23,3 L 30,7
+                 C 34,4 35,0 33,-3 C 30,-8 24,-12 17,-15 C 10,-18 4,-19 -2,-19
+                 C -9,-19 -15,-15 -17,2 Z&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;frameGeo&quot; fill=&quot;none&quot;&gt;
+        &lt;path d=&quot;M 540,478 C 600,462 678,452 738,456&quot;/&gt;
+        &lt;path d=&quot;M 744,464 C 700,536 658,592 612,624&quot;/&gt;
+        &lt;path d=&quot;M 612,624 C 590,586 562,530 540,478&quot;/&gt;
+        &lt;path d=&quot;M 612,624 C 560,612 512,600 468,583&quot;/&gt;
+        &lt;path d=&quot;M 540,478 C 514,528 490,558 468,583&quot;/&gt;
+        &lt;path d=&quot;M 736,450 L 764,512 C 774,538 784,560 792,583&quot;/&gt;
+        &lt;path d=&quot;M 540,478 L 528,450&quot;/&gt;
+      &lt;/g&gt;
+      &lt;path id=&quot;barGeo&quot; d=&quot;M 736,454 C 728,446 726,440 727,436 C 716,427 700,428 692,438&quot; fill=&quot;none&quot;/&gt;
+
+      &lt;clipPath id=&quot;clipBody&quot;&gt;
+        &lt;ellipse cx=&quot;585&quot; cy=&quot;380&quot; rx=&quot;118&quot; ry=&quot;88&quot; transform=&quot;rotate(-7 585 380)&quot;/&gt;
+      &lt;/clipPath&gt;
+    &lt;/defs&gt;
+
+    &lt;!-- 天空与太阳 --&gt;
+    &lt;rect x=&quot;-700&quot; y=&quot;-620&quot; width=&quot;2600&quot; height=&quot;1148&quot; fill=&quot;url(#gSky)&quot;/&gt;
+    &lt;circle cx=&quot;985&quot; cy=&quot;168&quot; r=&quot;80&quot; fill=&quot;#ffe9bf&quot; opacity=&quot;.55&quot;/&gt;
+    &lt;circle cx=&quot;985&quot; cy=&quot;168&quot; r=&quot;46&quot; fill=&quot;#ffd98a&quot; stroke=&quot;#ffc46b&quot; stroke-width=&quot;3&quot;/&gt;
+
+    &lt;!-- 远云 / 飞鸟 / 山丘 / 近云 --&gt;
+    &lt;g data-px=&quot;.15&quot; data-x=&quot;-240&quot; data-y=&quot;122&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.62)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.15&quot; data-x=&quot;215&quot;  data-y=&quot;98&quot; &gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.55)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.15&quot; data-x=&quot;690&quot;  data-y=&quot;142&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.66)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.15&quot; data-x=&quot;1215&quot; data-y=&quot;112&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.6)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.15&quot; data-x=&quot;1715&quot; data-y=&quot;138&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.53)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.12&quot; data-x=&quot;185&quot;  data-y=&quot;166&quot;&gt;&lt;use href=&quot;#fbird&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.12&quot; data-x=&quot;565&quot;  data-y=&quot;148&quot;&gt;&lt;use href=&quot;#fbird&quot; transform=&quot;scale(.8)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.12&quot; data-x=&quot;1085&quot; data-y=&quot;188&quot;&gt;&lt;use href=&quot;#fbird&quot; transform=&quot;scale(.9)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;-300&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(.8)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;85&quot;   data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(1.15)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;430&quot;  data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(.95)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;760&quot;  data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(1.3)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;1080&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(.85)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;1395&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(1.1)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.1&quot;  data-x=&quot;1710&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillFar&quot;  transform=&quot;scale(.9)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.2&quot;  data-x=&quot;-460&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillNear&quot; transform=&quot;scale(1)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.2&quot;  data-x=&quot;-70&quot;  data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillNear&quot; transform=&quot;scale(.85)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.2&quot;  data-x=&quot;315&quot;  data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillNear&quot; transform=&quot;scale(1.1)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.2&quot;  data-x=&quot;760&quot;  data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillNear&quot; transform=&quot;scale(.9)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.2&quot;  data-x=&quot;1190&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillNear&quot; transform=&quot;scale(1.05)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.2&quot;  data-x=&quot;1630&quot; data-y=&quot;528&quot;&gt;&lt;use href=&quot;#hillNear&quot; transform=&quot;scale(.8)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.3&quot;  data-x=&quot;-130&quot; data-y=&quot;208&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(1.02)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.3&quot;  data-x=&quot;335&quot;  data-y=&quot;184&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.92)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.3&quot;  data-x=&quot;860&quot;  data-y=&quot;228&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(1.08)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.3&quot;  data-x=&quot;1390&quot; data-y=&quot;198&quot;&gt;&lt;use href=&quot;#cloud&quot; transform=&quot;scale(.88)&quot;/&gt;&lt;/g&gt;
+
+    &lt;!-- 草地与灌木 --&gt;
+    &lt;rect x=&quot;-700&quot; y=&quot;528&quot; width=&quot;2600&quot; height=&quot;137&quot; fill=&quot;url(#gField)&quot;/&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;-260&quot; data-y=&quot;636&quot;&gt;&lt;use href=&quot;#bush&quot; transform=&quot;scale(.95)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;365&quot;  data-y=&quot;648&quot;&gt;&lt;use href=&quot;#bush&quot; transform=&quot;scale(1.15)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;940&quot;  data-y=&quot;640&quot;&gt;&lt;use href=&quot;#bush&quot; transform=&quot;scale(.85)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;1790&quot; data-y=&quot;646&quot;&gt;&lt;use href=&quot;#bush&quot; transform=&quot;scale(1.2)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;-40&quot;  data-y=&quot;653&quot;&gt;&lt;use href=&quot;#tree&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;645&quot;  data-y=&quot;652&quot;&gt;&lt;use href=&quot;#tree&quot; transform=&quot;scale(.9)&quot;/&gt;&lt;/g&gt;
+    &lt;g data-px=&quot;.5&quot; data-x=&quot;1505&quot; data-y=&quot;656&quot;&gt;&lt;use href=&quot;#tree&quot; transform=&quot;scale(1.05)&quot;/&gt;&lt;/g&gt;
+
+    &lt;!-- 公路 --&gt;
+    &lt;g id=&quot;road&quot;&gt;
+      &lt;rect x=&quot;-700&quot; y=&quot;665&quot; width=&quot;2600&quot; height=&quot;135&quot; fill=&quot;url(#gRoad)&quot;/&gt;
+      &lt;rect x=&quot;-700&quot; y=&quot;665&quot; width=&quot;2600&quot; height=&quot;3&quot; fill=&quot;#39404c&quot; opacity=&quot;.55&quot;/&gt;
+      &lt;rect x=&quot;-700&quot; y=&quot;670&quot; width=&quot;2600&quot; height=&quot;6&quot; fill=&quot;#e9eef4&quot; opacity=&quot;.95&quot;/&gt;
+      &lt;line id=&quot;cl&quot; x1=&quot;-700&quot; y1=&quot;746&quot; x2=&quot;1900&quot; y2=&quot;746&quot;
+            stroke=&quot;#ffe3a1&quot; stroke-width=&quot;7&quot; stroke-dasharray=&quot;46 40&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;ellipse cx=&quot;632&quot; cy=&quot;663&quot; rx=&quot;215&quot; ry=&quot;11&quot; fill=&quot;#39404c&quot; opacity=&quot;.2&quot;/&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;140&quot;  data-y=&quot;768&quot;&gt;&lt;use href=&quot;#pebble&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;560&quot;  data-y=&quot;724&quot;&gt;&lt;use href=&quot;#pebble&quot; transform=&quot;scale(.85)&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;980&quot;  data-y=&quot;712&quot;&gt;&lt;use href=&quot;#pebble&quot; transform=&quot;scale(.7)&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;1420&quot; data-y=&quot;780&quot;&gt;&lt;use href=&quot;#pebble&quot; transform=&quot;scale(1.1)&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;1790&quot; data-y=&quot;730&quot;&gt;&lt;use href=&quot;#pebble&quot; transform=&quot;scale(.9)&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;-160&quot; data-y=&quot;663&quot;&gt;&lt;use href=&quot;#tuft&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;262&quot;  data-y=&quot;663&quot;&gt;&lt;use href=&quot;#tuft&quot; transform=&quot;scale(.9)&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;700&quot;  data-y=&quot;664&quot;&gt;&lt;use href=&quot;#tuft&quot; transform=&quot;scale(1.1)&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;1120&quot; data-y=&quot;663&quot;&gt;&lt;use href=&quot;#tuft&quot;/&gt;&lt;/g&gt;
+      &lt;g data-px=&quot;1&quot; data-x=&quot;1620&quot; data-y=&quot;664&quot;&gt;&lt;use href=&quot;#tuft&quot; transform=&quot;scale(.85)&quot;/&gt;&lt;/g&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 自行车（远侧：曲柄、踏板、脚、腿） --&gt;
+    &lt;g id=&quot;farSide&quot;&gt;
+      &lt;g id=&quot;cF&quot;&gt;
+        &lt;use href=&quot;#crankGeo&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;9.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;use href=&quot;#crankGeo&quot; stroke=&quot;#b9c2d2&quot; stroke-width=&quot;5.5&quot;/&gt;
+        &lt;circle cx=&quot;647&quot; cy=&quot;624&quot; r=&quot;5&quot; fill=&quot;#3f4552&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;pF&quot;&gt;
+        &lt;rect x=&quot;-18&quot; y=&quot;-5&quot; width=&quot;36&quot; height=&quot;10&quot; rx=&quot;5&quot; fill=&quot;#2b303c&quot; stroke=&quot;#1f242e&quot; stroke-width=&quot;1.5&quot;/&gt;
+        &lt;rect x=&quot;-13&quot; y=&quot;-9&quot; width=&quot;26&quot; height=&quot;5&quot; rx=&quot;2.5&quot; fill=&quot;#9aa5b5&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g id=&quot;footF&quot;&gt;&lt;use href=&quot;#footGeo&quot; fill=&quot;#d0703f&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;/g&gt;
+      &lt;path id=&quot;legFI&quot; fill=&quot;none&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;15&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;use href=&quot;#legFI&quot; fill=&quot;none&quot; stroke=&quot;#d0703f&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 车轮 --&gt;
+    &lt;g id=&quot;wR&quot;&gt;
+      &lt;circle cx=&quot;468&quot; cy=&quot;583&quot; r=&quot;82&quot; fill=&quot;none&quot; stroke=&quot;#3a404d&quot; stroke-width=&quot;13&quot;/&gt;
+      &lt;circle cx=&quot;468&quot; cy=&quot;583&quot; r=&quot;66&quot; fill=&quot;none&quot; stroke=&quot;#dfe7f2&quot; stroke-width=&quot;5&quot;/&gt;
+      &lt;g id=&quot;spR&quot;&gt;&lt;/g&gt;
+      &lt;circle cx=&quot;468&quot; cy=&quot;583&quot; r=&quot;9&quot; fill=&quot;#3f4552&quot;/&gt;
+      &lt;circle cx=&quot;468&quot; cy=&quot;583&quot; r=&quot;3.5&quot; fill=&quot;#dfe7f2&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g id=&quot;wF&quot;&gt;
+      &lt;circle cx=&quot;792&quot; cy=&quot;583&quot; r=&quot;82&quot; fill=&quot;none&quot; stroke=&quot;#3a404d&quot; stroke-width=&quot;13&quot;/&gt;
+      &lt;circle cx=&quot;792&quot; cy=&quot;583&quot; r=&quot;66&quot; fill=&quot;none&quot; stroke=&quot;#dfe7f2&quot; stroke-width=&quot;5&quot;/&gt;
+      &lt;g id=&quot;spF&quot;&gt;&lt;/g&gt;
+      &lt;circle cx=&quot;792&quot; cy=&quot;583&quot; r=&quot;9&quot; fill=&quot;#3f4552&quot;/&gt;
+      &lt;circle cx=&quot;792&quot; cy=&quot;583&quot; r=&quot;3.5&quot; fill=&quot;#dfe7f2&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 车架、链条、车座、车把 --&gt;
+    &lt;g&gt;
+      &lt;use href=&quot;#frameGeo&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;use href=&quot;#frameGeo&quot; stroke=&quot;#2f9e97&quot; stroke-width=&quot;7&quot;/&gt;
+      &lt;circle cx=&quot;468&quot; cy=&quot;583&quot; r=&quot;12.5&quot; fill=&quot;none&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;5.5&quot;/&gt;
+      &lt;line id=&quot;chT&quot; x1=&quot;468&quot; y1=&quot;570&quot; x2=&quot;612&quot; y2=&quot;600&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;4&quot; stroke-dasharray=&quot;7 9&quot;/&gt;
+      &lt;line id=&quot;chB&quot; x1=&quot;468&quot; y1=&quot;596&quot; x2=&quot;612&quot; y2=&quot;648&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;4&quot; stroke-dasharray=&quot;7 9&quot;/&gt;
+      &lt;circle cx=&quot;612&quot; cy=&quot;624&quot; r=&quot;24.5&quot; fill=&quot;none&quot; stroke=&quot;#6b7482&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;circle cx=&quot;612&quot; cy=&quot;624&quot; r=&quot;21&quot; fill=&quot;none&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;6.5&quot;/&gt;
+      &lt;path d=&quot;M 500,455 C 505,446 520,440 536,443 C 548,445 556,451 553,457
+               C 549,463 525,466 508,463 C 498,461 495,458 500,455 Z&quot;
+            fill=&quot;#8a5e48&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;path d=&quot;M 507,451 C 519,446 534,445 546,451&quot; fill=&quot;none&quot; stroke=&quot;#a97e64&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;use href=&quot;#barGeo&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;use href=&quot;#barGeo&quot; stroke=&quot;#cfd6e2&quot; stroke-width=&quot;5.5&quot;/&gt;
+      &lt;line x1=&quot;693&quot; y1=&quot;437&quot; x2=&quot;679&quot; y2=&quot;446&quot; stroke=&quot;#5b6472&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;circle cx=&quot;711&quot; cy=&quot;423&quot; r=&quot;5.5&quot; fill=&quot;#f2c14e&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;circle cx=&quot;711&quot; cy=&quot;417.8&quot; r=&quot;1.8&quot; fill=&quot;#3f4552&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 近侧：曲柄与踏板 --&gt;
+    &lt;g id=&quot;cN&quot;&gt;
+      &lt;use href=&quot;#crankGeo&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;9.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;use href=&quot;#crankGeo&quot; stroke=&quot;#e8edf2&quot; stroke-width=&quot;5.5&quot;/&gt;
+      &lt;circle cx=&quot;647&quot; cy=&quot;624&quot; r=&quot;5&quot; fill=&quot;#3f4552&quot;/&gt;
+      &lt;circle cx=&quot;612&quot; cy=&quot;606&quot; r=&quot;4&quot; fill=&quot;#f2c14e&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;1.5&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g id=&quot;pN&quot;&gt;
+      &lt;rect x=&quot;-18&quot; y=&quot;-5&quot; width=&quot;36&quot; height=&quot;10&quot; rx=&quot;5&quot; fill=&quot;#3a404d&quot; stroke=&quot;#282e3a&quot; stroke-width=&quot;1.5&quot;/&gt;
+      &lt;rect x=&quot;-13&quot; y=&quot;-9&quot; width=&quot;26&quot; height=&quot;5&quot; rx=&quot;2.5&quot; fill=&quot;#e8edf2&quot; stroke=&quot;#b9c2d2&quot; stroke-width=&quot;1&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 鹈鹕：尾与身体 --&gt;
+    &lt;g id=&quot;birdA&quot;&gt;
+      &lt;path d=&quot;M 500,330 C 460,316 424,330 402,362 C 394,376 396,392 406,400
+               C 436,422 478,430 512,430 C 516,394 512,362 500,330 Z&quot;
+            fill=&quot;#efe8db&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 490,352 C 458,356 430,372 414,392&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 496,376 C 470,386 448,402 436,416&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;ellipse cx=&quot;585&quot; cy=&quot;380&quot; rx=&quot;118&quot; ry=&quot;88&quot; transform=&quot;rotate(-7 585 380)&quot;
+               fill=&quot;#f9f5ee&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;ellipse cx=&quot;592&quot; cy=&quot;430&quot; rx=&quot;98&quot; ry=&quot;42&quot; fill=&quot;#ece3d4&quot; clip-path=&quot;url(#clipBody)&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 近侧：腿（IK 跟随踏板）与脚 --&gt;
+    &lt;path id=&quot;legNI&quot; fill=&quot;none&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;17&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+    &lt;use href=&quot;#legNI&quot; fill=&quot;none&quot; stroke=&quot;#f4ad6d&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+    &lt;g id=&quot;footN&quot;&gt;&lt;use href=&quot;#footGeo&quot; fill=&quot;#f4ad6d&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;2.5&quot;/&gt;&lt;/g&gt;
+
+    &lt;!-- 鹈鹕：翅膀、颈、头、喙 --&gt;
+    &lt;g id=&quot;birdB&quot;&gt;
+      &lt;g id=&quot;wing&quot;&gt;
+        &lt;path d=&quot;M 676,330 C 660,318 628,320 588,336 C 546,352 510,386 494,416
+                 C 486,430 488,442 500,448 C 546,462 610,466 648,458
+                 C 672,452 682,436 678,410 C 676,382 678,352 676,330 Z&quot;
+              fill=&quot;#efe8db&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot; stroke-linejoin=&quot;round&quot;/&gt;
+        &lt;path d=&quot;M 664,352 C 610,360 556,388 516,430&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path d=&quot;M 654,372 C 606,386 562,412 530,446&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path d=&quot;M 646,392 C 608,408 578,430 556,448&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path d=&quot;M 668,336 C 636,340 604,352 576,372&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;/g&gt;
+      &lt;path d=&quot;M 652,326 C 668,300 692,287 714,275 C 730,262 744,253 760,249
+               C 778,244 796,247 804,258 C 810,266 808,276 798,283
+               C 786,291 776,296 768,306 C 756,320 748,335 744,352
+               C 738,376 736,398 724,414 L 700,412
+               C 686,398 678,376 668,356 C 660,342 654,334 652,326 Z&quot;
+            fill=&quot;#f9f5ee&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 756,250 C 744,242 732,238 718,238&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 760,246 C 750,236 740,230 728,226&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 764,244 C 758,234 752,227 744,222&quot; fill=&quot;none&quot; stroke=&quot;#d9d0c1&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;circle cx=&quot;786&quot; cy=&quot;268&quot; r=&quot;13&quot; fill=&quot;none&quot; stroke=&quot;#eccfb6&quot; stroke-width=&quot;2.5&quot;/&gt;
+      &lt;g id=&quot;eye&quot;&gt;
+        &lt;circle cx=&quot;786&quot; cy=&quot;268&quot; r=&quot;8&quot; fill=&quot;#33283e&quot;/&gt;
+        &lt;circle cx=&quot;783&quot; cy=&quot;265&quot; r=&quot;2.7&quot; fill=&quot;#fff&quot;/&gt;
+      &lt;/g&gt;
+      &lt;path d=&quot;M 806,262 C 862,270 906,286 936,304 C 943,309 943,317 936,321
+               C 900,328 852,318 812,289 C 806,282 802,270 806,262 Z&quot;
+            fill=&quot;#f29e5e&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 816,272 C 864,281 906,294 930,308&quot; fill=&quot;none&quot; stroke=&quot;#f8c98d&quot; stroke-width=&quot;3.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 824,278 C 830,280 836,281 842,282&quot; fill=&quot;none&quot; stroke=&quot;#d98d4f&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 812,289 C 818,323 838,349 868,357 C 896,363 924,344 940,318
+               C 936,324 888,330 848,316 C 832,308 820,297 812,289 Z&quot;
+            fill=&quot;#f6c290&quot; stroke=&quot;#3f4552&quot; stroke-width=&quot;3&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 826,300 C 836,326 852,348 876,355&quot; fill=&quot;none&quot; stroke=&quot;#e8a869&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M 820,295 C 826,318 838,338 858,352&quot; fill=&quot;none&quot; stroke=&quot;#e8a869&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;/g&gt;
+  &lt;/svg&gt;
+
+  &lt;header class=&quot;hud&quot;&gt;
+    &lt;h1&gt;鹈鹕骑行 · 海岸公路&lt;/h1&gt;
+    &lt;p id=&quot;status&quot; aria-live=&quot;polite&quot;&gt;状态：前进中&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;div class=&quot;controls&quot;&gt;
+    &lt;button id=&quot;playBtn&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-keyshortcuts=&quot;Space&quot;&gt;
+      &lt;svg class=&quot;ic icPlay&quot;  viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M8 5l12 7-12 7z&quot;/&gt;&lt;/svg&gt;
+      &lt;svg class=&quot;ic icPause&quot; viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;&lt;rect x=&quot;6&quot; y=&quot;5&quot; width=&quot;4&quot; height=&quot;14&quot; rx=&quot;1.4&quot;/&gt;&lt;rect x=&quot;14&quot; y=&quot;5&quot; width=&quot;4&quot; height=&quot;14&quot; rx=&quot;1.4&quot;/&gt;&lt;/svg&gt;
+      &lt;span id=&quot;btnLabel&quot;&gt;播放&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;p class=&quot;hint&quot;&gt;空格键或点按按钮：播放 / 暂停&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+(function () {
+  &#39;use strict&#39;;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var scene = $(&#39;scene&#39;), playBtn = $(&#39;playBtn&#39;), btnLabel = $(&#39;btnLabel&#39;), status = $(&#39;status&#39;);
+  var wR = $(&#39;wR&#39;), wF = $(&#39;wF&#39;), cN = $(&#39;cN&#39;), cF = $(&#39;cF&#39;);
+  var pN = $(&#39;pN&#39;), pF = $(&#39;pF&#39;), footN = $(&#39;footN&#39;), footF = $(&#39;footF&#39;);
+  var legNI = $(&#39;legNI&#39;), legFI = $(&#39;legFI&#39;);
+  var birdA = $(&#39;birdA&#39;), birdB = $(&#39;birdB&#39;), wing = $(&#39;wing&#39;), eye = $(&#39;eye&#39;);
+  var chT = $(&#39;chT&#39;), chB = $(&#39;chB&#39;), cl = $(&#39;cl&#39;);
+
+  var DEG = Math.PI / 180;
+  var GROUND = 250;            // 地面前进速度 px/s
+  var WDEG = (GROUND / 82) * 180 / Math.PI;  // 车轮角速度 deg/s
+  var CRW = 324;               // 曲柄角速度 deg/s（约 0.9 转/秒）
+  var TH0 = -50;               // 初始曲柄相位
+  var BBX = 612, BBY = 624, CR = 34;
+  var HIP_N = { x: 648, y: 462 }, HIP_F = { x: 626, y: 466 };
+  var L1 = 116, L2 = 112;
+  var WRAP = 2400, LO = -560;  // 背景循环区间 [-560, 1840)
+
+  var f1 = function (v) { return Math.round(v * 10) / 10; };
+  var f2 = function (v) { return Math.round(v * 100) / 100; };
+  var T = function (el, tr) { el.setAttribute(&#39;transform&#39;, tr); };
+
+  // ---- 背景视差元素登记 ----
+  var movers = [];
+  var nodes = scene.querySelectorAll(&#39;[data-px]&#39;);
+  for (var i = 0; i &lt; nodes.length; i++) {
+    var el = nodes[i];
+    movers.push({ el: el, x0: parseFloat(el.getAttribute(&#39;data-x&#39;)), y: parseFloat(el.getAttribute(&#39;data-y&#39;)), f: parseFloat(el.getAttribute(&#39;data-px&#39;)) });
+  }
+
+  // ---- 幅条与气门嘴 ----
+  function buildSpokes() {
+    var NS = &#39;http://www.w3.org/2000/svg&#39;;
+    var spec = [[&#39;spR&#39;, 468, 583], [&#39;spF&#39;, 792, 583]];
+    spec.forEach(function (s) {
+      var g = $(s[0]), cx = s[1], cy = s[2], k, a, l;
+      for (k = 0; k &lt; 8; k++) {
+        a = k * Math.PI / 4;
+        l = document.createElementNS(NS, &#39;line&#39;);
+        l.setAttribute(&#39;x1&#39;, f1(cx + 12 * Math.cos(a)));
+        l.setAttribute(&#39;y1&#39;, f1(cy + 12 * Math.sin(a)));
+        l.setAttribute(&#39;x2&#39;, f1(cx + 66 * Math.cos(a)));
+        l.setAttribute(&#39;y2&#39;, f1(cy + 66 * Math.sin(a)));
+        l.setAttribute(&#39;stroke&#39;, &#39;#cfd9e6&#39;);
+        l.setAttribute(&#39;stroke-width&#39;, &#39;2.5&#39;);
+        g.appendChild(l);
+      }
+      l = document.createElementNS(NS, &#39;line&#39;);
+      l.setAttribute(&#39;x1&#39;, f1(cx + 8)); l.setAttribute(&#39;y1&#39;, f1(cy + 64));
+      l.setAttribute(&#39;x2&#39;, f1(cx + 10)); l.setAttribute(&#39;y2&#39;, f1(cy + 76));
+      l.setAttribute(&#39;stroke&#39;, &#39;#3f4552&#39;);
+      l.setAttribute(&#39;stroke-width&#39;, &#39;4&#39;);
+      l.setAttribute(&#39;stroke-linecap&#39;, &#39;round&#39;);
+      g.appendChild(l);
+    });
+  }
+
+  // ---- 两骨 IK：返回靠前（+x）的膝盖 ----
+  function ik(h, ft) {
+    var dx = ft.x - h.x, dy = ft.y - h.y;
+    var d = Math.max(8, Math.min(224, Math.hypot(dx, dy)));
+    var a = Math.atan2(dy, dx);
+    var c = Math.min(1, Math.max(-1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d)));
+    var b = Math.acos(c);
+    var k1x = h.x + L1 * Math.cos(a + b), k1y = h.y + L1 * Math.sin(a + b);
+    var k2x = h.x + L1 * Math.cos(a - b), k2y = h.y + L1 * Math.sin(a - b);
+    return (k1x &gt;= k2x) ? { x: k1x, y: k1y } : { x: k2x, y: k2y };
+  }
+  function drawLeg(path, h, ft) {
+    var k = ik(h, ft);
+    path.setAttribute(&#39;d&#39;, &#39;M &#39; + f1(h.x) + &#39; &#39; + f1(h.y) +
+      &#39; L &#39; + f1(k.x) + &#39; &#39; + f1(k.y) +
+      &#39; L &#39; + f1(ft.x) + &#39; &#39; + f1(ft.y));
+  }
+
+  // ---- 每帧渲染 ----
+  var render = function (t) {
+    var th = (TH0 + CRW * t) % 360;
+    var thr = th * DEG, phr = thr + Math.PI;
+    var wd = (WDEG * t) % 360;
+
+    T(wR, &#39;rotate(&#39; + f1(wd) + &#39; 468 583)&#39;);
+    T(wF, &#39;rotate(&#39; + f1(wd) + &#39; 792 583)&#39;);
+    T(cN, &#39;rotate(&#39; + f1(th) + &#39; 612 624)&#39;);
+    T(cF, &#39;rotate(&#39; + f1(th + 180) + &#39; 612 624)&#39;);
+
+    var pnx = BBX + CR * Math.cos(thr), pny = BBY + CR * Math.sin(thr);
+    var pfx = BBX + CR * Math.cos(phr), pfy = BBY + CR * Math.sin(phr);
+    T(pN, &#39;translate(&#39; + f1(pnx) + &#39; &#39; + f1(pny) + &#39;)&#39;);
+    T(pF, &#39;translate(&#39; + f1(pfx) + &#39; &#39; + f1(pfy) + &#39;)&#39;);
+    T(footN, &#39;translate(&#39; + f1(pnx) + &#39; &#39; + f1(pny - 12) + &#39;)&#39;);
+    T(footF, &#39;translate(&#39; + f1(pfx) + &#39; &#39; + f1(pfy - 12) + &#39;)&#39;);
+
+    var by = 2.4 * Math.sin(2 * thr);
+    var br = Math.sin(thr);
+    var tr = &#39;translate(0 &#39; + f1(by) + &#39;) rotate(&#39; + f1(br) + &#39; 585 380)&#39;;
+    T(birdA, tr); T(birdB, tr);
+    T(wing, &#39;rotate(&#39; + f1(2.4 * Math.sin(t * 2.027)) + &#39; 676 330)&#39;);
+
+    var s = 1, bp = t % 3.7;
+    if (bp &gt; 3.56) { s = 1 - 0.92 * Math.sin(Math.PI * ((bp - 3.56) / 0.14)); }
+    T(eye, &#39;translate(786 268) scale(1 &#39; + f2(Math.max(0.06, s)) + &#39;) translate(-786 -268)&#39;);
+
+    drawLeg(legNI, { x: HIP_N.x, y: HIP_N.y + by }, { x: pnx, y: pny - 26 });
+    drawLeg(legFI, { x: HIP_F.x, y: HIP_F.y + by }, { x: pfx, y: pfy - 26 });
+
+    var o16 = (118.75 * t) % 16;
+    chT.setAttribute(&#39;stroke-dashoffset&#39;, f2(o16));
+    chB.setAttribute(&#39;stroke-dashoffset&#39;, f2(16 - o16));
+    cl.setAttribute(&#39;stroke-dashoffset&#39;, f2((GROUND * t) % 86));
+
+    for (var j = 0; j &lt; movers.length; j++) {
+      var m = movers[j];
+      var x = m.x0 - GROUND * t * m.f;
+      x = ((x - LO) % WRAP + WRAP) % WRAP + LO;
+      m.el.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + f1(x) + &#39; &#39; + m.y + &#39;)&#39;);
+    }
+  };
+
+  // ---- 播放控制 ----
+  var playing = false, t = 0, lastTs = 0, raf = 0;
+
+  function setUI() {
+    document.body.setAttribute(&#39;data-play&#39;, playing ? &#39;1&#39; : &#39;0&#39;);
+    playBtn.setAttribute(&#39;aria-pressed&#39;, playing ? &#39;true&#39; : &#39;false&#39;);
+    btnLabel.textContent = playing ? &#39;暂停&#39; : &#39;播放&#39;;
+    status.textContent = playing ? &#39;状态：前进中&#39; : &#39;状态：已暂停&#39;;
+  }
+  function loop(ts) {
+    if (!playing) return;
+    if (lastTs) t += Math.min(0.05, (ts - lastTs) / 1000);
+    lastTs = ts;
+    render(t);
+    raf = requestAnimationFrame(loop);
+  }
+  function play() {
+    if (playing) return;
+    playing = true; lastTs = 0; setUI();
+    raf = requestAnimationFrame(loop);
+  }
+  function pause() {
+    if (!playing) return;
+    playing = false;
+    cancelAnimationFrame(raf);
+    setUI();
+  }
+  function toggle() { playing ? pause() : play(); }
+
+  var lastSpace = 0;
+  playBtn.addEventListener(&#39;click&#39;, function () {
+    if (performance.now() - lastSpace &lt; 300) return;
+    toggle();
+  });
+  window.addEventListener(&#39;keydown&#39;, function (e) {
+    if (e.code === &#39;Space&#39;) {
+      e.preventDefault();
+      if (e.repeat) return;
+      lastSpace = performance.now();
+      toggle();
+    }
+  });
+
+  // ---- 视口适配：动态 viewBox，保证小车完整可见 ----
+  function onResize() {
+    var w = window.innerWidth, h = window.innerHeight;
+    if (!w || !h) return;
+    var a = w / h;
+    var H = 1200 / a;
+    H = Math.min(1400, Math.max(430, H));
+    var W = a * H;
+    var x0 = 660 - W / 2;
+    var minX = -560, maxX = 1840 - W;
+    if (maxX &lt; minX) maxX = minX;
+    x0 = Math.min(Math.max(x0, minX), maxX);
+    var y0 = 800 - H;
+    scene.setAttribute(&#39;viewBox&#39;,
+      f1(x0) + &#39; &#39; + f1(y0) + &#39; &#39; + f1(W) + &#39; &#39; + f1(H));
+  }
+
+  buildSpokes();
+  onResize();
+  window.addEventListener(&#39;resize&#39;, onResize);
+
+  render(0);
+
+  var mq = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+  if (mq.addEventListener) {
+    mq.addEventListener(&#39;change&#39;, function (e) { if (e.matches &amp;&amp; playing) pause(); });
+  }
+  if (!mq.matches) { play(); } else { setUI(); }
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>
