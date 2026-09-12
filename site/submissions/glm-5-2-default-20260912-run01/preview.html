@@ -1,0 +1,427 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>GLM 5.2 · default · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="GLM 5.2 · default" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;Pelican on a Bicycle&lt;/title&gt;
+&lt;style&gt;
+  :root{
+    --ink:#1f2430;
+    --accent:#e0524a;
+    --good:#36b3a8;
+    --panel:rgba(31,36,48,.82);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:#bfe3ff;
+    overflow:hidden;
+    font-family:system-ui,-apple-system,&quot;Segoe UI&quot;,Roboto,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .stage{
+    position:fixed;
+    inset:0;
+    display:block;
+  }
+  svg.scene{
+    display:block;
+    width:100%;
+    height:100%;
+  }
+
+  /* animation engine */
+  .fx{animation-iteration-count:infinite;animation-timing-function:linear;}
+  body.is-paused .fx{animation-play-state:paused;}
+
+  .wheel{transform-box:fill-box;transform-origin:center;animation:spin 1s linear infinite;}
+  .crank{transform-box:fill-box;transform-origin:center;animation:spin 1s linear infinite;}
+  .rig{transform-box:fill-box;transform-origin:center;animation:bob 1.7s ease-in-out infinite;}
+  .wing{transform-box:fill-box;transform-origin:28% 22%;animation:flap .85s ease-in-out infinite;}
+  .scarf{transform-box:fill-box;transform-origin:100% 50%;animation:wave 1.1s ease-in-out infinite;}
+  .clouds{transform-box:fill-box;transform-origin:center;animation:drift 34s linear infinite;}
+  .mid{transform-box:fill-box;transform-origin:center;animation:midmove 6s linear infinite;}
+  .grass{transform-box:fill-box;transform-origin:center;animation:fgmove 2.4s linear infinite;}
+  .dash{stroke-dasharray:60 60;animation:road .5s linear infinite;}
+  .streak{transform-box:fill-box;transform-origin:center;animation:streak .9s linear infinite;}
+  .sun{transform-box:fill-box;transform-origin:center;animation:pulse 6s ease-in-out infinite;}
+
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+  @keyframes flap{0%,100%{transform:rotate(-3deg);}50%{transform:rotate(12deg);}}
+  @keyframes wave{0%,100%{transform:rotate(-5deg);}50%{transform:rotate(7deg);}}
+  @keyframes drift{to{transform:translateX(-1200px);}}
+  @keyframes midmove{to{transform:translateX(-1200px);}}
+  @keyframes fgmove{to{transform:translateX(-1200px);}}
+  @keyframes road{to{stroke-dashoffset:-120;}}
+  @keyframes streak{0%{transform:translateX(0);opacity:0;}15%{opacity:.7;}100%{transform:translateX(-260px);opacity:0;}}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+  /* controls */
+  .ui{
+    position:fixed;
+    left:50%;
+    bottom:22px;
+    transform:translateX(-50%);
+    z-index:5;
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .btn{
+    appearance:none;
+    border:0;
+    cursor:pointer;
+    padding:11px 20px 11px 16px;
+    border-radius:999px;
+    background:var(--panel);
+    color:#fff;
+    font:600 15px/1 system-ui,-apple-system,&quot;Segoe UI&quot;,Roboto,sans-serif;
+    letter-spacing:.2px;
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    box-shadow:0 6px 18px rgba(0,0,0,.22);
+    transition:transform .12s ease,background .2s ease;
+  }
+  .btn:hover{background:rgba(31,36,48,.95);}
+  .btn:active{transform:translateX(-50%) scale(.97);}
+  .btn:focus-visible{
+    outline:3px solid #ffd86b;
+    outline-offset:3px;
+  }
+  .btn .ico{width:14px;height:14px;display:block;}
+  .badge{
+    background:rgba(255,255,255,.92);
+    color:var(--ink);
+    font:600 12px/1 system-ui,sans-serif;
+    padding:7px 11px;
+    border-radius:999px;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+    white-space:nowrap;
+  }
+  kbd{
+    background:#fff;color:var(--ink);
+    border-radius:5px;padding:2px 6px;
+    font:600 11px/1 system-ui,sans-serif;
+    box-shadow:0 1px 0 rgba(0,0,0,.25);
+  }
+  @media (max-width:560px){
+    .ui{bottom:14px;}
+    .btn{padding:10px 16px 10px 13px;font-size:14px;}
+    .badge{display:none;}
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;stage&quot;&gt;
+    &lt;svg class=&quot;scene&quot; id=&quot;scene&quot; viewBox=&quot;0 0 1200 800&quot; preserveAspectRatio=&quot;xMidYMid slice&quot; role=&quot;img&quot;
+         aria-label=&quot;一只鹈鹕骑着自行车在乡间小路上前进的插画&quot;&gt;
+      &lt;title&gt;鹈鹕骑自行车&lt;/title&gt;
+      &lt;desc&gt;一只戴着头盔和红围巾的鹈鹕骑红色自行车向前行驶，车轮和脚踏转动，云朵与树木向后移动。&lt;/desc&gt;
+
+      &lt;defs&gt;
+        &lt;linearGradient id=&quot;sky&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#9fd4ff&quot;/&gt;
+          &lt;stop offset=&quot;55%&quot; stop-color=&quot;#cfeaff&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#eaf7ff&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;radialGradient id=&quot;sunG&quot; cx=&quot;50%&quot; cy=&quot;50%&quot; r=&quot;50%&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#fff3c4&quot;/&gt;
+          &lt;stop offset=&quot;55%&quot; stop-color=&quot;#ffd86b&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#ffd86b&quot; stop-opacity=&quot;0&quot;/&gt;
+        &lt;/radialGradient&gt;
+        &lt;linearGradient id=&quot;bodyG&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#ffffff&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#dfe7f0&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;beakG&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;0&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#f3a64a&quot;/&gt;
+          &lt;stop offset=&quot;100&quot; stop-color=&quot;#f0842a&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;pouchG&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#ffce5e&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#f7a93a&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;frameG&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#ef5b4f&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#c8392f&quot;/&gt;
+        &lt;/linearGradient&gt;
+
+        &lt;filter id=&quot;soft&quot; x=&quot;-30%&quot; y=&quot;-30%&quot; width=&quot;160%&quot; height=&quot;160%&quot;&gt;
+          &lt;feGaussianBlur stdDeviation=&quot;4&quot;/&gt;
+        &lt;/filter&gt;
+
+        &lt;!-- reusable scenery sets (span 0..1200) --&gt;
+        &lt;g id=&quot;cloudset&quot;&gt;
+          &lt;g fill=&quot;#ffffff&quot; opacity=&quot;.92&quot;&gt;
+            &lt;ellipse cx=&quot;150&quot; cy=&quot;110&quot; rx=&quot;46&quot; ry=&quot;22&quot;/&gt;&lt;ellipse cx=&quot;195&quot; cy=&quot;98&quot; rx=&quot;40&quot; ry=&quot;24&quot;/&gt;&lt;ellipse cx=&quot;235&quot; cy=&quot;112&quot; rx=&quot;38&quot; ry=&quot;20&quot;/&gt;&lt;rect x=&quot;150&quot; y=&quot;110&quot; width=&quot;100&quot; height=&quot;22&quot; rx=&quot;11&quot;/&gt;
+            &lt;ellipse cx=&quot;620&quot; cy=&quot;70&quot; rx=&quot;52&quot; ry=&quot;24&quot;/&gt;&lt;ellipse cx=&quot;670&quot; cy=&quot;58&quot; rx=&quot;44&quot; ry=&quot;26&quot;/&gt;&lt;ellipse cx=&quot;710&quot; cy=&quot;74&quot; rx=&quot;40&quot; ry=&quot;20&quot;/&gt;&lt;rect x=&quot;620&quot; y=&quot;72&quot; width=&quot;110&quot; height=&quot;22&quot; rx=&quot;11&quot;/&gt;
+            &lt;ellipse cx=&quot;980&quot; cy=&quot;150&quot; rx=&quot;42&quot; ry=&quot;20&quot;/&gt;&lt;ellipse cx=&quot;1020&quot; cy=&quot;140&quot; rx=&quot;36&quot; ry=&quot;22&quot;/&gt;&lt;rect x=&quot;980&quot; y=&quot;150&quot; width=&quot;80&quot; height=&quot;18&quot; rx=&quot;9&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+
+        &lt;g id=&quot;bushset&quot;&gt;
+          &lt;!-- distant conifer &amp; bushes along horizon (base ~600) --&gt;
+          &lt;g fill=&quot;#6fae6a&quot;&gt;
+            &lt;path d=&quot;M210 600 L210 558 L188 600 Z&quot;/&gt;&lt;path d=&quot;M210 600 L210 540 L195 600 Z&quot;/&gt;&lt;path d=&quot;M210 600 L210 524 L202 600 Z&quot;/&gt;
+            &lt;circle cx=&quot;120&quot; cy=&quot;588&quot; r=&quot;22&quot;/&gt;&lt;circle cx=&quot;148&quot; cy=&quot;580&quot; r=&quot;20&quot;/&gt;&lt;circle cx=&quot;300&quot; cy=&quot;592&quot; r=&quot;26&quot;/&gt;&lt;circle cx=&quot;332&quot; cy=&quot;584&quot; r=&quot;20&quot;/&gt;
+            &lt;circle cx=&quot;470&quot; cy=&quot;590&quot; r=&quot;24&quot;/&gt;&lt;circle cx=&quot;500&quot; cy=&quot;582&quot; r=&quot;18&quot;/&gt;
+            &lt;circle cx=&quot;660&quot; cy=&quot;592&quot; r=&quot;28&quot;/&gt;&lt;circle cx=&quot;696&quot; cy=&quot;584&quot; r=&quot;20&quot;/&gt;
+            &lt;path d=&quot;M860 600 L860 556 L836 600 Z&quot;/&gt;&lt;path d=&quot;M860 600 L860 538 L848 600 Z&quot;/&gt;
+            &lt;circle cx=&quot;980&quot; cy=&quot;590&quot; r=&quot;24&quot;/&gt;&lt;circle cx=&quot;1010&quot; cy=&quot;582&quot; r=&quot;18&quot;/&gt;
+            &lt;circle cx=&quot;1130&quot; cy=&quot;588&quot; r=&quot;22&quot;/&gt;&lt;circle cx=&quot;1160&quot; cy=&quot;580&quot; r=&quot;18&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g fill=&quot;#5e9d5c&quot; opacity=&quot;.9&quot;&gt;
+            &lt;circle cx=&quot;220&quot; cy=&quot;600&quot; r=&quot;20&quot;/&gt;&lt;circle cx=&quot;400&quot; cy=&quot;600&quot; r=&quot;22&quot;/&gt;&lt;circle cx=&quot;610&quot; cy=&quot;600&quot; r=&quot;20&quot;/&gt;&lt;circle cx=&quot;800&quot; cy=&quot;600&quot; r=&quot;24&quot;/&gt;&lt;circle cx=&quot;1040&quot; cy=&quot;600&quot; r=&quot;20&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+
+        &lt;g id=&quot;grassset&quot;&gt;
+          &lt;g stroke=&quot;#3f8f3a&quot; stroke-width=&quot;4&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;&gt;
+            &lt;path d=&quot;M40 660 q4 -22 8 0&quot;/&gt;&lt;path d=&quot;M52 662 q4 -26 8 0&quot;/&gt;
+            &lt;path d=&quot;M250 658 q4 -24 8 0&quot;/&gt;&lt;path d=&quot;M262 662 q5 -28 9 0&quot;/&gt;
+            &lt;path d=&quot;M480 660 q4 -22 8 0&quot;/&gt;
+            &lt;path d=&quot;M700 658 q5 -26 9 0&quot;/&gt;&lt;path d=&quot;M714 662 q4 -22 8 0&quot;/&gt;
+            &lt;path d=&quot;M940 660 q4 -24 8 0&quot;/&gt;&lt;path d=&quot;M1080 658 q4 -22 8 0&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g fill=&quot;#ff7a7a&quot;&gt;&lt;circle cx=&quot;56&quot; cy=&quot;660&quot; r=&quot;4&quot;/&gt;&lt;circle cx=&quot;488&quot; cy=&quot;660&quot; r=&quot;4&quot;/&gt;&lt;circle cx=&quot;944&quot; cy=&quot;660&quot; r=&quot;4&quot;/&gt;&lt;/g&gt;
+        &lt;/g&gt;
+
+        &lt;!-- one wheel template (drawn around 0,0) --&gt;
+        &lt;g id=&quot;wheel&quot;&gt;
+          &lt;circle r=&quot;82&quot; fill=&quot;#262b37&quot;/&gt;
+          &lt;circle r=&quot;82&quot; fill=&quot;none&quot; stroke=&quot;#15191f&quot; stroke-width=&quot;6&quot;/&gt;
+          &lt;circle r=&quot;71&quot; fill=&quot;none&quot; stroke=&quot;#c7cfd9&quot; stroke-width=&quot;4&quot;/&gt;
+          &lt;g stroke=&quot;#aeb6c4&quot; stroke-width=&quot;2.2&quot;&gt;
+            &lt;line x1=&quot;-70&quot; y1=&quot;0&quot; x2=&quot;70&quot; y2=&quot;0&quot;/&gt;
+            &lt;line x1=&quot;0&quot; y1=&quot;-70&quot; x2=&quot;0&quot; y2=&quot;70&quot;/&gt;
+            &lt;line x1=&quot;-49.5&quot; y1=&quot;-49.5&quot; x2=&quot;49.5&quot; y2=&quot;49.5&quot;/&gt;
+            &lt;line x1=&quot;49.5&quot; y1=&quot;-49.5&quot; x2=&quot;-49.5&quot; y2=&quot;49.5&quot;/&gt;
+          &lt;/g&gt;
+          &lt;circle r=&quot;9&quot; fill=&quot;#15191f&quot;/&gt;
+          &lt;circle r=&quot;3.5&quot; fill=&quot;#9aa3b2&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/defs&gt;
+
+      &lt;!-- 1. sky --&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1200&quot; height=&quot;800&quot; fill=&quot;url(#sky)&quot;/&gt;
+
+      &lt;!-- 2. sun --&gt;
+      &lt;g class=&quot;sun fx&quot;&gt;
+        &lt;circle cx=&quot;1020&quot; cy=&quot;150&quot; r=&quot;90&quot; fill=&quot;url(#sunG)&quot;/&gt;
+        &lt;circle cx=&quot;1020&quot; cy=&quot;150&quot; r=&quot;40&quot; fill=&quot;#fff6d0&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 3. clouds (slow) --&gt;
+      &lt;g class=&quot;clouds fx&quot;&gt;
+        &lt;use href=&quot;#cloudset&quot;/&gt;
+        &lt;use href=&quot;#cloudset&quot; transform=&quot;translate(1200,0)&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 4. distant hills --&gt;
+      &lt;path d=&quot;M0 600 L0 540 Q120 500 260 530 Q420 565 560 520 Q720 480 860 520 Q1000 555 1200 515 L1200 600 Z&quot; fill=&quot;#9cc7a0&quot; opacity=&quot;.75&quot;/&gt;
+      &lt;path d=&quot;M0 600 L0 572 Q150 548 320 566 Q500 588 680 562 Q860 538 1200 566 L1200 600 Z&quot; fill=&quot;#7fb283&quot; opacity=&quot;.85&quot;/&gt;
+
+      &lt;!-- 5. mid scenery (moving) --&gt;
+      &lt;g class=&quot;mid fx&quot;&gt;
+        &lt;use href=&quot;#bushset&quot;/&gt;
+        &lt;use href=&quot;#bushset&quot; transform=&quot;translate(1200,0)&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 6. road --&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;600&quot; width=&quot;1200&quot; height=&quot;200&quot; fill=&quot;#3b4150&quot;/&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;600&quot; width=&quot;1200&quot; height=&quot;6&quot; fill=&quot;#2a2f3a&quot;/&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;606&quot; width=&quot;1200&quot; height=&quot;3&quot; fill=&quot;#525a6b&quot;/&gt;
+      &lt;line class=&quot;dash fx&quot; x1=&quot;0&quot; y1=&quot;712&quot; x2=&quot;1200&quot; y2=&quot;712&quot; stroke=&quot;#f4d35e&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;788&quot; width=&quot;1200&quot; height=&quot;12&quot; fill=&quot;#2a2f3a&quot;/&gt;
+
+      &lt;!-- 7. speed streaks behind bike --&gt;
+      &lt;g fill=&quot;#ffffff&quot; opacity=&quot;0&quot;&gt;
+        &lt;rect class=&quot;streak fx&quot; x=&quot;250&quot; y=&quot;360&quot; width=&quot;120&quot; height=&quot;5&quot; rx=&quot;3&quot;/&gt;
+        &lt;rect class=&quot;streak fx&quot; x=&quot;250&quot; y=&quot;420&quot; width=&quot;90&quot; height=&quot;4&quot; rx=&quot;3&quot; style=&quot;animation-delay:.25s&quot;/&gt;
+        &lt;rect class=&quot;streak fx&quot; x=&quot;250&quot; y=&quot;490&quot; width=&quot;110&quot; height=&quot;5&quot; rx=&quot;3&quot; style=&quot;animation-delay:.5s&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 8. shadow under bike --&gt;
+      &lt;ellipse cx=&quot;620&quot; cy=&quot;604&quot; rx=&quot;250&quot; ry=&quot;15&quot; fill=&quot;#1f2430&quot; opacity=&quot;.22&quot; filter=&quot;url(#soft)&quot;/&gt;
+
+      &lt;!-- 9. bike + pelican rig (bobs) --&gt;
+      &lt;g class=&quot;rig fx&quot;&gt;
+
+        &lt;!-- frame --&gt;
+        &lt;g stroke=&quot;url(#frameG)&quot; stroke-width=&quot;9&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;&gt;
+          &lt;!-- outlines --&gt;
+          &lt;g stroke=&quot;#7e2620&quot; stroke-width=&quot;12&quot;&gt;
+            &lt;line x1=&quot;470&quot; y1=&quot;518&quot; x2=&quot;565&quot; y2=&quot;392&quot;/&gt;
+            &lt;line x1=&quot;470&quot; y1=&quot;518&quot; x2=&quot;620&quot; y2=&quot;548&quot;/&gt;
+            &lt;line x1=&quot;565&quot; y1=&quot;392&quot; x2=&quot;620&quot; y2=&quot;548&quot;/&gt;
+            &lt;line x1=&quot;620&quot; y1=&quot;548&quot; x2=&quot;740&quot; y2=&quot;400&quot;/&gt;
+            &lt;line x1=&quot;565&quot; y1=&quot;392&quot; x2=&quot;740&quot; y2=&quot;400&quot;/&gt;
+            &lt;line x1=&quot;740&quot; y1=&quot;400&quot; x2=&quot;770&quot; y2=&quot;518&quot;/&gt;
+          &lt;/g&gt;
+          &lt;line x1=&quot;470&quot; y1=&quot;518&quot; x2=&quot;565&quot; y2=&quot;392&quot;/&gt;
+          &lt;line x1=&quot;470&quot; y1=&quot;518&quot; x2=&quot;620&quot; y2=&quot;548&quot;/&gt;
+          &lt;line x1=&quot;565&quot; y1=&quot;392&quot; x2=&quot;620&quot; y2=&quot;548&quot;/&gt;
+          &lt;line x1=&quot;620&quot; y1=&quot;548&quot; x2=&quot;740&quot; y2=&quot;400&quot;/&gt;
+          &lt;line x1=&quot;565&quot; y1=&quot;392&quot; x2=&quot;740&quot; y2=&quot;400&quot;/&gt;
+          &lt;line x1=&quot;740&quot; y1=&quot;400&quot; x2=&quot;770&quot; y2=&quot;518&quot;/&gt;
+          &lt;!-- fork crown + head tube --&gt;
+          &lt;line x1=&quot;728&quot; y1=&quot;412&quot; x2=&quot;752&quot; y2=&quot;388&quot; stroke=&quot;#1f2430&quot; stroke-width=&quot;7&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- handlebars + grips --&gt;
+        &lt;g stroke=&quot;#1f2430&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;&gt;
+          &lt;path d=&quot;M740 400 Q750 380 772 380&quot;/&gt;
+        &lt;/g&gt;
+        &lt;circle cx=&quot;774&quot; cy=&quot;380&quot; r=&quot;7&quot; fill=&quot;#262b37&quot;/&gt;
+        &lt;circle cx=&quot;774&quot; cy=&quot;380&quot; r=&quot;3&quot; fill=&quot;#525a6b&quot;/&gt;
+
+        &lt;!-- saddle + seat post --&gt;
+        &lt;line x1=&quot;565&quot; y1=&quot;392&quot; x2=&quot;548&quot; y2=&quot;378&quot; stroke=&quot;#7e2620&quot; stroke-width=&quot;9&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path d=&quot;M520 376 Q548 366 575 374 Q580 378 575 382 Q548 386 520 384 Q514 381 520 376 Z&quot; fill=&quot;#262b37&quot;/&gt;
+
+        &lt;!-- chain + sprockets --&gt;
+        &lt;g fill=&quot;none&quot; stroke=&quot;#4a5060&quot; stroke-width=&quot;3&quot; stroke-dasharray=&quot;3 3&quot;&gt;
+          &lt;path d=&quot;M470 518 L620 548&quot;/&gt;
+          &lt;path d=&quot;M470 518 L620 548&quot; transform=&quot;translate(-4,-4)&quot;/&gt;
+        &lt;/g&gt;
+        &lt;circle cx=&quot;470&quot; cy=&quot;518&quot; r=&quot;9&quot; fill=&quot;#525a6b&quot; stroke=&quot;#262b37&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;circle cx=&quot;620&quot; cy=&quot;548&quot; r=&quot;11&quot; fill=&quot;#525a6b&quot; stroke=&quot;#262b37&quot; stroke-width=&quot;2&quot;/&gt;
+
+        &lt;!-- rear wheel --&gt;
+        &lt;g class=&quot;wheel fx&quot; transform=&quot;translate(470 518)&quot;&gt;&lt;use href=&quot;#wheel&quot;/&gt;&lt;/g&gt;
+        &lt;!-- front wheel --&gt;
+        &lt;g class=&quot;wheel fx&quot; transform=&quot;translate(770 518)&quot;&gt;&lt;use href=&quot;#wheel&quot;/&gt;&lt;/g&gt;
+
+        &lt;!-- crank + pedals (symmetric around pivot 620,548) --&gt;
+        &lt;g class=&quot;crank fx&quot;&gt;
+          &lt;line x1=&quot;620&quot; y1=&quot;548&quot; x2=&quot;620&quot; y2=&quot;588&quot; stroke=&quot;#aeb6c4&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;620&quot; y1=&quot;548&quot; x2=&quot;620&quot; y2=&quot;508&quot; stroke=&quot;#aeb6c4&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;g fill=&quot;#262b37&quot;&gt;
+            &lt;rect x=&quot;604&quot; y=&quot;584&quot; width=&quot;32&quot; height=&quot;9&quot; rx=&quot;4&quot;/&gt;
+            &lt;rect x=&quot;604&quot; y=&quot;503&quot; width=&quot;32&quot; height=&quot;9&quot; rx=&quot;4&quot;/&gt;
+          &lt;/g&gt;
+          &lt;circle cx=&quot;620&quot; cy=&quot;548&quot; r=&quot;6&quot; fill=&quot;#15191f&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- pelican legs (static, end near crank) --&gt;
+        &lt;g stroke=&quot;#f0942a&quot; stroke-width=&quot;9&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;&gt;
+          &lt;path d=&quot;M500 402 Q545 470 600 580&quot;/&gt;
+          &lt;path d=&quot;M528 405 Q575 475 644 580&quot;/&gt;
+        &lt;/g&gt;
+        &lt;!-- feet --&gt;
+        &lt;g fill=&quot;#f0942a&quot;&gt;
+          &lt;path d=&quot;M586 580 q14 6 30 0 q-2 8 -14 9 q-12 1 -16 -9 Z&quot;/&gt;
+          &lt;path d=&quot;M630 580 q14 6 30 0 q-2 8 -14 9 q-12 1 -16 -9 Z&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- ===== PELICAN BODY ===== --&gt;
+        &lt;!-- tail feathers --&gt;
+        &lt;path d=&quot;M430 372 L398 360 L412 384 L392 392 L420 396 Z&quot; fill=&quot;#d9e1ec&quot;/&gt;
+        &lt;!-- body --&gt;
+        &lt;path d=&quot;M412 392 Q398 330 458 300 Q540 292 588 320 Q618 344 604 388 Q588 432 514 430 Q442 430 412 392 Z&quot; fill=&quot;url(#bodyG)&quot; stroke=&quot;#cdd6e3&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;!-- belly highlight --&gt;
+        &lt;path d=&quot;M470 410 Q510 430 556 420&quot; fill=&quot;none&quot; stroke=&quot;#eef3f9&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+        &lt;!-- wing --&gt;
+        &lt;g class=&quot;wing fx&quot;&gt;
+          &lt;path d=&quot;M470 318 Q520 322 548 372 Q536 402 504 402 Q472 392 462 360 Q460 332 470 318 Z&quot; fill=&quot;#eef3f9&quot; stroke=&quot;#c2cdda&quot; stroke-width=&quot;2.5&quot;/&gt;
+          &lt;path d=&quot;M486 360 Q512 370 540 372&quot; fill=&quot;none&quot; stroke=&quot;#c2cdda&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M484 378 Q508 388 532 388&quot; fill=&quot;none&quot; stroke=&quot;#c2cdda&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M470 318 L460 344 L476 348 Z&quot; fill=&quot;#c2cdda&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- neck --&gt;
+        &lt;path d=&quot;M542 318 Q536 268 590 250 Q632 244 642 262 Q630 286 600 300 Q572 312 558 332 Z&quot; fill=&quot;url(#bodyG)&quot; stroke=&quot;#cdd6e3&quot; stroke-width=&quot;3&quot;/&gt;
+
+        &lt;!-- scarf (trails left, anchored at right) --&gt;
+        &lt;g class=&quot;scarf fx&quot;&gt;
+          &lt;path d=&quot;M556 300 Q510 296 472 312 Q492 320 522 318 Q544 316 558 312 Z&quot; fill=&quot;#e0524a&quot;/&gt;
+          &lt;path d=&quot;M472 312 Q456 320 442 312 Q452 324 470 326 Z&quot; fill=&quot;#c8392f&quot;/&gt;
+          &lt;path d=&quot;M510 304 Q516 312 512 320&quot; fill=&quot;none&quot; stroke=&quot;#c8392f&quot; stroke-width=&quot;2.5&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- head --&gt;
+        &lt;ellipse cx=&quot;656&quot; cy=&quot;236&quot; rx=&quot;37&quot; ry=&quot;29&quot; fill=&quot;url(#bodyG)&quot; stroke=&quot;#cdd6e3&quot; stroke-width=&quot;3&quot;/&gt;
+
+        &lt;!-- eye --&gt;
+        &lt;circle cx=&quot;668&quot; cy=&quot;230&quot; r=&quot;6&quot; fill=&quot;#1f2430&quot;/&gt;
+        &lt;circle cx=&quot;670&quot; cy=&quot;228&quot; r=&quot;2.2&quot; fill=&quot;#ffffff&quot;/&gt;
+
+        &lt;!-- upper beak --&gt;
+        &lt;path d=&quot;M684 226 Q760 230 812 244 Q816 248 812 252 Q760 250 684 250 Z&quot; fill=&quot;url(#beakG)&quot; stroke=&quot;#cf7720&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;!-- throat pouch (iconic pelican feature) --&gt;
+        &lt;path d=&quot;M684 250 Q716 300 756 300 Q792 296 812 252 Q760 260 700 260 Q688 258 684 250 Z&quot; fill=&quot;url(#pouchG)&quot; stroke=&quot;#e0912a&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;path d=&quot;M700 270 Q740 286 778 268&quot; fill=&quot;none&quot; stroke=&quot;#e8a93a&quot; stroke-width=&quot;2&quot; opacity=&quot;.7&quot;/&gt;
+
+        &lt;!-- helmet --&gt;
+        &lt;path d=&quot;M623 222 Q624 188 656 184 Q690 186 692 222 Z&quot; fill=&quot;#3bbfb1&quot; stroke=&quot;#2a8f84&quot; stroke-width=&quot;2.5&quot;/&gt;
+        &lt;path d=&quot;M626 214 Q656 206 690 214&quot; fill=&quot;none&quot; stroke=&quot;#2a8f84&quot; stroke-width=&quot;2.5&quot;/&gt;
+        &lt;line x1=&quot;656&quot; y1=&quot;184&quot; x2=&quot;656&quot; y2=&quot;212&quot; stroke=&quot;#2a8f84&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;path d=&quot;M624 222 Q624 234 636 238&quot; fill=&quot;none&quot; stroke=&quot;#2a8f84&quot; stroke-width=&quot;2.5&quot;/&gt;
+        &lt;path d=&quot;M692 222 Q692 236 678 240&quot; fill=&quot;none&quot; stroke=&quot;#2a8f84&quot; stroke-width=&quot;2.5&quot;/&gt;
+        &lt;!-- helmet strap --&gt;
+        &lt;path d=&quot;M636 238 Q656 250 678 240&quot; fill=&quot;none&quot; stroke=&quot;#2a2f3a&quot; stroke-width=&quot;2&quot;/&gt;
+
+        &lt;!-- small crest feather --&gt;
+        &lt;path d=&quot;M640 186 L634 172 L648 184 Z&quot; fill=&quot;#d9e1ec&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 10. foreground grass (fast) --&gt;
+      &lt;g class=&quot;grass fx&quot;&gt;
+        &lt;use href=&quot;#grassset&quot;/&gt;
+        &lt;use href=&quot;#grassset&quot; transform=&quot;translate(1200,0)&quot;/&gt;
+      &lt;/g&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;ui&quot;&gt;
+    &lt;button id=&quot;toggleBtn&quot; class=&quot;btn&quot; type=&quot;button&quot; aria-label=&quot;播放或暂停动画&quot; aria-pressed=&quot;true&quot;&gt;
+      &lt;svg class=&quot;ico&quot; viewBox=&quot;0 0 14 14&quot; aria-hidden=&quot;true&quot;&gt;
+        &lt;rect class=&quot;i-pause&quot; x=&quot;2&quot; y=&quot;1&quot; width=&quot;3.2&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;rect class=&quot;i-pause&quot; x=&quot;8.8&quot; y=&quot;1&quot; width=&quot;3.2&quot; height=&quot;12&quot; rx=&quot;1&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;path class=&quot;i-play&quot; d=&quot;M3 1 L13 7 L3 13 Z&quot; fill=&quot;#fff&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;span id=&quot;btnText&quot;&gt;暂停&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;span class=&quot;badge&quot;&gt;按 &lt;kbd&gt;空格&lt;/kbd&gt; 切换&lt;/span&gt;
+  &lt;/div&gt;
+
+&lt;script&gt;
+(function(){
+  var scene = document.getElementById(&#39;scene&#39;);
+  var btn   = document.getElementById(&#39;toggleBtn&#39;);
+  var txt   = document.getElementById(&#39;btnText&#39;);
+  var plays = document.querySelectorAll(&#39;.i-play&#39;);
+  var pauses= document.querySelectorAll(&#39;.i-pause&#39;);
+
+  var reduced = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;).matches;
+  var playing = !reduced;
+
+  function apply(){
+    document.body.classList.toggle(&#39;is-paused&#39;, !playing);
+    btn.setAttribute(&#39;aria-pressed&#39;, String(playing));
+    txt.textContent = playing ? &#39;暂停&#39; : &#39;播放&#39;;
+    for (var i=0;i&lt;plays.length;i++)  plays[i].style.display  = playing ? &#39;none&#39; : &#39;&#39;;
+    for (var j=0;j&lt;pauses.length;j++) pauses[j].style.display = playing ? &#39;&#39; : &#39;none&#39;;
+  }
+
+  function toggle(){ playing = !playing; apply(); }
+
+  btn.addEventListener(&#39;click&#39;, toggle);
+
+  window.addEventListener(&#39;keydown&#39;, function(e){
+    if (e.key === &#39; &#39; || e.code === &#39;Space&#39;){
+      if (e.target === btn) return; // let the button handle it natively
+      e.preventDefault();
+      toggle();
+    }
+  });
+
+  apply();
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>
