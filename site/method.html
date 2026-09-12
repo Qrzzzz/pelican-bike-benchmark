@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="同一道鹈鹕骑自行车提示词，观察 AI 生成 HTML 的构图、动画、交互与代码。公开源码，可复查，可并排比较。"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>测试方法 · 鹈鹕骑车</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <script src="assets/theme.js"></script>
+    <link rel="stylesheet" href="assets/app.css" />
+    <script type="module" src="assets/app.js"></script>
+  </head>
+  <body data-page="method">
+    <a class="skip" href="#main">跳至主要内容</a>
+    <header class="header">
+      <div class="shell header-inner">
+        <a class="brand" href="index.html"
+          ><svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle
+              cx="10"
+              cy="29"
+              r="7"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <circle
+              cx="31"
+              cy="29"
+              r="7"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="m10 29 9-14 7 14H10l7-10 14 10-6-18h5M12 9c1-6 8-7 11-2l10 2-12 3c-1 9-11 8-13 2"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          ><span>鹈鹕骑车<small>PELICAN BIKE BENCHMARK</small></span></a
+        >
+        <nav aria-label="主导航">
+          <a href="index.html">作品陈列室</a><a href="compare.html">并排对比</a
+          ><a href="method.html" aria-current="page">测试方法</a>
+          <div class="nav-tools">
+            <button
+              class="icon-button"
+              id="theme-toggle"
+              aria-label="切换配色主题"
+              title="切换配色主题"
+            >
+              ◐</button
+            ><a
+              href="https://github.com/Qrzzzz/pelican-bike-benchmark"
+              aria-label="GitHub 仓库"
+              title="GitHub 仓库"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1-.3-2-1-2 4-.5 6-2 6-6 0-2-1-3-1-3 0-1 0-3-1-3-2 0-3 1-3 1-2-.5-4-.5-6 0 0 0-1-1-3-1-1 0-1 2-1 3 0 0-1 1-1 3 0 4 2 5.5 6 6-.7 0-1 1-1 2v4"
+                /></svg
+            ></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main class="shell" id="main">
+      <div class="page-title">
+        <div class="eyebrow">A transparent experiment</div>
+        <h1>让差异，有据可循。</h1>
+        <p class="lede">
+          这是一组公开的 HTML
+          小实验。保留原始输入和输出，让每一次观察都能被复查。
+        </p>
+      </div>
+      <div class="method-layout">
+        <aside class="toc" aria-label="本页目录">
+          <a href="#protocol">01 / 测试约定</a
+          ><a href="#prompt">02 / 固定提示词</a
+          ><a href="#rubric">03 / 评分维度</a
+          ><a href="#environment">04 / 观察环境</a
+          ><a href="#contribute">05 / 添加作品</a
+          ><a href="#limitations">06 / 边界与限制</a>
+        </aside>
+        <article class="prose">
+          <section id="protocol">
+            <h2>01 · 先固定输入，再观察输出。</h2>
+            <p>
+              每个模型使用下方完全一致的 v1
+              提示词，在新的对话中独立生成。模型版本、生成参数、日期、完整输入与原始输出一并记录。网站展示的是单次运行，不把单个结果等同于模型能力的整体排名。
+            </p>
+            <ol>
+              <li>原样提交固定提示词，不添加模型专属修饰。</li>
+              <li>
+                保留第一次完整输出，包括失败、解释文字或代码围栏；不手工修复后冒充原始结果。
+              </li>
+              <li>
+                使用静态检查记录合规性，再以固定视口检查画面、交互和控制台。
+              </li>
+              <li>
+                评分必须附带评审者、日期与各维度依据；未评审显示“未评分”。
+              </li>
+            </ol>
+            <p>
+              站点演示仅用于说明浏览、比较和代码查看功能，使用单独标识，永远不计入正式测试数量。
+            </p>
+          </section>
+          <section id="prompt">
+            <h2>02 · 固定提示词 v1</h2>
+            <div class="actions">
+              <button class="button primary" data-copy-prompt>
+                复制完整提示词 ⧉</button
+              ><a class="button" href="data/prompt.v1.json" download
+                >下载提示词 JSON ↓</a
+              >
+            </div>
+            <pre class="code" id="method-prompt">正在读取…</pre>
+            <p class="hash" id="prompt-hash"></p>
+            <p>
+              哈希以 JSON 中 text 字段的 UTF-8 字节计算，保留 LF
+              换行，不追加末尾换行。更改内容需新建提示词版本，不能静默替换 v1。
+            </p>
+          </section>
+          <section id="rubric">
+            <h2>03 · 看什么，如何评分。</h2>
+            <p>
+              五个维度分别按 0–10 分记录，总分为各项得分乘权重后相加，再乘
+              10，满分 100。缺少任一维度或评审信息时不展示总分。
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">维度</th>
+                  <th scope="col">权重</th>
+                  <th scope="col">观察依据</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">可运行性</th>
+                  <td class="weight">20%</td>
+                  <td>直接打开能否运行，有无控制台错误、缺失资源。</td>
+                </tr>
+                <tr>
+                  <th scope="row">画面识别与构图</th>
+                  <td class="weight">30%</td>
+                  <td>长喙、喉囊、翅膀、车架与脚踏是否清晰，场景是否协调。</td>
+                </tr>
+                <tr>
+                  <th scope="row">动画与交互</th>
+                  <td class="weight">20%</td>
+                  <td>车轮、脚踏和前进感是否连贯，按钮与空格键是否有效。</td>
+                </tr>
+                <tr>
+                  <th scope="row">响应式与无障碍</th>
+                  <td class="weight">20%</td>
+                  <td>手机无横向溢出，键盘焦点可见，减少动态偏好有效。</td>
+                </tr>
+                <tr>
+                  <th scope="row">代码质量与性能</th>
+                  <td class="weight">10%</td>
+                  <td>代码结构、重复计算、动画开销及资源使用。</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="environment">
+            <h2>04 · 同一个窗口，同一把尺。</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <th scope="row">桌面视口</th>
+                  <td>1200 × 800 CSS 像素，DPR 1</td>
+                </tr>
+                <tr>
+                  <th scope="row">手机视口</th>
+                  <td>390 × 844 CSS 像素，DPR 1</td>
+                </tr>
+                <tr>
+                  <th scope="row">浏览器</th>
+                  <td>
+                    每次实测记录浏览器名称和完整版本；未提供时标记“未记录”。
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">截图时机</th>
+                  <td>
+                    页面加载后第 3
+                    秒；同批测试保持一致，记录动态偏好与播放状态。
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">交互验收</th>
+                  <td>播放／暂停、空格键、Tab 焦点与减少动态偏好逐项检查。</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              演示插画是静态封面，不是浏览器实测截图。详情页会明确区分；缺失正式截图时显示待补充，不用封面替代证据。
+            </p>
+          </section>
+          <section id="contribute">
+            <h2>05 · 把下一只鹈鹕放进来。</h2>
+            <p>
+              下载元数据模板，补齐模型版本、生成日期、完整输入和参数。将 AI
+              的原始输出保存为 UTF-8 文本，再在本地仓库执行导入。
+            </p>
+            <div class="actions">
+              <a class="button" href="data/submission.template.json" download
+                >下载元数据模板 ↓</a
+              ><a
+                class="text-link"
+                href="https://github.com/Qrzzzz/pelican-bike-benchmark"
+                >打开 GitHub 仓库 ↗</a
+              >
+            </div>
+            <pre class="code">
+npm ci
+npm run import -- --source ./result.txt --meta ./meta.json
+npm run check
+npm run dev</pre>
+            <p>
+              导入工具计算原始输出
+              SHA-256，保留完整输入，生成受限预览和静态检查报告。检查未通过的作品仍可登记，运行预览会停用。桌面、手机
+              PNG / WebP 截图可通过 --desktop 和 --mobile
+              导入，并需在元数据中填写环境。
+            </p>
+            <p>
+              本网站没有上传后端。将生成的文件通过仓库变更提交，经检查后由现有
+              GitHub Pages 工作流发布。完整字段说明见仓库 README。
+            </p>
+          </section>
+          <section id="limitations">
+            <p class="note">
+              本批 Codex 投稿通过独立任务发送相同 v1
+              输入，模型可自行使用本地工具；DeepSeek
+              为用户确认的首次外部投稿。各平台的执行环境不同，生成耗时不用于直接排名。作品的来源、配置和实测记录可在详情页复查。
+            </p>
+            <h2>06 · 保留实验的边界。</h2>
+            <p>
+              画面质量包含主观判断；单次生成、不同采样参数、工具能力和生成耗时都会影响结果。本项目不宣称提供统计意义上的模型排行榜。
+            </p>
+            <p>
+              预览在仅允许脚本执行的独立沙盒中运行，不赋予同源、弹窗、表单或顶层导航权限，并通过内容安全策略限制网络与外部资源。静态检查是保守的诊断，不等于完整安全审计，也可能拒绝合规代码。
+            </p>
+            <p>
+              沙盒限制可能改变原始作品的表现。静态检查失败、截图缺失、未评分、演示作品分别标注。原始输出以文本保存，复制或下载后仍应先审阅再自行运行。
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>一只鹈鹕，一辆自行车，无数种可能。</span
+        ><span
+          >© 2026 <a href="https://qrzzzz.github.io">Qrzzzz</a> ·
+          <a href="method.html">关于这个实验</a> ·
+          <a href="https://github.com/Qrzzzz/pelican-bike-benchmark"
+            >Source ↗</a
+          ></span
+        >
+      </div>
+    </footer>
+    <dialog class="dialog" id="prompt-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-head">
+        <h2 id="dialog-title">固定提示词 <span class="mono">v1</span></h2>
+        <button class="icon-button" id="close-prompt" aria-label="关闭提示词">
+          ×
+        </button>
+      </div>
+      <pre class="code" id="dialog-prompt"></pre>
+      <p class="hash" id="dialog-hash"></p>
+      <button class="button primary" data-copy-prompt>复制完整提示词 ⧉</button>
+    </dialog>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <noscript
+      ><p class="shell note">
+        请启用 JavaScript 以浏览作品、复制提示词或进行对比。测试方法与提示词
+        JSON 仍可直接查看。
+      </p></noscript
+    >
+  </body>
+</html>

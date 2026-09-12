@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#bfe4f5">
+<title>鹈鹕骑行 · Pelican on a Bicycle</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #bfe4f5;
+    color: #10303f;
+    font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  .stage { position: fixed; inset: 0; }
+  #scene { display: block; width: 100%; height: 100%; }
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+  .hud > * { pointer-events: auto; }
+  .badge {
+    position: absolute;
+    top: max(14px, env(safe-area-inset-top));
+    left: max(14px, env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid rgba(16, 48, 63, .12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .88);
+    box-shadow: 0 6px 18px rgba(16, 48, 63, .14);
+    font-size: 13.5px;
+    line-height: 1;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .badge strong { font-size: 14px; letter-spacing: .02em; }
+  .badge .sep { opacity: .35; }
+  .badge .hint { opacity: .72; }
+  @media (max-width: 560px) {
+    .badge .sep, .badge .hint { display: none; }
+  }
+  .controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 14px));
+    display: flex;
+    justify-content: center;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 136px;
+    padding: 13px 24px;
+    border: 1.5px solid rgba(16, 48, 63, .2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .95);
+    color: #0e2c3a;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(11, 42, 62, .22), inset 0 1px 0 rgba(255, 255, 255, .8);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .toggle:hover { background: #ffffff; }
+  .toggle:active { transform: translateY(1px); }
+  .toggle:focus-visible { outline: 3px solid #0b57d0; outline-offset: 3px; }
+  .toggle .icon { width: 20px; height: 20px; flex: none; fill: currentColor; }
+  .toggle .icon-pause { display: none; }
+  .toggle.is-playing .icon-pause { display: block; }
+  .toggle.is-playing .icon-play { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .toggle { transition: background-color .18s ease, transform .12s ease; }
+  }
+</style>
+</head>
+<body>
+<main class="stage">
+  <svg id="scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="sceneTitle sceneDesc">
+    <title id="sceneTitle">一只鹈鹕骑着自行车在公路上前进</title>
+    <desc id="sceneDesc">画面中有一只白色鹈鹕，长喙与喉囊清晰可见，坐在青绿色自行车上沿公路骑行；车轮转动、双腿交替踩踏踏板，背景有太阳、云朵、远山、树木与移动的路面标线。</desc>
+    <defs>
+      <linearGradient id="skyGrad" gradientUnits="userSpaceOnUse" x1="0" y1="-1200" x2="0" y2="660">
+        <stop offset="0" stop-color="#8fcbe9"/>
+        <stop offset=".5" stop-color="#bde3f4"/>
+        <stop offset="1" stop-color="#e9f7fb"/>
+      </linearGradient>
+      <linearGradient id="roadGrad" gradientUnits="userSpaceOnUse" x1="0" y1="640" x2="0" y2="900">
+        <stop offset="0" stop-color="#7b828a"/>
+        <stop offset="1" stop-color="#565c63"/>
+      </linearGradient>
+      <linearGradient id="grassGrad" gradientUnits="userSpaceOnUse" x1="0" y1="556" x2="0" y2="642">
+        <stop offset="0" stop-color="#8fcd92"/>
+        <stop offset="1" stop-color="#74b57c"/>
+      </linearGradient>
+      <radialGradient id="sunGlow" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#ffe9a8" stop-opacity=".95"/>
+        <stop offset=".45" stop-color="#ffe6a0" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#ffe6a0" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bodyGrad" cx=".35" cy=".22" r=".95">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset=".62" stop-color="#fbfdfe"/>
+        <stop offset="1" stop-color="#dbe7ef"/>
+      </radialGradient>
+      <radialGradient id="headGrad" cx=".32" cy=".2" r="1">
+        <stop offset="0" stop-color="#ffffff"/>
+        <stop offset=".7" stop-color="#fbfdfe"/>
+        <stop offset="1" stop-color="#dbe7ef"/>
+      </radialGradient>
+      <linearGradient id="beakGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f7bb72"/>
+        <stop offset="1" stop-color="#ee9a4e"/>
+      </linearGradient>
+      <linearGradient id="pouchGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f6ad6f"/>
+        <stop offset="1" stop-color="#e37f39"/>
+      </linearGradient>
+      <radialGradient id="shadowGrad" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#1b2a33" stop-opacity=".3"/>
+        <stop offset=".6" stop-color="#1b2a33" stop-opacity=".16"/>
+        <stop offset="1" stop-color="#1b2a33" stop-opacity="0"/>
+      </radialGradient>
+
+      <g id="wheelTpl" fill="none">
+        <circle r="90" stroke="#2e3238" stroke-width="12"/>
+        <circle r="81" stroke="#c6cdd4" stroke-width="7"/>
+        <circle r="76.5" stroke="#9aa4ad" stroke-width="1.5" opacity=".7"/>
+        <g id="spokeHost" stroke="#aeb7bf" stroke-width="1.6"></g>
+        <circle r="10" fill="#b9c1c8" stroke="#7c858d" stroke-width="3"/>
+        <circle r="4" fill="#6e767d"/>
+        <circle cy="-70" r="5.5" fill="#e23b3b"/>
+        <circle cy="-70" r="2" fill="#ffd9d9"/>
+        <rect x="-2.5" y="76" width="5" height="14" rx="2" fill="#4a4f55"/>
+      </g>
+
+      <g id="frameTpl" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M480 570 L600 595"/>
+        <path d="M480 570 L545 465"/>
+        <path d="M600 595 L545 465"/>
+        <path d="M600 595 L720 495"/>
+        <path d="M549 463 L708 459"/>
+        <path d="M706 456 L722 498"/>
+        <path d="M718 492 C728 522 744 548 760 570"/>
+        <path d="M706 456 L700 434"/>
+        <path d="M700 434 C693 419 681 414 670 420"/>
+      </g>
+
+      <g id="footTpl" stroke-linejoin="round">
+        <path d="M-12 4 C-16 -3 -6 -9 4 -8 C16 -7 28 -4 35 0 C40 3 38 9 30 10 L-8 10 C-15 9 -16 7 -12 4 Z"/>
+        <path d="M12 -6 L14 10 M24 -4 L26 10" fill="none" opacity=".85"/>
+      </g>
+    </defs>
+
+    <rect x="-1600" y="-2600" width="5200" height="3400" fill="url(#skyGrad)"/>
+
+    <g id="sunGroup">
+      <circle id="sunGlowCircle" cx="1000" cy="176" r="150" fill="url(#sunGlow)"/>
+      <circle cx="1000" cy="176" r="56" fill="#ffdf8e"/>
+      <circle cx="1000" cy="176" r="56" fill="none" stroke="#ffd06a" stroke-width="4" opacity=".55"/>
+    </g>
+
+    <g id="cloudGroup"></g>
+
+    <g id="farHillsGroup"><path id="farHillsPath" fill="#b6d6c8"/></g>
+    <g id="nearHillsGroup"><path id="nearHillsPath" fill="#8fc2a3"/></g>
+
+    <rect x="-1600" y="556" width="5200" height="86" fill="url(#grassGrad)"/>
+
+    <g id="treeGroup"></g>
+    <g id="bushGroup"></g>
+
+    <rect x="-1600" y="640" width="5200" height="2200" fill="url(#roadGrad)"/>
+    <rect x="-1600" y="638" width="5200" height="4" fill="#dfe5e9" opacity=".8"/>
+    <g id="dashGroup"></g>
+
+    <ellipse cx="615" cy="662" rx="260" ry="20" fill="url(#shadowGrad)"/>
+    <g id="speedGroup"></g>
+    <g id="puffGroup" fill="#e7ecef">
+      <circle id="puff0" r="0" opacity="0"/>
+      <circle id="puff1" r="0" opacity="0"/>
+      <circle id="puff2" r="0" opacity="0"/>
+    </g>
+
+    <g id="cyclist">
+      <g id="crankFarWrap" transform="translate(600 595)">
+        <rect x="-5" y="-44" width="10" height="44" rx="5" fill="#136a74"/>
+        <g id="farPedalWrap">
+          <rect x="-16" y="-48" width="32" height="8" rx="4" fill="#3a4046"/>
+        </g>
+      </g>
+      <path id="legFar" d="" fill="none" stroke="#cd8a4c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      <g id="footFar"><g transform="scale(0.88)"><use href="#footTpl" fill="#cd8a4c" stroke="#a96c33" stroke-width="2"/></g></g>
+
+      <g transform="translate(480 570)"><g id="rearSpin"><use href="#wheelTpl"/></g></g>
+      <g transform="translate(760 570)"><g id="frontSpin"><use href="#wheelTpl"/></g></g>
+
+      <g id="bikeFrame">
+        <use href="#frameTpl" stroke="#0c5a64" stroke-width="14"/>
+        <use href="#frameTpl" stroke="#1e93a3" stroke-width="9"/>
+        <use href="#frameTpl" stroke="#9fdfe8" stroke-width="2" opacity=".45"/>
+      </g>
+
+      <path d="M600 570 L480 557" stroke="#3c4147" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M600 620 L480 583" stroke="#3c4147" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path id="chainDash" d="M600 570 L480 557 M600 620 L480 583" stroke="#9aa3aa" stroke-width="2" stroke-dasharray="6 5" fill="none" stroke-linecap="round"/>
+      <circle cx="600" cy="595" r="26" fill="#dde3e8" stroke="#9aa4ad" stroke-width="3"/>
+      <circle cx="600" cy="595" r="17" fill="none" stroke="#b3bdc4" stroke-width="2"/>
+      <g fill="#8b959d">
+        <circle cx="621" cy="595" r="2.2"/>
+        <circle cx="610.5" cy="613.2" r="2.2"/>
+        <circle cx="589.5" cy="613.2" r="2.2"/>
+        <circle cx="579" cy="595" r="2.2"/>
+        <circle cx="589.5" cy="576.8" r="2.2"/>
+        <circle cx="610.5" cy="576.8" r="2.2"/>
+      </g>
+      <circle cx="480" cy="570" r="13" fill="#c6cdd4" stroke="#7c858d" stroke-width="3"/>
+
+      <path d="M462 450 C482 442 522 442 556 452 C562 455 562 462 554 465 C524 471 486 470 468 463 C458 460 456 453 462 450 Z" fill="#6b4226" stroke="#4b2d18" stroke-width="2"/>
+
+      <g id="crankNearWrap" transform="translate(600 595)">
+        <rect x="-5" y="-44" width="10" height="44" rx="5" fill="#1e93a3" stroke="#0c5a64" stroke-width="2"/>
+        <g id="nearPedalWrap">
+          <rect x="-16" y="-48" width="32" height="8" rx="4" fill="#2e3238" stroke="#141719" stroke-width="2"/>
+        </g>
+      </g>
+      <path id="legNear" d="" fill="none" stroke="#efa95f" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+      <g id="footNear"><g transform="scale(0.88)"><use href="#footTpl" fill="#efa95f" stroke="#c97f3f" stroke-width="2"/></g></g>
+
+      <g id="pelican">
+        <g id="bodyBob">
+          <path d="M486 414 C448 392 410 384 384 392 C414 412 448 438 476 452 Z" fill="#eff5f9" stroke="#8aa6b8" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M440 402 L470 442" stroke="#c3d2dd" stroke-width="2" fill="none" opacity=".8"/>
+          <path d="M412 396 L444 430" stroke="#c3d2dd" stroke-width="2" fill="none" opacity=".8"/>
+          <ellipse cx="545" cy="435" rx="80" ry="56" transform="rotate(-12 545 435)" fill="url(#bodyGrad)" stroke="#8aa6b8" stroke-width="2.5"/>
+          <path d="M512 398 C536 376 570 372 594 386 C574 402 542 412 512 398 Z" fill="#dfe9f1" stroke="#8aa6b8" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M602 426 C612 380 636 344 674 324" fill="none" stroke="#cdd9e2" stroke-width="44" stroke-linecap="round" transform="translate(-5 4)"/>
+          <path d="M602 426 C612 380 636 344 674 324" fill="none" stroke="#fbfdfe" stroke-width="40" stroke-linecap="round"/>
+          <g id="headGroup">
+            <path d="M656 276 Q646 260 653 250 Q662 259 668 272 Z" fill="#e3edf3" stroke="#8aa6b8" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="674" cy="300" r="32" fill="url(#headGrad)" stroke="#8aa6b8" stroke-width="2.5"/>
+            <path d="M702 284 C746 286 794 296 838 312 C798 318 748 314 706 305 Z" fill="url(#beakGrad)" stroke="#d9822b" stroke-width="2.5" stroke-linejoin="round"/>
+            <g id="pouch">
+              <path d="M706 305 C738 314 786 318 836 312 C830 338 806 364 772 364 C740 364 714 340 706 305 Z" fill="url(#pouchGrad)" stroke="#d9822b" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M734 336 C750 352 774 358 796 350" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".3"/>
+            </g>
+            <path d="M706 305 C738 314 786 318 836 312" fill="none" stroke="#c86f2e" stroke-width="2.5" opacity=".85"/>
+            <circle cx="684" cy="286" r="9" fill="#ffffff" stroke="#9fb4c4" stroke-width="1.5"/>
+            <circle cx="686" cy="286" r="4.6" fill="#232a31"/>
+            <circle cx="688" cy="283.5" r="1.8" fill="#ffffff"/>
+            <path d="M674 276 Q684 270 695 274" fill="none" stroke="#9fb4c4" stroke-width="2.5" stroke-linecap="round"/>
+            <g id="scarf">
+              <g id="scarfTail2"><path d="M606 382 C574 380 548 392 534 412 C556 404 584 400 610 400 Z" fill="#d14b28" stroke="#a93a1e" stroke-width="1.6" stroke-linejoin="round"/></g>
+              <g id="scarfTail1"><path d="M610 372 C576 360 546 370 528 392 C552 386 582 384 614 390 Z" fill="#e4572e" stroke="#b8401f" stroke-width="1.6" stroke-linejoin="round"/></g>
+              <circle cx="610" cy="376" r="8" fill="#e4572e" stroke="#b8401f" stroke-width="1.6"/>
+              <g transform="translate(627 365) rotate(-42)"><rect x="-26" y="-11" width="52" height="22" rx="11" fill="#e4572e" stroke="#b8401f" stroke-width="2"/></g>
+            </g>
+          </g>
+          <g id="wingGroup">
+            <path d="M596 392 C628 392 660 408 688 428 C682 442 668 448 652 444 C622 436 596 424 580 408 C578 400 584 392 596 392 Z" fill="#eaf2f7" stroke="#8aa6b8" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M636 420 C652 428 668 434 682 436" fill="none" stroke="#a8bfcd" stroke-width="2"/>
+            <path d="M624 428 C640 436 656 440 670 442" fill="none" stroke="#a8bfcd" stroke-width="2"/>
+            <path d="M614 434 C628 440 642 443 654 444" fill="none" stroke="#a8bfcd" stroke-width="2"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+
+  <div class="hud">
+    <div class="badge" role="note">
+      <strong>鹈鹕骑行</strong><span class="sep" aria-hidden="true">·</span><span class="hint">空格键播放 / 暂停</span>
+    </div>
+    <div class="controls">
+      <button id="toggle" class="toggle" type="button" aria-pressed="false" aria-keyshortcuts="Space" aria-label="播放动画">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path class="icon-play" d="M8 5.6v12.8L19 12z"/>
+          <g class="icon-pause"><rect x="7" y="5.6" width="3.6" height="12.8" rx="1.5"/><rect x="13.4" y="5.6" width="3.6" height="12.8" rx="1.5"/></g>
+        </svg>
+        <span id="toggleText">播放</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('scene');
+  var stage = document.querySelector('.stage');
+  var btn = document.getElementById('toggle');
+  var btnText = document.getElementById('toggleText');
+
+  function byId(id) { return document.getElementById(id); }
+  function mod(v, m) { return ((v % m) + m) % m; }
+  function svgEl(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    if (attrs) {
+      for (var k in attrs) {
+        if (Object.prototype.hasOwnProperty.call(attrs, k)) { n.setAttribute(k, attrs[k]); }
+      }
+    }
+    if (parent) { parent.appendChild(n); }
+    return n;
+  }
+
+  /* ---------- wheels: spokes ---------- */
+  (function () {
+    var host = byId('spokeHost');
+    for (var i = 0; i < 12; i++) {
+      var a = (i * Math.PI) / 6;
+      svgEl('line', {
+        x1: (Math.cos(a) * 11).toFixed(2),
+        y1: (Math.sin(a) * 11).toFixed(2),
+        x2: (Math.cos(a) * 76).toFixed(2),
+        y2: (Math.sin(a) * 76).toFixed(2)
+      }, host);
+    }
+  }());
+
+  /* ---------- hills ---------- */
+  function hillPath(yc, amp, base, comps) {
+    var d = 'M-2400 780';
+    for (var x = -2400; x <= 4800; x += 12) {
+      var v = 0, wsum = 0;
+      for (var c = 0; c < comps.length; c++) {
+        v += comps[c][2] * Math.sin((2 * Math.PI * x) / comps[c][0] + comps[c][1]);
+        wsum += comps[c][2];
+      }
+      var y = yc - amp * (base + (1 - base) * (v / wsum));
+      d += 'L' + x + ' ' + y.toFixed(1);
+    }
+    return d + 'L4800 780Z';
+  }
+  byId('farHillsPath').setAttribute('d', hillPath(560, 58, 0.34, [[600, 0.4, 0.6], [240, 2.1, 0.4]]));
+  byId('nearHillsPath').setAttribute('d', hillPath(578, 44, 0.26, [[400, 1.2, 0.55], [150, 3.0, 0.45]]));
+
+  /* ---------- clouds + distant birds ---------- */
+  var cloudGroup = byId('cloudGroup');
+  function cloud(x, y, s, o) {
+    var g = svgEl('g', { transform: 'translate(' + x + ' ' + y + ') scale(' + s + ')', opacity: String(o) }, cloudGroup);
+    svgEl('ellipse', { cx: -46, cy: 4, rx: 50, ry: 25, fill: '#ffffff' }, g);
+    svgEl('ellipse', { cx: 6, cy: -8, rx: 62, ry: 34, fill: '#ffffff' }, g);
+    svgEl('ellipse', { cx: 58, cy: 6, rx: 42, ry: 23, fill: '#ffffff' }, g);
+    svgEl('ellipse', { cx: 6, cy: 16, rx: 64, ry: 17, fill: '#ffffff' }, g);
+    svgEl('ellipse', { cx: 8, cy: 10, rx: 38, ry: 9, fill: '#e2eef6', opacity: '0.75' }, g);
+  }
+  function bird(x, y, s) {
+    var g = svgEl('g', { transform: 'translate(' + x + ' ' + y + ') scale(' + s + ')', stroke: '#7d97a6', 'stroke-width': 3, fill: 'none', 'stroke-linecap': 'round' }, cloudGroup);
+    svgEl('path', { d: 'M-13 0 Q-6.5 -8 0 0 Q6.5 -8 13 0' }, g);
+  }
+  var cloudDefs = [
+    [70, 168, 1.05, 0.9], [430, 92, 0.78, 0.85], [700, 226, 0.6, 0.8],
+    [960, 130, 0.95, 0.88], [1250, 262, 0.7, 0.76], [300, 316, 0.48, 0.7]
+  ];
+  for (var ck = -1; ck <= 2; ck++) {
+    for (var ci = 0; ci < cloudDefs.length; ci++) {
+      cloud(cloudDefs[ci][0] + ck * 1500, cloudDefs[ci][1], cloudDefs[ci][2], cloudDefs[ci][3]);
+    }
+    bird(560 + ck * 1500, 214, 1);
+    bird(608 + ck * 1500, 194, 0.78);
+    bird(1130 + ck * 1500, 92, 0.9);
+  }
+
+  /* ---------- distant trees ---------- */
+  var treeGroup = byId('treeGroup');
+  function tree(x, s, shade, shade2) {
+    var g = svgEl('g', { transform: 'translate(' + x + ' 640) scale(' + s + ')' }, treeGroup);
+    svgEl('rect', { x: -4, y: -32, width: 8, height: 34, rx: 3, fill: '#7d6549' }, g);
+    svgEl('circle', { cx: -15, cy: -44, r: 19, fill: shade }, g);
+    svgEl('circle', { cx: 12, cy: -52, r: 22, fill: shade }, g);
+    svgEl('circle', { cx: -2, cy: -68, r: 17, fill: shade }, g);
+    svgEl('circle', { cx: 26, cy: -36, r: 15, fill: shade2 }, g);
+    svgEl('circle', { cx: 0, cy: -58, r: 12, fill: '#8cc894', opacity: 0.7 }, g);
+  }
+  var treeDefs = [
+    [40, 1.0, '#5fa06e', '#55945f'],
+    [235, 0.78, '#6aab77', '#5f9e6c'],
+    [335, 1.18, '#549766', '#4b8a5c']
+  ];
+  for (var tk = -2; tk <= 6; tk++) {
+    for (var ti = 0; ti < treeDefs.length; ti++) {
+      tree(treeDefs[ti][0] + tk * 500 + (ti === 1 ? 60 : 0), treeDefs[ti][1], treeDefs[ti][2], treeDefs[ti][3]);
+    }
+  }
+
+  /* ---------- roadside grass, bushes, flowers ---------- */
+  var bushGroup = byId('bushGroup');
+  function tuft(x, s, flip) {
+    var g = svgEl('g', { transform: 'translate(' + x + ' 638) scale(' + (flip ? -s : s) + ' ' + s + ')' }, bushGroup);
+    svgEl('path', { d: 'M0 0 Q-3 -14 -12 -23', stroke: '#4e9e63', 'stroke-width': 3.5, fill: 'none', 'stroke-linecap': 'round' }, g);
+    svgEl('path', { d: 'M2 0 Q5 -16 1 -27', stroke: '#5cae70', 'stroke-width': 3.5, fill: 'none', 'stroke-linecap': 'round' }, g);
+    svgEl('path', { d: 'M4 0 Q11 -12 19 -18', stroke: '#469157', 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round' }, g);
+  }
+  function bush(x, s, c1, c2) {
+    var g = svgEl('g', { transform: 'translate(' + x + ' 640) scale(' + s + ')' }, bushGroup);
+    svgEl('circle', { cx: -14, cy: -11, r: 15, fill: c1 }, g);
+    svgEl('circle', { cx: 8, cy: -17, r: 17, fill: c1 }, g);
+    svgEl('circle', { cx: 15, cy: -7, r: 12, fill: c2 }, g);
+    svgEl('ellipse', { cx: 1, cy: -19, rx: 12, ry: 7, fill: '#8fd09a', opacity: 0.5 }, g);
+  }
+  function flower(x, s, petal) {
+    var g = svgEl('g', { transform: 'translate(' + x + ' 638) scale(' + s + ')' }, bushGroup);
+    svgEl('path', { d: 'M0 0 L0 -15', stroke: '#4e9e63', 'stroke-width': 2.4, 'stroke-linecap': 'round', fill: 'none' }, g);
+    for (var pi = 0; pi < 5; pi++) {
+      var pa = (pi * Math.PI * 2) / 5 - Math.PI / 2;
+      svgEl('circle', { cx: (Math.cos(pa) * 4.2).toFixed(2), cy: (-15 + Math.sin(pa) * 4.2).toFixed(2), r: 3.4, fill: petal }, g);
+    }
+    svgEl('circle', { cx: 0, cy: -15, r: 2.4, fill: '#f2b134' }, g);
+  }
+  var bushDefs = [
+    function (x) { bush(x, 1.0, '#4f9a60', '#438a54'); },
+    function (x) { tuft(x, 1.0, false); },
+    function (x) { bush(x, 0.72, '#57a56a', '#4a945d'); },
+    function (x) { tuft(x + 44, 0.78, true); },
+    function (x) { flower(x + 128, 1.0, '#f7c2d4'); },
+    function (x) { flower(x + 196, 0.82, '#f9d38a'); },
+    function (x) { bush(x + 252, 0.88, '#4c9560', '#3f8452'); },
+    function (x) { tuft(x + 330, 0.9, false); },
+    function (x) { tuft(x + 360, 0.66, true); }
+  ];
+  for (var bk = -3; bk <= 6; bk++) {
+    for (var bi = 0; bi < bushDefs.length; bi++) {
+      bushDefs[bi](bk * 400 + bi * 13);
+    }
+  }
+
+  /* ---------- road dashes ---------- */
+  var dashGroup = byId('dashGroup');
+  for (var dk = -5; dk <= 13; dk++) {
+    svgEl('rect', { x: dk * 200, y: 724, width: 96, height: 15, rx: 7.5, fill: '#f3f5f1', opacity: 0.92 }, dashGroup);
+  }
+
+  /* ---------- speed lines ---------- */
+  var speedGroup = byId('speedGroup');
+  var speedDefs = [[0, 606, 130, 0.3], [200, 640, 78, 0.24], [380, 690, 150, 0.26], [560, 730, 92, 0.2], [120, 764, 110, 0.16]];
+  for (var sk = -2; sk <= 4; sk++) {
+    for (var si = 0; si < speedDefs.length; si++) {
+      var sd = speedDefs[si];
+      svgEl('rect', { x: sk * 700 + sd[0], y: sd[1], width: sd[2], height: 7, rx: 3.5, fill: '#ffffff', opacity: sd[3] }, speedGroup);
+    }
+  }
+
+  /* ---------- cached refs ---------- */
+  var refs = {
+    rearSpin: byId('rearSpin'),
+    frontSpin: byId('frontSpin'),
+    crankNearWrap: byId('crankNearWrap'),
+    crankFarWrap: byId('crankFarWrap'),
+    nearPedalWrap: byId('nearPedalWrap'),
+    farPedalWrap: byId('farPedalWrap'),
+    chainDash: byId('chainDash'),
+    legNear: byId('legNear'),
+    legFar: byId('legFar'),
+    footNear: byId('footNear'),
+    footFar: byId('footFar'),
+    bodyBob: byId('bodyBob'),
+    wingGroup: byId('wingGroup'),
+    headGroup: byId('headGroup'),
+    pouch: byId('pouch'),
+    scarfTail1: byId('scarfTail1'),
+    scarfTail2: byId('scarfTail2'),
+    dashGroup: byId('dashGroup'),
+    bushGroup: byId('bushGroup'),
+    treeGroup: byId('treeGroup'),
+    speedGroup: byId('speedGroup'),
+    cloudGroup: byId('cloudGroup'),
+    farHillsGroup: byId('farHillsGroup'),
+    nearHillsGroup: byId('nearHillsGroup'),
+    sunGlowCircle: byId('sunGlowCircle'),
+    puff0: byId('puff0'),
+    puff1: byId('puff1'),
+    puff2: byId('puff2')
+  };
+
+  /* ---------- rider anatomy ---------- */
+  var HIP_NEAR = { x: 586, y: 492 };
+  var HIP_FAR = { x: 574, y: 489 };
+  var BB = { x: 600, y: 595 };
+  var CRANK_R = 44;
+  var THIGH = 82;
+  var SHIN = 76;
+
+  function pedalAt(angle) {
+    return { x: BB.x + CRANK_R * Math.sin(angle), y: BB.y - CRANK_R * Math.cos(angle) };
+  }
+  function solveLeg(hip, ankle) {
+    var dx = ankle.x - hip.x;
+    var dy = ankle.y - hip.y;
+    var d = Math.sqrt(dx * dx + dy * dy) || 0.001;
+    var maxD = THIGH + SHIN - 0.5;
+    if (d > maxD) {
+      var sc = maxD / d;
+      dx *= sc;
+      dy *= sc;
+      d = maxD;
+    }
+    var a = Math.atan2(dy, dx);
+    var cosA = (THIGH * THIGH + d * d - SHIN * SHIN) / (2 * THIGH * d);
+    cosA = cosA > 1 ? 1 : (cosA < -1 ? -1 : cosA);
+    var ka = a - Math.acos(cosA);
+    return {
+      knee: { x: hip.x + THIGH * Math.cos(ka), y: hip.y + THIGH * Math.sin(ka) },
+      ankle: { x: hip.x + dx, y: hip.y + dy }
+    };
+  }
+
+  /* ---------- render ---------- */
+  function render(phase) {
+    var deg = (phase * 180) / Math.PI;
+    var spinDeg = (phase * 360) / Math.PI;
+    var dist = phase * 180;
+
+    refs.rearSpin.setAttribute('transform', 'rotate(' + spinDeg.toFixed(2) + ')');
+    refs.frontSpin.setAttribute('transform', 'rotate(' + spinDeg.toFixed(2) + ')');
+
+    refs.crankNearWrap.setAttribute('transform', 'translate(600 595) rotate(' + deg.toFixed(2) + ')');
+    refs.crankFarWrap.setAttribute('transform', 'translate(600 595) rotate(' + (deg + 180).toFixed(2) + ')');
+    refs.nearPedalWrap.setAttribute('transform', 'rotate(' + (-deg).toFixed(2) + ' 0 -44)');
+    refs.farPedalWrap.setAttribute('transform', 'rotate(' + (-deg - 180).toFixed(2) + ' 0 -44)');
+    refs.chainDash.setAttribute('stroke-dashoffset', mod(-phase * 26, 11).toFixed(2));
+
+    var bob = Math.sin(phase * 2) * 2.4;
+    refs.bodyBob.setAttribute('transform', 'translate(0 ' + bob.toFixed(2) + ')');
+    refs.wingGroup.setAttribute('transform', 'rotate(' + (2.6 * Math.sin(phase * 2 + 0.5)).toFixed(2) + ' 598 398)');
+    refs.headGroup.setAttribute('transform', 'rotate(' + (2.1 * Math.sin(phase * 2 + 1.1)).toFixed(2) + ' 622 374)');
+    refs.pouch.setAttribute('transform', 'rotate(' + (1.5 * Math.sin(phase * 2 + 2.0)).toFixed(2) + ' 716 310)');
+    refs.scarfTail1.setAttribute('transform', 'rotate(' + (5 * Math.sin(phase * 3 + 0.2)).toFixed(2) + ' 610 376)');
+    refs.scarfTail2.setAttribute('transform', 'rotate(' + (4 * Math.sin(phase * 3 + 1.3) - 2).toFixed(2) + ' 610 376)');
+
+    var pn = pedalAt(phase);
+    var pf = pedalAt(phase + Math.PI);
+    var hipN = { x: HIP_NEAR.x, y: HIP_NEAR.y + bob };
+    var hipF = { x: HIP_FAR.x, y: HIP_FAR.y + bob };
+    var sn = solveLeg(hipN, { x: pn.x, y: pn.y - 9 });
+    var sf = solveLeg(hipF, { x: pf.x, y: pf.y - 9 });
+
+    refs.legNear.setAttribute('d',
+      'M' + hipN.x + ' ' + hipN.y.toFixed(1) +
+      'L' + sn.knee.x.toFixed(1) + ' ' + sn.knee.y.toFixed(1) +
+      'L' + sn.ankle.x.toFixed(1) + ' ' + sn.ankle.y.toFixed(1));
+    refs.legFar.setAttribute('d',
+      'M' + hipF.x + ' ' + hipF.y.toFixed(1) +
+      'L' + sf.knee.x.toFixed(1) + ' ' + sf.knee.y.toFixed(1) +
+      'L' + sf.ankle.x.toFixed(1) + ' ' + sf.ankle.y.toFixed(1));
+    refs.footNear.setAttribute('transform', 'translate(' + sn.ankle.x.toFixed(1) + ' ' + sn.ankle.y.toFixed(1) + ')');
+    refs.footFar.setAttribute('transform', 'translate(' + sf.ankle.x.toFixed(1) + ' ' + sf.ankle.y.toFixed(1) + ')');
+
+    refs.dashGroup.setAttribute('transform', 'translate(' + (-mod(dist, 200)).toFixed(1) + ' 0)');
+    refs.bushGroup.setAttribute('transform', 'translate(' + (-mod(dist, 400)).toFixed(1) + ' 0)');
+    refs.treeGroup.setAttribute('transform', 'translate(' + (-mod(dist * 0.25, 500)).toFixed(1) + ' 0)');
+    refs.speedGroup.setAttribute('transform', 'translate(' + (-mod(dist * 1.7, 700)).toFixed(1) + ' 0)');
+    refs.cloudGroup.setAttribute('transform', 'translate(' + (-mod(dist * 0.02, 1500)).toFixed(1) + ' 0)');
+    refs.farHillsGroup.setAttribute('transform', 'translate(' + (-mod(dist * 0.045, 1200)).toFixed(1) + ' 0)');
+    refs.nearHillsGroup.setAttribute('transform', 'translate(' + (-mod(dist * 0.1, 1200)).toFixed(1) + ' 0)');
+    refs.sunGlowCircle.setAttribute('r', (150 + Math.sin(phase * 0.7) * 7).toFixed(1));
+
+    var cycle = 240;
+    for (var i = 0; i < 3; i++) {
+      var t = mod(dist + i * (cycle / 3), cycle) / cycle;
+      var puff = refs['puff' + i];
+      puff.setAttribute('cx', (472 - t * 78).toFixed(1));
+      puff.setAttribute('cy', (654 - t * 34).toFixed(1));
+      puff.setAttribute('r', (3 + t * 10).toFixed(1));
+      puff.setAttribute('opacity', (0.42 * (1 - t)).toFixed(2));
+    }
+  }
+
+  /* ---------- responsive viewBox ---------- */
+  function layout() {
+    var cw = stage.clientWidth || 0;
+    var ch = stage.clientHeight || 0;
+    if (cw < 2 || ch < 2) { return; }
+    var aspect = cw / ch;
+    var w, h;
+    if (aspect >= 1.5) {
+      h = 800;
+      w = 800 * aspect;
+    } else {
+      w = 1200;
+      h = 1200 / aspect;
+    }
+    if (h > 1180) { h = 1180; w = h * aspect; }
+    if (w < 620) { w = 620; h = w / aspect; }
+    if (w > 3000) { w = 3000; h = w / aspect; }
+    svg.setAttribute('viewBox',
+      (600 - w / 2).toFixed(1) + ' ' + (400 - h / 2).toFixed(1) + ' ' + w.toFixed(1) + ' ' + h.toFixed(1));
+  }
+
+  /* ---------- animation loop ---------- */
+  var RAF = window.requestAnimationFrame
+    ? function (fn) { return window.requestAnimationFrame(fn); }
+    : function (fn) { return window.setTimeout(function () { fn(Date.now()); }, 16); };
+  var CAF = window.cancelAnimationFrame ? function (id) { window.cancelAnimationFrame(id); } : window.clearTimeout;
+
+  var SPEED = 3.2;
+  var playing = false;
+  var phase = 0;
+  var lastT = 0;
+  var rafId = 0;
+
+  function frame(t) {
+    if (!playing) { return; }
+    var dt = lastT ? (t - lastT) / 1000 : 0;
+    lastT = t;
+    if (dt > 0.08) { dt = 0.08; }
+    phase += dt * SPEED;
+    if (phase > 1e6) { phase = mod(phase, Math.PI * 2); }
+    render(phase);
+    rafId = RAF(frame);
+  }
+
+  function setPlaying(on) {
+    if (on === playing) { return; }
+    playing = on;
+    btn.classList.toggle('is-playing', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? '暂停动画' : '播放动画');
+    btnText.textContent = on ? '暂停' : '播放';
+    if (on) {
+      lastT = 0;
+      rafId = RAF(frame);
+    } else {
+      CAF(rafId);
+    }
+  }
+
+  layout();
+  render(0);
+
+  btn.addEventListener('click', function () { setPlaying(!playing); });
+
+  document.addEventListener('keydown', function (e) {
+    var isSpace = e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar';
+    if (!isSpace || e.repeat) { return; }
+    if (e.target === btn) { return; }
+    e.preventDefault();
+    setPlaying(!playing);
+  });
+
+  window.addEventListener('resize', function () { RAF(layout); });
+  window.addEventListener('orientationchange', function () { window.setTimeout(layout, 150); });
+  window.addEventListener('load', layout);
+  if (window.ResizeObserver) {
+    new window.ResizeObserver(function () { layout(); }).observe(stage);
+  }
+
+  var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  function onMotionPref(ev) {
+    if (ev.matches) { setPlaying(false); }
+  }
+  if (mq) {
+    if (mq.matches) { setPlaying(false); } else { setPlaying(true); }
+    if (mq.addEventListener) { mq.addEventListener('change', onMotionPref); }
+    else if (mq.addListener) { mq.addListener(onMotionPref); }
+  } else {
+    setPlaying(true);
+  }
+}());
+</script>
+</body>
+</html>

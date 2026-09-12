@@ -1,0 +1,673 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>DeepSeek 4.1 Flash · max · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="DeepSeek 4.1 Flash · max" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+&lt;meta name=&quot;theme-color&quot; content=&quot;#bfe4f5&quot;&gt;
+&lt;title&gt;鹈鹕骑行 · Pelican on a Bicycle&lt;/title&gt;
+&lt;style&gt;
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #bfe4f5;
+    color: #10303f;
+    font-family: system-ui, -apple-system, &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei&quot;, sans-serif;
+  }
+  .stage { position: fixed; inset: 0; }
+  #scene { display: block; width: 100%; height: 100%; }
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+  .hud &gt; * { pointer-events: auto; }
+  .badge {
+    position: absolute;
+    top: max(14px, env(safe-area-inset-top));
+    left: max(14px, env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid rgba(16, 48, 63, .12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .88);
+    box-shadow: 0 6px 18px rgba(16, 48, 63, .14);
+    font-size: 13.5px;
+    line-height: 1;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .badge strong { font-size: 14px; letter-spacing: .02em; }
+  .badge .sep { opacity: .35; }
+  .badge .hint { opacity: .72; }
+  @media (max-width: 560px) {
+    .badge .sep, .badge .hint { display: none; }
+  }
+  .controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: max(20px, calc(env(safe-area-inset-bottom) + 14px));
+    display: flex;
+    justify-content: center;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 136px;
+    padding: 13px 24px;
+    border: 1.5px solid rgba(16, 48, 63, .2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .95);
+    color: #0e2c3a;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(11, 42, 62, .22), inset 0 1px 0 rgba(255, 255, 255, .8);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .toggle:hover { background: #ffffff; }
+  .toggle:active { transform: translateY(1px); }
+  .toggle:focus-visible { outline: 3px solid #0b57d0; outline-offset: 3px; }
+  .toggle .icon { width: 20px; height: 20px; flex: none; fill: currentColor; }
+  .toggle .icon-pause { display: none; }
+  .toggle.is-playing .icon-pause { display: block; }
+  .toggle.is-playing .icon-play { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .toggle { transition: background-color .18s ease, transform .12s ease; }
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main class=&quot;stage&quot;&gt;
+  &lt;svg id=&quot;scene&quot; viewBox=&quot;0 0 1200 800&quot; preserveAspectRatio=&quot;xMidYMid slice&quot; role=&quot;img&quot; aria-labelledby=&quot;sceneTitle sceneDesc&quot;&gt;
+    &lt;title id=&quot;sceneTitle&quot;&gt;一只鹈鹕骑着自行车在公路上前进&lt;/title&gt;
+    &lt;desc id=&quot;sceneDesc&quot;&gt;画面中有一只白色鹈鹕，长喙与喉囊清晰可见，坐在青绿色自行车上沿公路骑行；车轮转动、双腿交替踩踏踏板，背景有太阳、云朵、远山、树木与移动的路面标线。&lt;/desc&gt;
+    &lt;defs&gt;
+      &lt;linearGradient id=&quot;skyGrad&quot; gradientUnits=&quot;userSpaceOnUse&quot; x1=&quot;0&quot; y1=&quot;-1200&quot; x2=&quot;0&quot; y2=&quot;660&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#8fcbe9&quot;/&gt;
+        &lt;stop offset=&quot;.5&quot; stop-color=&quot;#bde3f4&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#e9f7fb&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;roadGrad&quot; gradientUnits=&quot;userSpaceOnUse&quot; x1=&quot;0&quot; y1=&quot;640&quot; x2=&quot;0&quot; y2=&quot;900&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#7b828a&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#565c63&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;grassGrad&quot; gradientUnits=&quot;userSpaceOnUse&quot; x1=&quot;0&quot; y1=&quot;556&quot; x2=&quot;0&quot; y2=&quot;642&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#8fcd92&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#74b57c&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;radialGradient id=&quot;sunGlow&quot; cx=&quot;.5&quot; cy=&quot;.5&quot; r=&quot;.5&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#ffe9a8&quot; stop-opacity=&quot;.95&quot;/&gt;
+        &lt;stop offset=&quot;.45&quot; stop-color=&quot;#ffe6a0&quot; stop-opacity=&quot;.5&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#ffe6a0&quot; stop-opacity=&quot;0&quot;/&gt;
+      &lt;/radialGradient&gt;
+      &lt;radialGradient id=&quot;bodyGrad&quot; cx=&quot;.35&quot; cy=&quot;.22&quot; r=&quot;.95&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#ffffff&quot;/&gt;
+        &lt;stop offset=&quot;.62&quot; stop-color=&quot;#fbfdfe&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#dbe7ef&quot;/&gt;
+      &lt;/radialGradient&gt;
+      &lt;radialGradient id=&quot;headGrad&quot; cx=&quot;.32&quot; cy=&quot;.2&quot; r=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#ffffff&quot;/&gt;
+        &lt;stop offset=&quot;.7&quot; stop-color=&quot;#fbfdfe&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#dbe7ef&quot;/&gt;
+      &lt;/radialGradient&gt;
+      &lt;linearGradient id=&quot;beakGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#f7bb72&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#ee9a4e&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;pouchGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#f6ad6f&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#e37f39&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;radialGradient id=&quot;shadowGrad&quot; cx=&quot;.5&quot; cy=&quot;.5&quot; r=&quot;.5&quot;&gt;
+        &lt;stop offset=&quot;0&quot; stop-color=&quot;#1b2a33&quot; stop-opacity=&quot;.3&quot;/&gt;
+        &lt;stop offset=&quot;.6&quot; stop-color=&quot;#1b2a33&quot; stop-opacity=&quot;.16&quot;/&gt;
+        &lt;stop offset=&quot;1&quot; stop-color=&quot;#1b2a33&quot; stop-opacity=&quot;0&quot;/&gt;
+      &lt;/radialGradient&gt;
+
+      &lt;g id=&quot;wheelTpl&quot; fill=&quot;none&quot;&gt;
+        &lt;circle r=&quot;90&quot; stroke=&quot;#2e3238&quot; stroke-width=&quot;12&quot;/&gt;
+        &lt;circle r=&quot;81&quot; stroke=&quot;#c6cdd4&quot; stroke-width=&quot;7&quot;/&gt;
+        &lt;circle r=&quot;76.5&quot; stroke=&quot;#9aa4ad&quot; stroke-width=&quot;1.5&quot; opacity=&quot;.7&quot;/&gt;
+        &lt;g id=&quot;spokeHost&quot; stroke=&quot;#aeb7bf&quot; stroke-width=&quot;1.6&quot;&gt;&lt;/g&gt;
+        &lt;circle r=&quot;10&quot; fill=&quot;#b9c1c8&quot; stroke=&quot;#7c858d&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;circle r=&quot;4&quot; fill=&quot;#6e767d&quot;/&gt;
+        &lt;circle cy=&quot;-70&quot; r=&quot;5.5&quot; fill=&quot;#e23b3b&quot;/&gt;
+        &lt;circle cy=&quot;-70&quot; r=&quot;2&quot; fill=&quot;#ffd9d9&quot;/&gt;
+        &lt;rect x=&quot;-2.5&quot; y=&quot;76&quot; width=&quot;5&quot; height=&quot;14&quot; rx=&quot;2&quot; fill=&quot;#4a4f55&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;g id=&quot;frameTpl&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+        &lt;path d=&quot;M480 570 L600 595&quot;/&gt;
+        &lt;path d=&quot;M480 570 L545 465&quot;/&gt;
+        &lt;path d=&quot;M600 595 L545 465&quot;/&gt;
+        &lt;path d=&quot;M600 595 L720 495&quot;/&gt;
+        &lt;path d=&quot;M549 463 L708 459&quot;/&gt;
+        &lt;path d=&quot;M706 456 L722 498&quot;/&gt;
+        &lt;path d=&quot;M718 492 C728 522 744 548 760 570&quot;/&gt;
+        &lt;path d=&quot;M706 456 L700 434&quot;/&gt;
+        &lt;path d=&quot;M700 434 C693 419 681 414 670 420&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;g id=&quot;footTpl&quot; stroke-linejoin=&quot;round&quot;&gt;
+        &lt;path d=&quot;M-12 4 C-16 -3 -6 -9 4 -8 C16 -7 28 -4 35 0 C40 3 38 9 30 10 L-8 10 C-15 9 -16 7 -12 4 Z&quot;/&gt;
+        &lt;path d=&quot;M12 -6 L14 10 M24 -4 L26 10&quot; fill=&quot;none&quot; opacity=&quot;.85&quot;/&gt;
+      &lt;/g&gt;
+    &lt;/defs&gt;
+
+    &lt;rect x=&quot;-1600&quot; y=&quot;-2600&quot; width=&quot;5200&quot; height=&quot;3400&quot; fill=&quot;url(#skyGrad)&quot;/&gt;
+
+    &lt;g id=&quot;sunGroup&quot;&gt;
+      &lt;circle id=&quot;sunGlowCircle&quot; cx=&quot;1000&quot; cy=&quot;176&quot; r=&quot;150&quot; fill=&quot;url(#sunGlow)&quot;/&gt;
+      &lt;circle cx=&quot;1000&quot; cy=&quot;176&quot; r=&quot;56&quot; fill=&quot;#ffdf8e&quot;/&gt;
+      &lt;circle cx=&quot;1000&quot; cy=&quot;176&quot; r=&quot;56&quot; fill=&quot;none&quot; stroke=&quot;#ffd06a&quot; stroke-width=&quot;4&quot; opacity=&quot;.55&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;g id=&quot;cloudGroup&quot;&gt;&lt;/g&gt;
+
+    &lt;g id=&quot;farHillsGroup&quot;&gt;&lt;path id=&quot;farHillsPath&quot; fill=&quot;#b6d6c8&quot;/&gt;&lt;/g&gt;
+    &lt;g id=&quot;nearHillsGroup&quot;&gt;&lt;path id=&quot;nearHillsPath&quot; fill=&quot;#8fc2a3&quot;/&gt;&lt;/g&gt;
+
+    &lt;rect x=&quot;-1600&quot; y=&quot;556&quot; width=&quot;5200&quot; height=&quot;86&quot; fill=&quot;url(#grassGrad)&quot;/&gt;
+
+    &lt;g id=&quot;treeGroup&quot;&gt;&lt;/g&gt;
+    &lt;g id=&quot;bushGroup&quot;&gt;&lt;/g&gt;
+
+    &lt;rect x=&quot;-1600&quot; y=&quot;640&quot; width=&quot;5200&quot; height=&quot;2200&quot; fill=&quot;url(#roadGrad)&quot;/&gt;
+    &lt;rect x=&quot;-1600&quot; y=&quot;638&quot; width=&quot;5200&quot; height=&quot;4&quot; fill=&quot;#dfe5e9&quot; opacity=&quot;.8&quot;/&gt;
+    &lt;g id=&quot;dashGroup&quot;&gt;&lt;/g&gt;
+
+    &lt;ellipse cx=&quot;615&quot; cy=&quot;662&quot; rx=&quot;260&quot; ry=&quot;20&quot; fill=&quot;url(#shadowGrad)&quot;/&gt;
+    &lt;g id=&quot;speedGroup&quot;&gt;&lt;/g&gt;
+    &lt;g id=&quot;puffGroup&quot; fill=&quot;#e7ecef&quot;&gt;
+      &lt;circle id=&quot;puff0&quot; r=&quot;0&quot; opacity=&quot;0&quot;/&gt;
+      &lt;circle id=&quot;puff1&quot; r=&quot;0&quot; opacity=&quot;0&quot;/&gt;
+      &lt;circle id=&quot;puff2&quot; r=&quot;0&quot; opacity=&quot;0&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;g id=&quot;cyclist&quot;&gt;
+      &lt;g id=&quot;crankFarWrap&quot; transform=&quot;translate(600 595)&quot;&gt;
+        &lt;rect x=&quot;-5&quot; y=&quot;-44&quot; width=&quot;10&quot; height=&quot;44&quot; rx=&quot;5&quot; fill=&quot;#136a74&quot;/&gt;
+        &lt;g id=&quot;farPedalWrap&quot;&gt;
+          &lt;rect x=&quot;-16&quot; y=&quot;-48&quot; width=&quot;32&quot; height=&quot;8&quot; rx=&quot;4&quot; fill=&quot;#3a4046&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+      &lt;path id=&quot;legFar&quot; d=&quot;&quot; fill=&quot;none&quot; stroke=&quot;#cd8a4c&quot; stroke-width=&quot;12&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;g id=&quot;footFar&quot;&gt;&lt;g transform=&quot;scale(0.88)&quot;&gt;&lt;use href=&quot;#footTpl&quot; fill=&quot;#cd8a4c&quot; stroke=&quot;#a96c33&quot; stroke-width=&quot;2&quot;/&gt;&lt;/g&gt;&lt;/g&gt;
+
+      &lt;g transform=&quot;translate(480 570)&quot;&gt;&lt;g id=&quot;rearSpin&quot;&gt;&lt;use href=&quot;#wheelTpl&quot;/&gt;&lt;/g&gt;&lt;/g&gt;
+      &lt;g transform=&quot;translate(760 570)&quot;&gt;&lt;g id=&quot;frontSpin&quot;&gt;&lt;use href=&quot;#wheelTpl&quot;/&gt;&lt;/g&gt;&lt;/g&gt;
+
+      &lt;g id=&quot;bikeFrame&quot;&gt;
+        &lt;use href=&quot;#frameTpl&quot; stroke=&quot;#0c5a64&quot; stroke-width=&quot;14&quot;/&gt;
+        &lt;use href=&quot;#frameTpl&quot; stroke=&quot;#1e93a3&quot; stroke-width=&quot;9&quot;/&gt;
+        &lt;use href=&quot;#frameTpl&quot; stroke=&quot;#9fdfe8&quot; stroke-width=&quot;2&quot; opacity=&quot;.45&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;path d=&quot;M600 570 L480 557&quot; stroke=&quot;#3c4147&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;/&gt;
+      &lt;path d=&quot;M600 620 L480 583&quot; stroke=&quot;#3c4147&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;/&gt;
+      &lt;path id=&quot;chainDash&quot; d=&quot;M600 570 L480 557 M600 620 L480 583&quot; stroke=&quot;#9aa3aa&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;6 5&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;circle cx=&quot;600&quot; cy=&quot;595&quot; r=&quot;26&quot; fill=&quot;#dde3e8&quot; stroke=&quot;#9aa4ad&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;circle cx=&quot;600&quot; cy=&quot;595&quot; r=&quot;17&quot; fill=&quot;none&quot; stroke=&quot;#b3bdc4&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;g fill=&quot;#8b959d&quot;&gt;
+        &lt;circle cx=&quot;621&quot; cy=&quot;595&quot; r=&quot;2.2&quot;/&gt;
+        &lt;circle cx=&quot;610.5&quot; cy=&quot;613.2&quot; r=&quot;2.2&quot;/&gt;
+        &lt;circle cx=&quot;589.5&quot; cy=&quot;613.2&quot; r=&quot;2.2&quot;/&gt;
+        &lt;circle cx=&quot;579&quot; cy=&quot;595&quot; r=&quot;2.2&quot;/&gt;
+        &lt;circle cx=&quot;589.5&quot; cy=&quot;576.8&quot; r=&quot;2.2&quot;/&gt;
+        &lt;circle cx=&quot;610.5&quot; cy=&quot;576.8&quot; r=&quot;2.2&quot;/&gt;
+      &lt;/g&gt;
+      &lt;circle cx=&quot;480&quot; cy=&quot;570&quot; r=&quot;13&quot; fill=&quot;#c6cdd4&quot; stroke=&quot;#7c858d&quot; stroke-width=&quot;3&quot;/&gt;
+
+      &lt;path d=&quot;M462 450 C482 442 522 442 556 452 C562 455 562 462 554 465 C524 471 486 470 468 463 C458 460 456 453 462 450 Z&quot; fill=&quot;#6b4226&quot; stroke=&quot;#4b2d18&quot; stroke-width=&quot;2&quot;/&gt;
+
+      &lt;g id=&quot;crankNearWrap&quot; transform=&quot;translate(600 595)&quot;&gt;
+        &lt;rect x=&quot;-5&quot; y=&quot;-44&quot; width=&quot;10&quot; height=&quot;44&quot; rx=&quot;5&quot; fill=&quot;#1e93a3&quot; stroke=&quot;#0c5a64&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;g id=&quot;nearPedalWrap&quot;&gt;
+          &lt;rect x=&quot;-16&quot; y=&quot;-48&quot; width=&quot;32&quot; height=&quot;8&quot; rx=&quot;4&quot; fill=&quot;#2e3238&quot; stroke=&quot;#141719&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+      &lt;path id=&quot;legNear&quot; d=&quot;&quot; fill=&quot;none&quot; stroke=&quot;#efa95f&quot; stroke-width=&quot;13&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;g id=&quot;footNear&quot;&gt;&lt;g transform=&quot;scale(0.88)&quot;&gt;&lt;use href=&quot;#footTpl&quot; fill=&quot;#efa95f&quot; stroke=&quot;#c97f3f&quot; stroke-width=&quot;2&quot;/&gt;&lt;/g&gt;&lt;/g&gt;
+
+      &lt;g id=&quot;pelican&quot;&gt;
+        &lt;g id=&quot;bodyBob&quot;&gt;
+          &lt;path d=&quot;M486 414 C448 392 410 384 384 392 C414 412 448 438 476 452 Z&quot; fill=&quot;#eff5f9&quot; stroke=&quot;#8aa6b8&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M440 402 L470 442&quot; stroke=&quot;#c3d2dd&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;.8&quot;/&gt;
+          &lt;path d=&quot;M412 396 L444 430&quot; stroke=&quot;#c3d2dd&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;.8&quot;/&gt;
+          &lt;ellipse cx=&quot;545&quot; cy=&quot;435&quot; rx=&quot;80&quot; ry=&quot;56&quot; transform=&quot;rotate(-12 545 435)&quot; fill=&quot;url(#bodyGrad)&quot; stroke=&quot;#8aa6b8&quot; stroke-width=&quot;2.5&quot;/&gt;
+          &lt;path d=&quot;M512 398 C536 376 570 372 594 386 C574 402 542 412 512 398 Z&quot; fill=&quot;#dfe9f1&quot; stroke=&quot;#8aa6b8&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M602 426 C612 380 636 344 674 324&quot; fill=&quot;none&quot; stroke=&quot;#cdd9e2&quot; stroke-width=&quot;44&quot; stroke-linecap=&quot;round&quot; transform=&quot;translate(-5 4)&quot;/&gt;
+          &lt;path d=&quot;M602 426 C612 380 636 344 674 324&quot; fill=&quot;none&quot; stroke=&quot;#fbfdfe&quot; stroke-width=&quot;40&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;g id=&quot;headGroup&quot;&gt;
+            &lt;path d=&quot;M656 276 Q646 260 653 250 Q662 259 668 272 Z&quot; fill=&quot;#e3edf3&quot; stroke=&quot;#8aa6b8&quot; stroke-width=&quot;2&quot; stroke-linejoin=&quot;round&quot;/&gt;
+            &lt;circle cx=&quot;674&quot; cy=&quot;300&quot; r=&quot;32&quot; fill=&quot;url(#headGrad)&quot; stroke=&quot;#8aa6b8&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;path d=&quot;M702 284 C746 286 794 296 838 312 C798 318 748 314 706 305 Z&quot; fill=&quot;url(#beakGrad)&quot; stroke=&quot;#d9822b&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+            &lt;g id=&quot;pouch&quot;&gt;
+              &lt;path d=&quot;M706 305 C738 314 786 318 836 312 C830 338 806 364 772 364 C740 364 714 340 706 305 Z&quot; fill=&quot;url(#pouchGrad)&quot; stroke=&quot;#d9822b&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+              &lt;path d=&quot;M734 336 C750 352 774 358 796 350&quot; fill=&quot;none&quot; stroke=&quot;#ffffff&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.3&quot;/&gt;
+            &lt;/g&gt;
+            &lt;path d=&quot;M706 305 C738 314 786 318 836 312&quot; fill=&quot;none&quot; stroke=&quot;#c86f2e&quot; stroke-width=&quot;2.5&quot; opacity=&quot;.85&quot;/&gt;
+            &lt;circle cx=&quot;684&quot; cy=&quot;286&quot; r=&quot;9&quot; fill=&quot;#ffffff&quot; stroke=&quot;#9fb4c4&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;circle cx=&quot;686&quot; cy=&quot;286&quot; r=&quot;4.6&quot; fill=&quot;#232a31&quot;/&gt;
+            &lt;circle cx=&quot;688&quot; cy=&quot;283.5&quot; r=&quot;1.8&quot; fill=&quot;#ffffff&quot;/&gt;
+            &lt;path d=&quot;M674 276 Q684 270 695 274&quot; fill=&quot;none&quot; stroke=&quot;#9fb4c4&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;g id=&quot;scarf&quot;&gt;
+              &lt;g id=&quot;scarfTail2&quot;&gt;&lt;path d=&quot;M606 382 C574 380 548 392 534 412 C556 404 584 400 610 400 Z&quot; fill=&quot;#d14b28&quot; stroke=&quot;#a93a1e&quot; stroke-width=&quot;1.6&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/g&gt;
+              &lt;g id=&quot;scarfTail1&quot;&gt;&lt;path d=&quot;M610 372 C576 360 546 370 528 392 C552 386 582 384 614 390 Z&quot; fill=&quot;#e4572e&quot; stroke=&quot;#b8401f&quot; stroke-width=&quot;1.6&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/g&gt;
+              &lt;circle cx=&quot;610&quot; cy=&quot;376&quot; r=&quot;8&quot; fill=&quot;#e4572e&quot; stroke=&quot;#b8401f&quot; stroke-width=&quot;1.6&quot;/&gt;
+              &lt;g transform=&quot;translate(627 365) rotate(-42)&quot;&gt;&lt;rect x=&quot;-26&quot; y=&quot;-11&quot; width=&quot;52&quot; height=&quot;22&quot; rx=&quot;11&quot; fill=&quot;#e4572e&quot; stroke=&quot;#b8401f&quot; stroke-width=&quot;2&quot;/&gt;&lt;/g&gt;
+            &lt;/g&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;wingGroup&quot;&gt;
+            &lt;path d=&quot;M596 392 C628 392 660 408 688 428 C682 442 668 448 652 444 C622 436 596 424 580 408 C578 400 584 392 596 392 Z&quot; fill=&quot;#eaf2f7&quot; stroke=&quot;#8aa6b8&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+            &lt;path d=&quot;M636 420 C652 428 668 434 682 436&quot; fill=&quot;none&quot; stroke=&quot;#a8bfcd&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M624 428 C640 436 656 440 670 442&quot; fill=&quot;none&quot; stroke=&quot;#a8bfcd&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M614 434 C628 440 642 443 654 444&quot; fill=&quot;none&quot; stroke=&quot;#a8bfcd&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+  &lt;/svg&gt;
+
+  &lt;div class=&quot;hud&quot;&gt;
+    &lt;div class=&quot;badge&quot; role=&quot;note&quot;&gt;
+      &lt;strong&gt;鹈鹕骑行&lt;/strong&gt;&lt;span class=&quot;sep&quot; aria-hidden=&quot;true&quot;&gt;·&lt;/span&gt;&lt;span class=&quot;hint&quot;&gt;空格键播放 / 暂停&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;controls&quot;&gt;
+      &lt;button id=&quot;toggle&quot; class=&quot;toggle&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-keyshortcuts=&quot;Space&quot; aria-label=&quot;播放动画&quot;&gt;
+        &lt;svg class=&quot;icon&quot; viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;
+          &lt;path class=&quot;icon-play&quot; d=&quot;M8 5.6v12.8L19 12z&quot;/&gt;
+          &lt;g class=&quot;icon-pause&quot;&gt;&lt;rect x=&quot;7&quot; y=&quot;5.6&quot; width=&quot;3.6&quot; height=&quot;12.8&quot; rx=&quot;1.5&quot;/&gt;&lt;rect x=&quot;13.4&quot; y=&quot;5.6&quot; width=&quot;3.6&quot; height=&quot;12.8&quot; rx=&quot;1.5&quot;/&gt;&lt;/g&gt;
+        &lt;/svg&gt;
+        &lt;span id=&quot;toggleText&quot;&gt;播放&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+(function () {
+  &#39;use strict&#39;;
+
+  var NS = &#39;http://www.w3.org/2000/svg&#39;;
+  var svg = document.getElementById(&#39;scene&#39;);
+  var stage = document.querySelector(&#39;.stage&#39;);
+  var btn = document.getElementById(&#39;toggle&#39;);
+  var btnText = document.getElementById(&#39;toggleText&#39;);
+
+  function byId(id) { return document.getElementById(id); }
+  function mod(v, m) { return ((v % m) + m) % m; }
+  function svgEl(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    if (attrs) {
+      for (var k in attrs) {
+        if (Object.prototype.hasOwnProperty.call(attrs, k)) { n.setAttribute(k, attrs[k]); }
+      }
+    }
+    if (parent) { parent.appendChild(n); }
+    return n;
+  }
+
+  /* ---------- wheels: spokes ---------- */
+  (function () {
+    var host = byId(&#39;spokeHost&#39;);
+    for (var i = 0; i &lt; 12; i++) {
+      var a = (i * Math.PI) / 6;
+      svgEl(&#39;line&#39;, {
+        x1: (Math.cos(a) * 11).toFixed(2),
+        y1: (Math.sin(a) * 11).toFixed(2),
+        x2: (Math.cos(a) * 76).toFixed(2),
+        y2: (Math.sin(a) * 76).toFixed(2)
+      }, host);
+    }
+  }());
+
+  /* ---------- hills ---------- */
+  function hillPath(yc, amp, base, comps) {
+    var d = &#39;M-2400 780&#39;;
+    for (var x = -2400; x &lt;= 4800; x += 12) {
+      var v = 0, wsum = 0;
+      for (var c = 0; c &lt; comps.length; c++) {
+        v += comps[c][2] * Math.sin((2 * Math.PI * x) / comps[c][0] + comps[c][1]);
+        wsum += comps[c][2];
+      }
+      var y = yc - amp * (base + (1 - base) * (v / wsum));
+      d += &#39;L&#39; + x + &#39; &#39; + y.toFixed(1);
+    }
+    return d + &#39;L4800 780Z&#39;;
+  }
+  byId(&#39;farHillsPath&#39;).setAttribute(&#39;d&#39;, hillPath(560, 58, 0.34, [[600, 0.4, 0.6], [240, 2.1, 0.4]]));
+  byId(&#39;nearHillsPath&#39;).setAttribute(&#39;d&#39;, hillPath(578, 44, 0.26, [[400, 1.2, 0.55], [150, 3.0, 0.45]]));
+
+  /* ---------- clouds + distant birds ---------- */
+  var cloudGroup = byId(&#39;cloudGroup&#39;);
+  function cloud(x, y, s, o) {
+    var g = svgEl(&#39;g&#39;, { transform: &#39;translate(&#39; + x + &#39; &#39; + y + &#39;) scale(&#39; + s + &#39;)&#39;, opacity: String(o) }, cloudGroup);
+    svgEl(&#39;ellipse&#39;, { cx: -46, cy: 4, rx: 50, ry: 25, fill: &#39;#ffffff&#39; }, g);
+    svgEl(&#39;ellipse&#39;, { cx: 6, cy: -8, rx: 62, ry: 34, fill: &#39;#ffffff&#39; }, g);
+    svgEl(&#39;ellipse&#39;, { cx: 58, cy: 6, rx: 42, ry: 23, fill: &#39;#ffffff&#39; }, g);
+    svgEl(&#39;ellipse&#39;, { cx: 6, cy: 16, rx: 64, ry: 17, fill: &#39;#ffffff&#39; }, g);
+    svgEl(&#39;ellipse&#39;, { cx: 8, cy: 10, rx: 38, ry: 9, fill: &#39;#e2eef6&#39;, opacity: &#39;0.75&#39; }, g);
+  }
+  function bird(x, y, s) {
+    var g = svgEl(&#39;g&#39;, { transform: &#39;translate(&#39; + x + &#39; &#39; + y + &#39;) scale(&#39; + s + &#39;)&#39;, stroke: &#39;#7d97a6&#39;, &#39;stroke-width&#39;: 3, fill: &#39;none&#39;, &#39;stroke-linecap&#39;: &#39;round&#39; }, cloudGroup);
+    svgEl(&#39;path&#39;, { d: &#39;M-13 0 Q-6.5 -8 0 0 Q6.5 -8 13 0&#39; }, g);
+  }
+  var cloudDefs = [
+    [70, 168, 1.05, 0.9], [430, 92, 0.78, 0.85], [700, 226, 0.6, 0.8],
+    [960, 130, 0.95, 0.88], [1250, 262, 0.7, 0.76], [300, 316, 0.48, 0.7]
+  ];
+  for (var ck = -1; ck &lt;= 2; ck++) {
+    for (var ci = 0; ci &lt; cloudDefs.length; ci++) {
+      cloud(cloudDefs[ci][0] + ck * 1500, cloudDefs[ci][1], cloudDefs[ci][2], cloudDefs[ci][3]);
+    }
+    bird(560 + ck * 1500, 214, 1);
+    bird(608 + ck * 1500, 194, 0.78);
+    bird(1130 + ck * 1500, 92, 0.9);
+  }
+
+  /* ---------- distant trees ---------- */
+  var treeGroup = byId(&#39;treeGroup&#39;);
+  function tree(x, s, shade, shade2) {
+    var g = svgEl(&#39;g&#39;, { transform: &#39;translate(&#39; + x + &#39; 640) scale(&#39; + s + &#39;)&#39; }, treeGroup);
+    svgEl(&#39;rect&#39;, { x: -4, y: -32, width: 8, height: 34, rx: 3, fill: &#39;#7d6549&#39; }, g);
+    svgEl(&#39;circle&#39;, { cx: -15, cy: -44, r: 19, fill: shade }, g);
+    svgEl(&#39;circle&#39;, { cx: 12, cy: -52, r: 22, fill: shade }, g);
+    svgEl(&#39;circle&#39;, { cx: -2, cy: -68, r: 17, fill: shade }, g);
+    svgEl(&#39;circle&#39;, { cx: 26, cy: -36, r: 15, fill: shade2 }, g);
+    svgEl(&#39;circle&#39;, { cx: 0, cy: -58, r: 12, fill: &#39;#8cc894&#39;, opacity: 0.7 }, g);
+  }
+  var treeDefs = [
+    [40, 1.0, &#39;#5fa06e&#39;, &#39;#55945f&#39;],
+    [235, 0.78, &#39;#6aab77&#39;, &#39;#5f9e6c&#39;],
+    [335, 1.18, &#39;#549766&#39;, &#39;#4b8a5c&#39;]
+  ];
+  for (var tk = -2; tk &lt;= 6; tk++) {
+    for (var ti = 0; ti &lt; treeDefs.length; ti++) {
+      tree(treeDefs[ti][0] + tk * 500 + (ti === 1 ? 60 : 0), treeDefs[ti][1], treeDefs[ti][2], treeDefs[ti][3]);
+    }
+  }
+
+  /* ---------- roadside grass, bushes, flowers ---------- */
+  var bushGroup = byId(&#39;bushGroup&#39;);
+  function tuft(x, s, flip) {
+    var g = svgEl(&#39;g&#39;, { transform: &#39;translate(&#39; + x + &#39; 638) scale(&#39; + (flip ? -s : s) + &#39; &#39; + s + &#39;)&#39; }, bushGroup);
+    svgEl(&#39;path&#39;, { d: &#39;M0 0 Q-3 -14 -12 -23&#39;, stroke: &#39;#4e9e63&#39;, &#39;stroke-width&#39;: 3.5, fill: &#39;none&#39;, &#39;stroke-linecap&#39;: &#39;round&#39; }, g);
+    svgEl(&#39;path&#39;, { d: &#39;M2 0 Q5 -16 1 -27&#39;, stroke: &#39;#5cae70&#39;, &#39;stroke-width&#39;: 3.5, fill: &#39;none&#39;, &#39;stroke-linecap&#39;: &#39;round&#39; }, g);
+    svgEl(&#39;path&#39;, { d: &#39;M4 0 Q11 -12 19 -18&#39;, stroke: &#39;#469157&#39;, &#39;stroke-width&#39;: 3.2, fill: &#39;none&#39;, &#39;stroke-linecap&#39;: &#39;round&#39; }, g);
+  }
+  function bush(x, s, c1, c2) {
+    var g = svgEl(&#39;g&#39;, { transform: &#39;translate(&#39; + x + &#39; 640) scale(&#39; + s + &#39;)&#39; }, bushGroup);
+    svgEl(&#39;circle&#39;, { cx: -14, cy: -11, r: 15, fill: c1 }, g);
+    svgEl(&#39;circle&#39;, { cx: 8, cy: -17, r: 17, fill: c1 }, g);
+    svgEl(&#39;circle&#39;, { cx: 15, cy: -7, r: 12, fill: c2 }, g);
+    svgEl(&#39;ellipse&#39;, { cx: 1, cy: -19, rx: 12, ry: 7, fill: &#39;#8fd09a&#39;, opacity: 0.5 }, g);
+  }
+  function flower(x, s, petal) {
+    var g = svgEl(&#39;g&#39;, { transform: &#39;translate(&#39; + x + &#39; 638) scale(&#39; + s + &#39;)&#39; }, bushGroup);
+    svgEl(&#39;path&#39;, { d: &#39;M0 0 L0 -15&#39;, stroke: &#39;#4e9e63&#39;, &#39;stroke-width&#39;: 2.4, &#39;stroke-linecap&#39;: &#39;round&#39;, fill: &#39;none&#39; }, g);
+    for (var pi = 0; pi &lt; 5; pi++) {
+      var pa = (pi * Math.PI * 2) / 5 - Math.PI / 2;
+      svgEl(&#39;circle&#39;, { cx: (Math.cos(pa) * 4.2).toFixed(2), cy: (-15 + Math.sin(pa) * 4.2).toFixed(2), r: 3.4, fill: petal }, g);
+    }
+    svgEl(&#39;circle&#39;, { cx: 0, cy: -15, r: 2.4, fill: &#39;#f2b134&#39; }, g);
+  }
+  var bushDefs = [
+    function (x) { bush(x, 1.0, &#39;#4f9a60&#39;, &#39;#438a54&#39;); },
+    function (x) { tuft(x, 1.0, false); },
+    function (x) { bush(x, 0.72, &#39;#57a56a&#39;, &#39;#4a945d&#39;); },
+    function (x) { tuft(x + 44, 0.78, true); },
+    function (x) { flower(x + 128, 1.0, &#39;#f7c2d4&#39;); },
+    function (x) { flower(x + 196, 0.82, &#39;#f9d38a&#39;); },
+    function (x) { bush(x + 252, 0.88, &#39;#4c9560&#39;, &#39;#3f8452&#39;); },
+    function (x) { tuft(x + 330, 0.9, false); },
+    function (x) { tuft(x + 360, 0.66, true); }
+  ];
+  for (var bk = -3; bk &lt;= 6; bk++) {
+    for (var bi = 0; bi &lt; bushDefs.length; bi++) {
+      bushDefs[bi](bk * 400 + bi * 13);
+    }
+  }
+
+  /* ---------- road dashes ---------- */
+  var dashGroup = byId(&#39;dashGroup&#39;);
+  for (var dk = -5; dk &lt;= 13; dk++) {
+    svgEl(&#39;rect&#39;, { x: dk * 200, y: 724, width: 96, height: 15, rx: 7.5, fill: &#39;#f3f5f1&#39;, opacity: 0.92 }, dashGroup);
+  }
+
+  /* ---------- speed lines ---------- */
+  var speedGroup = byId(&#39;speedGroup&#39;);
+  var speedDefs = [[0, 606, 130, 0.3], [200, 640, 78, 0.24], [380, 690, 150, 0.26], [560, 730, 92, 0.2], [120, 764, 110, 0.16]];
+  for (var sk = -2; sk &lt;= 4; sk++) {
+    for (var si = 0; si &lt; speedDefs.length; si++) {
+      var sd = speedDefs[si];
+      svgEl(&#39;rect&#39;, { x: sk * 700 + sd[0], y: sd[1], width: sd[2], height: 7, rx: 3.5, fill: &#39;#ffffff&#39;, opacity: sd[3] }, speedGroup);
+    }
+  }
+
+  /* ---------- cached refs ---------- */
+  var refs = {
+    rearSpin: byId(&#39;rearSpin&#39;),
+    frontSpin: byId(&#39;frontSpin&#39;),
+    crankNearWrap: byId(&#39;crankNearWrap&#39;),
+    crankFarWrap: byId(&#39;crankFarWrap&#39;),
+    nearPedalWrap: byId(&#39;nearPedalWrap&#39;),
+    farPedalWrap: byId(&#39;farPedalWrap&#39;),
+    chainDash: byId(&#39;chainDash&#39;),
+    legNear: byId(&#39;legNear&#39;),
+    legFar: byId(&#39;legFar&#39;),
+    footNear: byId(&#39;footNear&#39;),
+    footFar: byId(&#39;footFar&#39;),
+    bodyBob: byId(&#39;bodyBob&#39;),
+    wingGroup: byId(&#39;wingGroup&#39;),
+    headGroup: byId(&#39;headGroup&#39;),
+    pouch: byId(&#39;pouch&#39;),
+    scarfTail1: byId(&#39;scarfTail1&#39;),
+    scarfTail2: byId(&#39;scarfTail2&#39;),
+    dashGroup: byId(&#39;dashGroup&#39;),
+    bushGroup: byId(&#39;bushGroup&#39;),
+    treeGroup: byId(&#39;treeGroup&#39;),
+    speedGroup: byId(&#39;speedGroup&#39;),
+    cloudGroup: byId(&#39;cloudGroup&#39;),
+    farHillsGroup: byId(&#39;farHillsGroup&#39;),
+    nearHillsGroup: byId(&#39;nearHillsGroup&#39;),
+    sunGlowCircle: byId(&#39;sunGlowCircle&#39;),
+    puff0: byId(&#39;puff0&#39;),
+    puff1: byId(&#39;puff1&#39;),
+    puff2: byId(&#39;puff2&#39;)
+  };
+
+  /* ---------- rider anatomy ---------- */
+  var HIP_NEAR = { x: 586, y: 492 };
+  var HIP_FAR = { x: 574, y: 489 };
+  var BB = { x: 600, y: 595 };
+  var CRANK_R = 44;
+  var THIGH = 82;
+  var SHIN = 76;
+
+  function pedalAt(angle) {
+    return { x: BB.x + CRANK_R * Math.sin(angle), y: BB.y - CRANK_R * Math.cos(angle) };
+  }
+  function solveLeg(hip, ankle) {
+    var dx = ankle.x - hip.x;
+    var dy = ankle.y - hip.y;
+    var d = Math.sqrt(dx * dx + dy * dy) || 0.001;
+    var maxD = THIGH + SHIN - 0.5;
+    if (d &gt; maxD) {
+      var sc = maxD / d;
+      dx *= sc;
+      dy *= sc;
+      d = maxD;
+    }
+    var a = Math.atan2(dy, dx);
+    var cosA = (THIGH * THIGH + d * d - SHIN * SHIN) / (2 * THIGH * d);
+    cosA = cosA &gt; 1 ? 1 : (cosA &lt; -1 ? -1 : cosA);
+    var ka = a - Math.acos(cosA);
+    return {
+      knee: { x: hip.x + THIGH * Math.cos(ka), y: hip.y + THIGH * Math.sin(ka) },
+      ankle: { x: hip.x + dx, y: hip.y + dy }
+    };
+  }
+
+  /* ---------- render ---------- */
+  function render(phase) {
+    var deg = (phase * 180) / Math.PI;
+    var spinDeg = (phase * 360) / Math.PI;
+    var dist = phase * 180;
+
+    refs.rearSpin.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + spinDeg.toFixed(2) + &#39;)&#39;);
+    refs.frontSpin.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + spinDeg.toFixed(2) + &#39;)&#39;);
+
+    refs.crankNearWrap.setAttribute(&#39;transform&#39;, &#39;translate(600 595) rotate(&#39; + deg.toFixed(2) + &#39;)&#39;);
+    refs.crankFarWrap.setAttribute(&#39;transform&#39;, &#39;translate(600 595) rotate(&#39; + (deg + 180).toFixed(2) + &#39;)&#39;);
+    refs.nearPedalWrap.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (-deg).toFixed(2) + &#39; 0 -44)&#39;);
+    refs.farPedalWrap.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (-deg - 180).toFixed(2) + &#39; 0 -44)&#39;);
+    refs.chainDash.setAttribute(&#39;stroke-dashoffset&#39;, mod(-phase * 26, 11).toFixed(2));
+
+    var bob = Math.sin(phase * 2) * 2.4;
+    refs.bodyBob.setAttribute(&#39;transform&#39;, &#39;translate(0 &#39; + bob.toFixed(2) + &#39;)&#39;);
+    refs.wingGroup.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (2.6 * Math.sin(phase * 2 + 0.5)).toFixed(2) + &#39; 598 398)&#39;);
+    refs.headGroup.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (2.1 * Math.sin(phase * 2 + 1.1)).toFixed(2) + &#39; 622 374)&#39;);
+    refs.pouch.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (1.5 * Math.sin(phase * 2 + 2.0)).toFixed(2) + &#39; 716 310)&#39;);
+    refs.scarfTail1.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (5 * Math.sin(phase * 3 + 0.2)).toFixed(2) + &#39; 610 376)&#39;);
+    refs.scarfTail2.setAttribute(&#39;transform&#39;, &#39;rotate(&#39; + (4 * Math.sin(phase * 3 + 1.3) - 2).toFixed(2) + &#39; 610 376)&#39;);
+
+    var pn = pedalAt(phase);
+    var pf = pedalAt(phase + Math.PI);
+    var hipN = { x: HIP_NEAR.x, y: HIP_NEAR.y + bob };
+    var hipF = { x: HIP_FAR.x, y: HIP_FAR.y + bob };
+    var sn = solveLeg(hipN, { x: pn.x, y: pn.y - 9 });
+    var sf = solveLeg(hipF, { x: pf.x, y: pf.y - 9 });
+
+    refs.legNear.setAttribute(&#39;d&#39;,
+      &#39;M&#39; + hipN.x + &#39; &#39; + hipN.y.toFixed(1) +
+      &#39;L&#39; + sn.knee.x.toFixed(1) + &#39; &#39; + sn.knee.y.toFixed(1) +
+      &#39;L&#39; + sn.ankle.x.toFixed(1) + &#39; &#39; + sn.ankle.y.toFixed(1));
+    refs.legFar.setAttribute(&#39;d&#39;,
+      &#39;M&#39; + hipF.x + &#39; &#39; + hipF.y.toFixed(1) +
+      &#39;L&#39; + sf.knee.x.toFixed(1) + &#39; &#39; + sf.knee.y.toFixed(1) +
+      &#39;L&#39; + sf.ankle.x.toFixed(1) + &#39; &#39; + sf.ankle.y.toFixed(1));
+    refs.footNear.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + sn.ankle.x.toFixed(1) + &#39; &#39; + sn.ankle.y.toFixed(1) + &#39;)&#39;);
+    refs.footFar.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + sf.ankle.x.toFixed(1) + &#39; &#39; + sf.ankle.y.toFixed(1) + &#39;)&#39;);
+
+    refs.dashGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist, 200)).toFixed(1) + &#39; 0)&#39;);
+    refs.bushGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist, 400)).toFixed(1) + &#39; 0)&#39;);
+    refs.treeGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist * 0.25, 500)).toFixed(1) + &#39; 0)&#39;);
+    refs.speedGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist * 1.7, 700)).toFixed(1) + &#39; 0)&#39;);
+    refs.cloudGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist * 0.02, 1500)).toFixed(1) + &#39; 0)&#39;);
+    refs.farHillsGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist * 0.045, 1200)).toFixed(1) + &#39; 0)&#39;);
+    refs.nearHillsGroup.setAttribute(&#39;transform&#39;, &#39;translate(&#39; + (-mod(dist * 0.1, 1200)).toFixed(1) + &#39; 0)&#39;);
+    refs.sunGlowCircle.setAttribute(&#39;r&#39;, (150 + Math.sin(phase * 0.7) * 7).toFixed(1));
+
+    var cycle = 240;
+    for (var i = 0; i &lt; 3; i++) {
+      var t = mod(dist + i * (cycle / 3), cycle) / cycle;
+      var puff = refs[&#39;puff&#39; + i];
+      puff.setAttribute(&#39;cx&#39;, (472 - t * 78).toFixed(1));
+      puff.setAttribute(&#39;cy&#39;, (654 - t * 34).toFixed(1));
+      puff.setAttribute(&#39;r&#39;, (3 + t * 10).toFixed(1));
+      puff.setAttribute(&#39;opacity&#39;, (0.42 * (1 - t)).toFixed(2));
+    }
+  }
+
+  /* ---------- responsive viewBox ---------- */
+  function layout() {
+    var cw = stage.clientWidth || 0;
+    var ch = stage.clientHeight || 0;
+    if (cw &lt; 2 || ch &lt; 2) { return; }
+    var aspect = cw / ch;
+    var w, h;
+    if (aspect &gt;= 1.5) {
+      h = 800;
+      w = 800 * aspect;
+    } else {
+      w = 1200;
+      h = 1200 / aspect;
+    }
+    if (h &gt; 1180) { h = 1180; w = h * aspect; }
+    if (w &lt; 620) { w = 620; h = w / aspect; }
+    if (w &gt; 3000) { w = 3000; h = w / aspect; }
+    svg.setAttribute(&#39;viewBox&#39;,
+      (600 - w / 2).toFixed(1) + &#39; &#39; + (400 - h / 2).toFixed(1) + &#39; &#39; + w.toFixed(1) + &#39; &#39; + h.toFixed(1));
+  }
+
+  /* ---------- animation loop ---------- */
+  var RAF = window.requestAnimationFrame
+    ? function (fn) { return window.requestAnimationFrame(fn); }
+    : function (fn) { return window.setTimeout(function () { fn(Date.now()); }, 16); };
+  var CAF = window.cancelAnimationFrame ? function (id) { window.cancelAnimationFrame(id); } : window.clearTimeout;
+
+  var SPEED = 3.2;
+  var playing = false;
+  var phase = 0;
+  var lastT = 0;
+  var rafId = 0;
+
+  function frame(t) {
+    if (!playing) { return; }
+    var dt = lastT ? (t - lastT) / 1000 : 0;
+    lastT = t;
+    if (dt &gt; 0.08) { dt = 0.08; }
+    phase += dt * SPEED;
+    if (phase &gt; 1e6) { phase = mod(phase, Math.PI * 2); }
+    render(phase);
+    rafId = RAF(frame);
+  }
+
+  function setPlaying(on) {
+    if (on === playing) { return; }
+    playing = on;
+    btn.classList.toggle(&#39;is-playing&#39;, on);
+    btn.setAttribute(&#39;aria-pressed&#39;, on ? &#39;true&#39; : &#39;false&#39;);
+    btn.setAttribute(&#39;aria-label&#39;, on ? &#39;暂停动画&#39; : &#39;播放动画&#39;);
+    btnText.textContent = on ? &#39;暂停&#39; : &#39;播放&#39;;
+    if (on) {
+      lastT = 0;
+      rafId = RAF(frame);
+    } else {
+      CAF(rafId);
+    }
+  }
+
+  layout();
+  render(0);
+
+  btn.addEventListener(&#39;click&#39;, function () { setPlaying(!playing); });
+
+  document.addEventListener(&#39;keydown&#39;, function (e) {
+    var isSpace = e.code === &#39;Space&#39; || e.key === &#39; &#39; || e.key === &#39;Spacebar&#39;;
+    if (!isSpace || e.repeat) { return; }
+    if (e.target === btn) { return; }
+    e.preventDefault();
+    setPlaying(!playing);
+  });
+
+  window.addEventListener(&#39;resize&#39;, function () { RAF(layout); });
+  window.addEventListener(&#39;orientationchange&#39;, function () { window.setTimeout(layout, 150); });
+  window.addEventListener(&#39;load&#39;, layout);
+  if (window.ResizeObserver) {
+    new window.ResizeObserver(function () { layout(); }).observe(stage);
+  }
+
+  var mq = window.matchMedia ? window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;) : null;
+  function onMotionPref(ev) {
+    if (ev.matches) { setPlaying(false); }
+  }
+  if (mq) {
+    if (mq.matches) { setPlaying(false); } else { setPlaying(true); }
+    if (mq.addEventListener) { mq.addEventListener(&#39;change&#39;, onMotionPref); }
+    else if (mq.addListener) { mq.addListener(onMotionPref); }
+  } else {
+    setPlaying(true);
+  }
+}());
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>

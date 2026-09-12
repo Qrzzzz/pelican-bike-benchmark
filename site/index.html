@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="同一道鹈鹕骑自行车提示词，观察 AI 生成 HTML 的构图、动画、交互与代码。公开源码，可复查，可并排比较。"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>鹈鹕骑车 · Pelican Bike Benchmark</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <script src="assets/theme.js"></script>
+    <link rel="stylesheet" href="assets/app.css" />
+    <script type="module" src="assets/app.js"></script>
+  </head>
+  <body data-page="index">
+    <a class="skip" href="#main">跳至主要内容</a>
+    <header class="header">
+      <div class="shell header-inner">
+        <a class="brand" href="index.html"
+          ><svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle
+              cx="10"
+              cy="29"
+              r="7"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <circle
+              cx="31"
+              cy="29"
+              r="7"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="m10 29 9-14 7 14H10l7-10 14 10-6-18h5M12 9c1-6 8-7 11-2l10 2-12 3c-1 9-11 8-13 2"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+          ><span>鹈鹕骑车<small>PELICAN BIKE BENCHMARK</small></span></a
+        >
+        <nav aria-label="主导航">
+          <a href="index.html" aria-current="page">作品陈列室</a
+          ><a href="compare.html">并排对比</a><a href="method.html">测试方法</a>
+          <div class="nav-tools">
+            <button
+              class="icon-button"
+              id="theme-toggle"
+              aria-label="切换配色主题"
+              title="切换配色主题"
+            >
+              ◐</button
+            ><a
+              href="https://github.com/Qrzzzz/pelican-bike-benchmark"
+              aria-label="GitHub 仓库"
+              title="GitHub 仓库"
+              ><svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                aria-hidden="true"
+              >
+                <path
+                  d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1-.3-2-1-2 4-.5 6-2 6-6 0-2-1-3-1-3 0-1 0-3-1-3-2 0-3 1-3 1-2-.5-4-.5-6 0 0 0-1-1-3-1-1 0-1 2-1 3 0 0-1 1-1 3 0 4 2 5.5 6 6-.7 0-1 1-1 2v4"
+                /></svg
+            ></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main class="shell" id="main">
+      <section class="hero">
+        <div>
+          <div class="eyebrow">One prompt. Many possibilities.</div>
+          <h1>
+            Pelican, meet<br />the bicycle.<span class="cn"
+              >同一道题，不同的想象。</span
+            >
+          </h1>
+          <p>
+            把一只鹈鹕交给 AI，再给它一辆自行车。<br />用完全相同的提示词，观察不同模型如何把想象<br
+              class="desktop-break"
+            />变成一个会动的 HTML 页面。
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#gallery"
+              >浏览作品 <span aria-hidden="true">↘</span></a
+            ><button class="button" data-prompt>
+              查看固定提示词 <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+        <figure class="hero-art">
+          <img
+            src="assets/hero.svg"
+            width="540"
+            height="400"
+            alt="一只长喙鹈鹕骑着青绿色自行车，沿着起伏的道路前进"
+            style="display: block; width: 100%; height: auto"
+          />
+          <figcaption>
+            <span>FIG. 01 — A SMALL EXPERIMENT IN IMAGINATION</span
+            ><span>HTML / CSS / SVG</span>
+          </figcaption>
+        </figure>
+      </section>
+      <div class="rule-strip">
+        <span><span class="dot">●</span><strong>统一提示词 v1</strong></span
+        ><span>单文件 HTML · 零外部依赖</span><span>同一视口 · 可复查源码</span
+        ><a href="method.html">了解实验方法 ↗</a>
+      </div>
+      <section class="section" id="gallery" aria-labelledby="gallery-title">
+        <div class="section-top">
+          <div>
+            <h2 id="gallery-title">
+              作品陈列室 <span class="mono" id="total-count"></span>
+            </h2>
+            <p>先看画面，再看它如何运转。</p>
+          </div>
+          <a class="mono text-link" href="compare.html">并排对比 ↗</a>
+        </div>
+        <div class="filters">
+          <div class="tabs" aria-label="作品类型">
+            <button class="tab" data-filter="all" aria-pressed="true">
+              全部作品</button
+            ><button class="tab" data-filter="benchmark" aria-pressed="false">
+              正式测试</button
+            ><button class="tab" data-filter="demo" aria-pressed="false">
+              站点演示
+            </button>
+          </div>
+          <label class="search"
+            ><span class="sr-only">搜索作品</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="搜索作品、模型…"
+              autocomplete="off" /></label
+          ><label
+            ><span class="sr-only">筛选模型</span
+            ><select id="model-filter">
+              <option value="">所有模型</option>
+            </select></label
+          >
+        </div>
+        <div class="result-line">
+          <span id="result-count" role="status">正在读取作品…</span
+          ><span>选取 2–4 个作品，放在一起看</span>
+        </div>
+        <div class="gallery" id="cards"></div>
+        <div class="note" id="demo-note">
+          目前尚无正式参测结果。以下为站点功能演示，不计入模型测试，也不提供虚构评分。
+        </div>
+      </section>
+      <section class="prompt-band">
+        <div>
+          <div class="eyebrow">The starting point</div>
+          <h2>一切，从同一句话开始。</h2>
+          <p>
+            输入保持一致，差异才值得观察。<br />不补充提示，不为单个模型修改规则。
+          </p>
+          <a class="text-link" href="method.html#protocol"
+            >阅读完整测试约定 ↗</a
+          >
+        </div>
+        <div class="prompt-box">
+          <p class="quote">
+            “页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。”
+          </p>
+          <footer>
+            <span class="mono">PROMPT v1 · 8 REQUIREMENTS</span
+            ><button class="button" data-copy-prompt>复制完整提示词 ⧉</button>
+          </footer>
+        </div>
+      </section>
+      <div class="comparison-tray" id="tray" hidden>
+        <span id="selection-count"></span>
+        <div class="actions" style="margin: 0">
+          <button class="button" id="clear-selection">清空</button
+          ><button class="button primary" id="start-compare">开始对比 →</button>
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <span>一只鹈鹕，一辆自行车，无数种可能。</span
+        ><span
+          >© 2026 <a href="https://qrzzzz.github.io">Qrzzzz</a> ·
+          <a href="method.html">关于这个实验</a> ·
+          <a href="https://github.com/Qrzzzz/pelican-bike-benchmark"
+            >Source ↗</a
+          ></span
+        >
+      </div>
+    </footer>
+    <dialog class="dialog" id="prompt-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-head">
+        <h2 id="dialog-title">固定提示词 <span class="mono">v1</span></h2>
+        <button class="icon-button" id="close-prompt" aria-label="关闭提示词">
+          ×
+        </button>
+      </div>
+      <pre class="code" id="dialog-prompt"></pre>
+      <p class="hash" id="dialog-hash"></p>
+      <button class="button primary" data-copy-prompt>复制完整提示词 ⧉</button>
+    </dialog>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <noscript
+      ><p class="shell note">
+        请启用 JavaScript 以浏览作品、复制提示词或进行对比。测试方法与提示词
+        JSON 仍可直接查看。
+      </p></noscript
+    >
+  </body>
+</html>

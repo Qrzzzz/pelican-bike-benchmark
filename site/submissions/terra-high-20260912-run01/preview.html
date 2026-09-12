@@ -1,0 +1,129 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>GPT-5.6 Terra · high · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="GPT-5.6 Terra · high" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot; class=&quot;is-paused&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta name=&quot;color-scheme&quot; content=&quot;light&quot;&gt;
+  &lt;link rel=&quot;icon&quot; href=&quot;data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 64 64&#39;%3E%3Ccircle cx=&#39;32&#39; cy=&#39;32&#39; r=&#39;30&#39; fill=&#39;%2363c7b6&#39;/%3E%3Cpath d=&#39;M16 34c13 8 28 4 34-9-11-3-22 1-34 9Z&#39; fill=&#39;%23f3a25e&#39; stroke=&#39;%2315223a&#39; stroke-width=&#39;3&#39;/%3E%3Ccircle cx=&#39;38&#39; cy=&#39;23&#39; r=&#39;4&#39; fill=&#39;%2315223a&#39;/%3E%3C/svg%3E&quot;&gt;
+  &lt;title&gt;鹈鹕的晨间骑行&lt;/title&gt;
+  &lt;style&gt;
+    :root { --ink:#15223a; --navy:#203a5e; --sky:#9fe2f0; --foam:#f9fbf6; --sun:#ffd56a; --coral:#f27668; --road:#43516b; --mint:#63c7b6; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:0; min-height:100vh; overflow-x:hidden; background:#82d7e8; color:var(--ink); font-family:ui-rounded, &quot;SF Pro Rounded&quot;, &quot;Segoe UI&quot;, system-ui, sans-serif; }
+    .scene { position:relative; display:grid; min-height:100svh; place-items:center; padding:clamp(16px,3vw,38px); isolation:isolate; }
+    .art { width:min(1120px,100%); max-height:calc(100svh - 32px); filter:drop-shadow(0 20px 30px rgb(20 55 80 / .18)); }
+    svg { display:block; width:100%; height:auto; overflow:visible; }
+    .title-card { position:absolute; z-index:2; top:clamp(21px,5vw,56px); left:clamp(22px,6vw,74px); max-width:300px; pointer-events:none; }
+    h1 { margin:0; font-size:clamp(1.45rem,3vw,2.65rem); line-height:1; letter-spacing:-.06em; color:#16304d; text-wrap:balance; }
+    .title-card p { margin:.55rem 0 0; font-size:clamp(.78rem,1.25vw,1rem); font-weight:650; letter-spacing:.04em; color:#245372; }
+    .controls { position:absolute; z-index:3; right:clamp(18px,5vw,58px); bottom:clamp(18px,4vw,44px); }
+    button { display:inline-flex; align-items:center; gap:.55rem; min-height:46px; border:2px solid #173150; border-radius:999px; padding:.65rem 1rem; color:#173150; background:#fffdf6; box-shadow:0 5px 0 #173150; font:700 .95rem/1 ui-rounded, &quot;Segoe UI&quot;, system-ui, sans-serif; cursor:pointer; transition:transform .15s, box-shadow .15s, background .15s; }
+    button:hover { background:#ffe8a1; }
+    button:active { transform:translateY(4px); box-shadow:0 1px 0 #173150; }
+    button:focus-visible { outline:4px solid #fff; outline-offset:4px; }
+    .icon { width:12px; height:14px; display:inline-block; background:currentColor; clip-path:polygon(0 0,100% 50%,0 100%); }
+    button[aria-pressed=&quot;true&quot;] .icon { clip-path:polygon(0 0,35% 0,35% 100%,0 100%,0 0,65% 0,100% 0,100% 100%,65% 100%); }
+    .sky-shift, .clouds, .road-dashes, .pelican, .wheel, .crank, .wind { transform-box:view-box; }
+    .sky-shift { animation:sky-drift 12s linear infinite; }
+    .clouds { animation:cloud-float 13s linear infinite; }
+    .road-dashes { animation:road-roll 1.05s linear infinite; }
+    .pelican { animation:ride-bob .72s ease-in-out infinite alternate; transform-origin:620px 395px; }
+    .wheel { animation:wheel-spin 1.05s linear infinite; }
+    .back-wheel { transform-origin:463px 564px; }
+    .front-wheel { transform-origin:774px 564px; }
+    .crank { transform-origin:610px 500px; animation:wheel-spin 1.05s linear infinite; }
+    .wind { animation:wind-push .68s ease-in-out infinite alternate; }
+    .leg-front { transform-origin:574px 407px; animation:leg-front 1.05s linear infinite; }
+    .leg-back { transform-origin:592px 410px; animation:leg-back 1.05s linear infinite; }
+    .is-paused .sky-shift, .is-paused .clouds, .is-paused .road-dashes, .is-paused .pelican, .is-paused .wheel, .is-paused .crank, .is-paused .wind, .is-paused .leg-front, .is-paused .leg-back { animation-play-state:paused; }
+    @keyframes wheel-spin { to { transform:rotate(360deg); } }
+    @keyframes road-roll { to { transform:translateX(-92px); } }
+    @keyframes sky-drift { to { transform:translateX(-56px); } }
+    @keyframes cloud-float { 50% { transform:translateX(16px); } }
+    @keyframes ride-bob { to { transform:translateY(-8px) rotate(-.4deg); } }
+    @keyframes wind-push { to { transform:translateX(9px); opacity:.45; } }
+    @keyframes leg-front { 50% { transform:rotate(16deg); } }
+    @keyframes leg-back { 50% { transform:rotate(-15deg); } }
+    @media (prefers-reduced-motion:reduce) { .sky-shift, .clouds, .road-dashes, .pelican, .wheel, .crank, .wind, .leg-front, .leg-back { animation-play-state:paused; } }
+    @media (max-width:640px) { .scene { align-items:stretch; padding:0; } .art { width:100%; max-height:none; filter:none; } .title-card { max-width:190px; top:22px; left:22px; } h1 { font-size:1.5rem; } .title-card p { font-size:.72rem; line-height:1.35; max-width:150px; } .controls { right:18px; bottom:18px; } button { min-height:42px; padding:.58rem .85rem; font-size:.84rem; } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class=&quot;scene&quot; aria-label=&quot;一只骑自行车前进的鹈鹕插画&quot;&gt;
+    &lt;div class=&quot;title-card&quot;&gt;&lt;h1&gt;鹈鹕，向前骑&lt;/h1&gt;&lt;p&gt;顺着海风，去追下一段晨光&lt;/p&gt;&lt;/div&gt;
+    &lt;svg class=&quot;art&quot; viewBox=&quot;0 0 1200 800&quot; role=&quot;img&quot; aria-labelledby=&quot;scene-title scene-desc&quot;&gt;
+      &lt;title id=&quot;scene-title&quot;&gt;骑自行车的鹈鹕&lt;/title&gt;
+      &lt;desc id=&quot;scene-desc&quot;&gt;一只长喙鹈鹕骑着薄荷色自行车沿海岸公路前进，车轮和脚踏正在转动。&lt;/desc&gt;
+      &lt;defs&gt;
+        &lt;linearGradient id=&quot;sky&quot; x1=&quot;0&quot; x2=&quot;0&quot; y1=&quot;0&quot; y2=&quot;1&quot;&gt;&lt;stop stop-color=&quot;#9ee4f1&quot;/&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#e4f4de&quot;/&gt;&lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;road&quot; x1=&quot;0&quot; x2=&quot;0&quot; y1=&quot;0&quot; y2=&quot;1&quot;&gt;&lt;stop stop-color=&quot;#4e5b72&quot;/&gt;&lt;stop offset=&quot;1&quot; stop-color=&quot;#2d3851&quot;/&gt;&lt;/linearGradient&gt;
+        &lt;filter id=&quot;soft&quot;&gt;&lt;feGaussianBlur stdDeviation=&quot;7&quot;/&gt;&lt;/filter&gt;
+      &lt;/defs&gt;
+      &lt;clipPath id=&quot;frame&quot;&gt;&lt;rect x=&quot;35&quot; y=&quot;35&quot; width=&quot;1130&quot; height=&quot;730&quot; rx=&quot;45&quot;/&gt;&lt;/clipPath&gt;
+      &lt;g clip-path=&quot;url(#frame)&quot;&gt;
+        &lt;rect x=&quot;35&quot; y=&quot;35&quot; width=&quot;1130&quot; height=&quot;730&quot; fill=&quot;url(#sky)&quot;/&gt;
+        &lt;g class=&quot;sky-shift&quot; opacity=&quot;.72&quot;&gt;&lt;circle cx=&quot;977&quot; cy=&quot;178&quot; r=&quot;62&quot; fill=&quot;#ffe58b&quot;/&gt;&lt;circle cx=&quot;977&quot; cy=&quot;178&quot; r=&quot;85&quot; fill=&quot;#ffe58b&quot; opacity=&quot;.22&quot; filter=&quot;url(#soft)&quot;/&gt;&lt;path d=&quot;M-80 318 Q160 226 338 320 T745 310 T1280 290 V442 H-80Z&quot; fill=&quot;#aeddbd&quot;/&gt;&lt;path d=&quot;M-80 363 Q135 285 384 370 T744 350 T1280 345 V463 H-80Z&quot; fill=&quot;#6fc5aa&quot;/&gt;&lt;/g&gt;
+        &lt;g class=&quot;clouds&quot; fill=&quot;#fffdf3&quot; opacity=&quot;.86&quot;&gt;&lt;path d=&quot;M133 193c11-33 57-30 64-1 37-16 66 30 30 45H122c-37-4-32-43 11-44Z&quot;/&gt;&lt;path d=&quot;M711 135c8-25 42-23 49-1 29-13 52 24 24 36h-81c-26-3-23-32 8-35Z&quot;/&gt;&lt;/g&gt;
+        &lt;path d=&quot;M35 423 C219 390 365 430 558 417 S949 386 1165 420 V535 H35Z&quot; fill=&quot;#e9db9a&quot;/&gt;
+        &lt;path d=&quot;M35 476 C263 446 441 481 636 468 S987 440 1165 475 V535 H35Z&quot; fill=&quot;#f7ebbd&quot; opacity=&quot;.9&quot;/&gt;
+        &lt;path d=&quot;M35 507 L1165 484 V765 H35Z&quot; fill=&quot;url(#road)&quot;/&gt;
+        &lt;path d=&quot;M35 504 L1165 481&quot; stroke=&quot;#fff2bf&quot; stroke-width=&quot;12&quot; opacity=&quot;.9&quot;/&gt;
+        &lt;g class=&quot;road-dashes&quot; stroke=&quot;#f7d882&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.9&quot;&gt;&lt;path d=&quot;M-60 658h57M45 655h57M150 652h57M255 649h57M360 646h57M465 643h57M570 640h57M675 637h57M780 634h57M885 631h57M990 628h57M1095 625h57M1200 622h57&quot;/&gt;&lt;/g&gt;
+        &lt;g class=&quot;wind&quot; fill=&quot;none&quot; stroke=&quot;#4386a0&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.7&quot;&gt;&lt;path d=&quot;M188 394h98q26 0 11-16&quot; stroke-width=&quot;7&quot;/&gt;&lt;path d=&quot;M265 424h64q21 0 10-14&quot; stroke-width=&quot;5&quot;/&gt;&lt;path d=&quot;M822 330h95q26 0 12-17&quot; stroke-width=&quot;6&quot;/&gt;&lt;/g&gt;
+        &lt;!-- bicycle --&gt;
+        &lt;g aria-label=&quot;薄荷色自行车&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;g class=&quot;wheel back-wheel&quot; fill=&quot;#fdf6d8&quot; stroke=&quot;#182945&quot; stroke-width=&quot;10&quot;&gt;&lt;circle cx=&quot;463&quot; cy=&quot;564&quot; r=&quot;105&quot;/&gt;&lt;circle cx=&quot;463&quot; cy=&quot;564&quot; r=&quot;8&quot; fill=&quot;#182945&quot;/&gt;&lt;g stroke=&quot;#9fabc0&quot; stroke-width=&quot;3&quot;&gt;&lt;path d=&quot;M463 459v210M358 564h210M389 490l148 148M537 490 389 638&quot;/&gt;&lt;/g&gt;&lt;/g&gt;
+          &lt;g class=&quot;wheel front-wheel&quot; fill=&quot;#fdf6d8&quot; stroke=&quot;#182945&quot; stroke-width=&quot;10&quot;&gt;&lt;circle cx=&quot;774&quot; cy=&quot;564&quot; r=&quot;105&quot;/&gt;&lt;circle cx=&quot;774&quot; cy=&quot;564&quot; r=&quot;8&quot; fill=&quot;#182945&quot;/&gt;&lt;g stroke=&quot;#9fabc0&quot; stroke-width=&quot;3&quot;&gt;&lt;path d=&quot;M774 459v210M669 564h210M700 490l148 148M848 490 700 638&quot;/&gt;&lt;/g&gt;&lt;/g&gt;
+          &lt;g fill=&quot;none&quot; stroke=&quot;#1eaa9b&quot; stroke-width=&quot;15&quot;&gt;&lt;path d=&quot;M463 564 535 424 610 500 463 564 610 500 708 451 774 564&quot;/&gt;&lt;path d=&quot;M535 424h-56&quot;/&gt;&lt;path d=&quot;M708 451 729 372h49&quot;/&gt;&lt;/g&gt;
+          &lt;path d=&quot;M718 371h84&quot; stroke=&quot;#182945&quot; stroke-width=&quot;11&quot;/&gt;&lt;path d=&quot;M472 414h-62&quot; stroke=&quot;#182945&quot; stroke-width=&quot;11&quot;/&gt;
+          &lt;g class=&quot;crank&quot; fill=&quot;none&quot; stroke=&quot;#182945&quot; stroke-width=&quot;9&quot;&gt;&lt;circle cx=&quot;610&quot; cy=&quot;500&quot; r=&quot;16&quot; fill=&quot;#ffd56a&quot;/&gt;&lt;path d=&quot;M610 500 644 459M610 500 576 541&quot;/&gt;&lt;path d=&quot;M632 456h29M559 544h31&quot;/&gt;&lt;/g&gt;
+        &lt;/g&gt;
+        &lt;!-- pelican --&gt;
+        &lt;g class=&quot;pelican&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;g class=&quot;leg-back&quot; fill=&quot;none&quot; stroke=&quot;#ef9b62&quot; stroke-width=&quot;16&quot;&gt;&lt;path d=&quot;M591 409q-22 57-15 133l-4 27&quot;/&gt;&lt;path d=&quot;M559 569h38&quot; stroke-width=&quot;12&quot;/&gt;&lt;/g&gt;
+          &lt;g class=&quot;leg-front&quot; fill=&quot;none&quot; stroke=&quot;#f4a76f&quot; stroke-width=&quot;17&quot;&gt;&lt;path d=&quot;M574 407q32 58 70 52l1 1&quot;/&gt;&lt;path d=&quot;M631 460h31&quot; stroke-width=&quot;12&quot;/&gt;&lt;/g&gt;
+          &lt;path d=&quot;M555 322c-61 14-89 56-75 102 15 48 60 59 119 40 49-16 74-61 55-104-17-39-55-51-99-38Z&quot; fill=&quot;#f9fbf6&quot; stroke=&quot;#182945&quot; stroke-width=&quot;8&quot;/&gt;
+          &lt;path d=&quot;M522 373c-26 28-24 75 19 94 35 16 75-7 83-44-18 8-38 8-58-4-19-11-31-27-44-46Z&quot; fill=&quot;#7892bd&quot; stroke=&quot;#182945&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;path d=&quot;M544 344c-1-62 32-101 74-96 35 4 53 38 43 79-8 31-33 51-65 52Z&quot; fill=&quot;#f7f8eb&quot; stroke=&quot;#182945&quot; stroke-width=&quot;8&quot;/&gt;
+          &lt;path d=&quot;M597 323c18-18 52-13 65 10 5 9 5 20 1 29-30 12-59 0-66-39Z&quot; fill=&quot;#ffd56a&quot; stroke=&quot;#182945&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;circle cx=&quot;618&quot; cy=&quot;305&quot; r=&quot;8&quot; fill=&quot;#182945&quot;/&gt;&lt;circle cx=&quot;620&quot; cy=&quot;302&quot; r=&quot;2.7&quot; fill=&quot;#fff&quot;/&gt;
+          &lt;!-- long bill and pouch --&gt;
+          &lt;path d=&quot;M592 327c-38-2-85 10-124 30-28 15-59 20-86 9 31 45 83 57 129 43 38-12 68-35 86-63Z&quot; fill=&quot;#f3a25e&quot; stroke=&quot;#182945&quot; stroke-width=&quot;8&quot;/&gt;
+          &lt;path d=&quot;M385 365c31 20 76 26 119 15 24-6 44-19 61-35-7 47-42 83-84 90-49 8-82-19-96-70Z&quot; fill=&quot;#f7c581&quot; stroke=&quot;#182945&quot; stroke-width=&quot;8&quot;/&gt;
+          &lt;path d=&quot;M385 365c29 13 66 11 98 0&quot; fill=&quot;none&quot; stroke=&quot;#182945&quot; stroke-width=&quot;6&quot;/&gt;
+          &lt;path d=&quot;M549 359c-8 19-4 39 12 55&quot; fill=&quot;none&quot; stroke=&quot;#d86f56&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;path d=&quot;M646 350q43 27 53 80-45-20-75-11&quot; fill=&quot;#e9eff0&quot; stroke=&quot;#182945&quot; stroke-width=&quot;8&quot;/&gt;
+          &lt;path d=&quot;M637 368q22 12 38 31&quot; fill=&quot;none&quot; stroke=&quot;#7892bd&quot; stroke-width=&quot;7&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g fill=&quot;#213653&quot; opacity=&quot;.8&quot;&gt;&lt;circle cx=&quot;129&quot; cy=&quot;494&quot; r=&quot;4&quot;/&gt;&lt;circle cx=&quot;170&quot; cy=&quot;481&quot; r=&quot;3&quot;/&gt;&lt;circle cx=&quot;1052&quot; cy=&quot;478&quot; r=&quot;4&quot;/&gt;&lt;/g&gt;
+      &lt;/g&gt;
+      &lt;rect x=&quot;35&quot; y=&quot;35&quot; width=&quot;1130&quot; height=&quot;730&quot; rx=&quot;45&quot; fill=&quot;none&quot; stroke=&quot;#173150&quot; stroke-width=&quot;10&quot;/&gt;
+    &lt;/svg&gt;
+    &lt;div class=&quot;controls&quot;&gt;&lt;button id=&quot;motionToggle&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-label=&quot;播放动画&quot;&gt;&lt;span class=&quot;icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;&lt;span&gt;播放动画&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
+  &lt;/main&gt;
+  &lt;script&gt;
+    (() =&gt; {
+      const root = document.documentElement;
+      const button = document.getElementById(&#39;motionToggle&#39;);
+      const prefersReduced = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+      let playing = !prefersReduced.matches;
+      function render() {
+        root.classList.toggle(&#39;is-paused&#39;, !playing);
+        button.setAttribute(&#39;aria-pressed&#39;, String(playing));
+        button.setAttribute(&#39;aria-label&#39;, playing ? &#39;暂停动画&#39; : &#39;播放动画&#39;);
+        button.lastElementChild.textContent = playing ? &#39;暂停动画&#39; : &#39;播放动画&#39;;
+      }
+      function toggle() { playing = !playing; render(); }
+      button.addEventListener(&#39;click&#39;, toggle);
+      document.addEventListener(&#39;keydown&#39;, event =&gt; {
+        if (event.code === &#39;Space&#39; &amp;&amp; !event.altKey &amp;&amp; !event.ctrlKey &amp;&amp; !event.metaKey) {
+          event.preventDefault(); toggle();
+        }
+      });
+      prefersReduced.addEventListener(&#39;change&#39;, event =&gt; { if (event.matches) { playing = false; render(); } });
+      render();
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>

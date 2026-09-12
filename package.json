@@ -1,0 +1,18 @@
+{
+  "name": "pelican-bike-benchmark",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "check": "node --test tests/*.test.mjs && node scripts/check.mjs",
+    "import": "node scripts/import.mjs",
+    "demo": "node scripts/create-demos.mjs",
+    "prepare:capture": "node scripts/prepare-capture.mjs"
+  },
+  "devDependencies": {
+    "parse5": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

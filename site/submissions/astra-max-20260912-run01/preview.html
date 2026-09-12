@@ -1,0 +1,493 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>GPT-6 Astra · max · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="GPT-6 Astra · max" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta name=&quot;theme-color&quot; content=&quot;#f6f3e9&quot;&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;一只鹈鹕骑着珊瑚红自行车，在海风里慢慢前行。一幅可以暂停的原创动态插画。&quot;&gt;
+  &lt;title&gt;今天，顺风。 — 鹈鹕的海岸骑行&lt;/title&gt;
+  &lt;style&gt;
+    :root {
+      color-scheme: light;
+      --paper: #f6f3e9;
+      --ink: #304d49;
+      --muted: #62716a;
+      --line: #d9dccf;
+      --accent: #c5684f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; }
+    .page { width: min(1184px, 100%); margin: auto; padding: 23px 32px 14px; }
+    .masthead, .wordmark, .heading, .controls, .playback, .endnote {
+      display: flex;
+      align-items: center;
+    }
+    .masthead { justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .wordmark { gap: 10px; font-size: 11px; font-weight: 650; letter-spacing: .18em; }
+    .wordmark svg { width: 29px; height: 26px; flex: none; }
+    .edition { font-size: 11px; letter-spacing: .13em; color: var(--muted); white-space: nowrap; }
+    .heading { justify-content: space-between; gap: 20px; padding: 17px 1px 15px; }
+    h1 {
+      margin: 0;
+      font-family: &quot;Songti SC&quot;, &quot;STSong&quot;, &quot;SimSun&quot;, Georgia, serif;
+      font-size: clamp(30px, 3.4vw, 40px);
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: .09em;
+    }
+    .intro { margin: 6px 0 0; font-size: 12px; color: var(--muted); letter-spacing: .13em; line-height: 1.8; }
+    .route-note { display: flex; align-items: center; gap: 13px; padding-right: 5px; }
+    .route-note svg { width: 36px; height: 36px; }
+    .route-note p { margin: 0; font-size: 10px; line-height: 1.8; letter-spacing: .17em; }
+    .scene {
+      position: relative;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid #ccd7ca;
+      border-radius: 18px;
+      background: #e1e9df;
+      isolation: isolate;
+    }
+    .landscape { display: block; width: 100%; height: auto; aspect-ratio: 1120 / 550; }
+    .scene-caption {
+      position: absolute;
+      left: 25px;
+      bottom: 19px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #43584a;
+      font-size: 10px;
+      letter-spacing: .16em;
+      pointer-events: none;
+    }
+    .scene-caption::before { content: &quot;&quot;; width: 19px; height: 1px; background: currentColor; }
+    .scene-number {
+      position: absolute;
+      right: 23px;
+      bottom: 17px;
+      font: italic 19px Georgia, serif;
+      color: #43584a;
+      pointer-events: none;
+    }
+    .controls { justify-content: space-between; gap: 18px; padding: 14px 1px 0; }
+    .playback { gap: 15px; }
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-width: 114px;
+      min-height: 44px;
+      padding: 10px 18px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fffdf3;
+      font-size: 12px;
+      letter-spacing: .07em;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .toggle:hover { background: #43645b; }
+    .toggle:active { background: #203d39; }
+    .toggle:focus-visible { outline: 3px solid #b15c43; outline-offset: 5px; }
+    .toggle svg { width: 15px; height: 15px; fill: currentColor; }
+    .pause-icon { display: none; }
+    [data-playing=&quot;true&quot;] .pause-icon { display: block; }
+    [data-playing=&quot;true&quot;] .play-icon { display: none; }
+    .key-hint { color: var(--muted); font-size: 11px; }
+    kbd { padding: 3px 6px; margin-right: 5px; border: 1px solid #b9c3b6; border-radius: 4px; font-family: inherit; font-size: 10px; }
+    .endnote { gap: 8px; color: var(--muted); font-size: 11px; letter-spacing: .06em; }
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #929b8e; }
+    [data-playing=&quot;true&quot;] .status-dot { background: #5b7960; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    noscript p { font-size: 12px; line-height: 1.6; }
+    @media (min-width: 1400px) { .page { padding-top: 40px; } .heading { padding-block: 30px; } }
+    @media (max-width: 600px) {
+      .page { padding: 21px 18px 22px; }
+      .masthead { padding-bottom: 16px; }
+      .wordmark { font-size: 9px; letter-spacing: .12em; gap: 7px; }
+      .edition { font-size: 9px; letter-spacing: .04em; }
+      .heading { padding: 27px 0 24px; }
+      h1 { font-size: 32px; }
+      .intro { font-size: 11px; letter-spacing: .035em; }
+      .route-note { display: none; }
+      .scene { border-radius: 13px; }
+      .landscape { height: auto; aspect-ratio: 560 / 550; }
+      .sun { transform: translateX(-110px); }
+      .scene-caption { left: 16px; bottom: 16px; font-size: 9px; letter-spacing: .08em; }
+      .scene-number { right: 15px; bottom: 13px; font-size: 18px; }
+      .controls { align-items: flex-start; gap: 12px; padding-top: 21px; }
+      .playback { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .key-hint { font-size: 10px; padding-left: 6px; }
+      .endnote { margin-top: 15px; font-size: 10px; letter-spacing: 0; }
+    }
+    @media (forced-colors: active) { .toggle { border: 2px solid ButtonText; } .toggle:focus-visible { outline-color: Highlight; } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body data-playing=&quot;false&quot;&gt;
+  &lt;main class=&quot;page&quot;&gt;
+    &lt;header class=&quot;masthead&quot;&gt;
+      &lt;div class=&quot;wordmark&quot;&gt;
+        &lt;svg viewBox=&quot;0 0 32 28&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.6&quot; stroke-linecap=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;
+          &lt;path d=&quot;M2 18q4-4 8 0t8 0t8 0M2 24q4-4 8 0t8 0t8 0M10 10a6 6 0 0 1 12 0M16 1V0M6 6 4 4M26 6l2-2&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;THE PELICAN POST&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class=&quot;edition&quot;&gt;沿海来信 &amp;nbsp; / &amp;nbsp; № 001&lt;/span&gt;
+    &lt;/header&gt;
+
+    &lt;div class=&quot;heading&quot;&gt;
+      &lt;div&gt;
+        &lt;h1&gt;今天，顺风。&lt;/h1&gt;
+        &lt;p class=&quot;intro&quot;&gt;一只鹈鹕，和一段不着急的路。&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;route-note&quot; aria-hidden=&quot;true&quot;&gt;
+        &lt;svg viewBox=&quot;0 0 40 40&quot; fill=&quot;none&quot; stroke=&quot;#9a7650&quot; stroke-width=&quot;1.2&quot; stroke-linecap=&quot;round&quot;&gt;
+          &lt;circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;16&quot; stroke-dasharray=&quot;1 4&quot;/&gt;
+          &lt;path d=&quot;M12 28 27 13M17 13h10v10M10 20l8-8M21 30l8-8&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;p&gt;TAKE THE SCENIC ROUTE.&lt;br&gt;A LITTLE FURTHER, A LITTLE SLOWER.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;figure class=&quot;scene&quot;&gt;
+      &lt;svg id=&quot;coastal-scene&quot; class=&quot;landscape&quot; viewBox=&quot;0 0 1120 550&quot; preserveAspectRatio=&quot;xMidYMid slice&quot; role=&quot;img&quot; aria-labelledby=&quot;scene-title scene-description&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;
+        &lt;title id=&quot;scene-title&quot;&gt;鹈鹕的海岸骑行&lt;/title&gt;
+        &lt;desc id=&quot;scene-description&quot;&gt;暖黄色的太阳下，一只白色鹈鹕戴着蓝绿色围巾，骑着珊瑚红自行车向右前行。它有长长的金色喙、桃色喉囊、明亮的眼睛，翅膀搭着车把，两只蹼足踩着脚踏。车轮转动，海岸小路向后掠过，远方有灯塔和帆船。&lt;/desc&gt;
+        &lt;defs&gt;
+          &lt;linearGradient id=&quot;sky&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+            &lt;stop stop-color=&quot;#dce8e3&quot;/&gt;
+            &lt;stop offset=&quot;1&quot; stop-color=&quot;#eff0dd&quot;/&gt;
+          &lt;/linearGradient&gt;
+          &lt;linearGradient id=&quot;water&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+            &lt;stop stop-color=&quot;#91b9ac&quot;/&gt;
+            &lt;stop offset=&quot;1&quot; stop-color=&quot;#bed1b6&quot;/&gt;
+          &lt;/linearGradient&gt;
+          &lt;linearGradient id=&quot;pouch&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;.35&quot; y2=&quot;1&quot;&gt;
+            &lt;stop stop-color=&quot;#f4c971&quot;/&gt;
+            &lt;stop offset=&quot;1&quot; stop-color=&quot;#de9670&quot;/&gt;
+          &lt;/linearGradient&gt;
+          &lt;pattern id=&quot;paper-grain&quot; width=&quot;37&quot; height=&quot;31&quot; patternUnits=&quot;userSpaceOnUse&quot;&gt;
+            &lt;circle cx=&quot;3&quot; cy=&quot;7&quot; r=&quot;.6&quot; fill=&quot;#486350&quot; opacity=&quot;.16&quot;/&gt;
+            &lt;circle cx=&quot;23&quot; cy=&quot;20&quot; r=&quot;.7&quot; fill=&quot;#fffdf2&quot; opacity=&quot;.7&quot;/&gt;
+            &lt;path d=&quot;M31 4h1M12 26h1&quot; stroke=&quot;#59664a&quot; stroke-width=&quot;.6&quot; opacity=&quot;.15&quot;/&gt;
+          &lt;/pattern&gt;
+          &lt;g id=&quot;cloud&quot; fill=&quot;#faf8ec&quot;&gt;
+            &lt;path d=&quot;M0 25C-4 14 8 8 17 12C18-3 42-5 48 11C61 3 76 13 74 24C88 24 88 34 78 35H9C0 35-5 28 0 25Z&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;wheel&quot; fill=&quot;none&quot;&gt;
+            &lt;circle r=&quot;88&quot; stroke=&quot;#314947&quot; stroke-width=&quot;10&quot;/&gt;
+            &lt;circle r=&quot;80&quot; stroke=&quot;#faf1d8&quot; stroke-width=&quot;4&quot;/&gt;
+            &lt;circle r=&quot;76&quot; stroke=&quot;#668077&quot; stroke-width=&quot;1.3&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;spokes&quot; fill=&quot;none&quot; stroke=&quot;#68867c&quot; stroke-width=&quot;1.4&quot; opacity=&quot;.85&quot;&gt;
+            &lt;path d=&quot;M-76 0H76M0-76V76M-53.74-53.74 53.74 53.74M-53.74 53.74 53.74-53.74M-70.2-29.1 70.2 29.1M-29.1-70.2 29.1 70.2M-70.2 29.1 70.2-29.1M-29.1 70.2 29.1-70.2&quot;/&gt;
+            &lt;path d=&quot;M37-68 43-64&quot; stroke=&quot;#d88858&quot; stroke-width=&quot;4&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;grass&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;&gt;
+            &lt;path d=&quot;M0 0Q-3-24-17-35M0 0Q4-37 1-50M0 0Q13-27 27-31M-2-1Q-12-18-25-19&quot; stroke=&quot;#768360&quot; stroke-width=&quot;3&quot;/&gt;
+            &lt;path d=&quot;M2-40 0-58M-11-26-23-43M19-25l12-12&quot; stroke=&quot;#ad9b66&quot; stroke-width=&quot;4&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;ground-tile&quot;&gt;
+            &lt;path d=&quot;M35 480h75m81 0h16&quot; stroke=&quot;#fcf5df&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;path d=&quot;M66 523h7m165-15h13M168 455h4&quot; stroke=&quot;#aba586&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.65&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;shore-tile&quot; fill=&quot;none&quot; stroke=&quot;#e1e9cf&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;&gt;
+            &lt;path d=&quot;M8 354h46m13 0h6m84 15h67m-112 17h32m126-33h38m35 19h45&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/defs&gt;
+
+        &lt;!-- A quiet coast; distant layers move more slowly than the road. --&gt;
+        &lt;path fill=&quot;url(#sky)&quot; d=&quot;M0 0h1120v550H0z&quot;/&gt;
+        &lt;g class=&quot;sun&quot;&gt;
+          &lt;circle cx=&quot;886&quot; cy=&quot;116&quot; r=&quot;59&quot; fill=&quot;#ebbf69&quot;/&gt;
+          &lt;circle cx=&quot;886&quot; cy=&quot;116&quot; r=&quot;71&quot; fill=&quot;none&quot; stroke=&quot;#e9c887&quot; stroke-width=&quot;1&quot; opacity=&quot;.6&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;clouds&quot;&gt;
+          &lt;use href=&quot;#cloud&quot; transform=&quot;translate(139 89) scale(1.4 .93)&quot;/&gt;
+          &lt;use href=&quot;#cloud&quot; transform=&quot;translate(893 196) scale(1.2 .75)&quot; opacity=&quot;.83&quot;/&gt;
+          &lt;use href=&quot;#cloud&quot; transform=&quot;translate(365 52) scale(.58 .43)&quot; opacity=&quot;.7&quot;/&gt;
+          &lt;use href=&quot;#cloud&quot; transform=&quot;translate(1091 89) scale(1.4 .93)&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;gulls&quot; fill=&quot;none&quot; stroke=&quot;#78928a&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;&gt;
+          &lt;path d=&quot;M759 83q8-8 15 0 7-8 15 0M809 103q5-6 10 0 5-6 10 0&quot;/&gt;
+        &lt;/g&gt;
+        &lt;path d=&quot;M0 323C62 311 94 323 146 313S237 287 308 310 400 322 483 315 590 311 686 319 813 311 885 307 997 309 1120 290V399H0Z&quot; fill=&quot;#adbfaa&quot;/&gt;
+        &lt;path d=&quot;M0 339Q160 329 275 338T559 337T844 335T1120 327V418H0Z&quot; fill=&quot;url(#water)&quot;/&gt;
+        &lt;g fill=&quot;none&quot; stroke=&quot;#cfe0c8&quot; stroke-width=&quot;1.4&quot; opacity=&quot;.8&quot;&gt;
+          &lt;path d=&quot;M0 345h151m68 0h166m307-2h167m111-3h160M74 362h119m536-6h125m120 11h87&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;water-lines&quot;&gt;
+          &lt;use href=&quot;#shore-tile&quot; x=&quot;-400&quot;/&gt;&lt;use href=&quot;#shore-tile&quot;/&gt;&lt;use href=&quot;#shore-tile&quot; x=&quot;400&quot;/&gt;&lt;use href=&quot;#shore-tile&quot; x=&quot;800&quot;/&gt;&lt;use href=&quot;#shore-tile&quot; x=&quot;1200&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;sailboat&quot; stroke=&quot;#708e83&quot; stroke-width=&quot;1.2&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;path d=&quot;M233 331v-43l-24 43Z&quot; fill=&quot;#fcf6e4&quot;/&gt;
+          &lt;path d=&quot;M237 299v31h17Z&quot; fill=&quot;#d8dfcd&quot;/&gt;
+          &lt;path d=&quot;M204 337h54l-10 7h-35Z&quot; fill=&quot;#698f82&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;lighthouse&quot; stroke=&quot;#72877a&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;path d=&quot;M917 326q34-21 85-8l28 12h-124Z&quot; fill=&quot;#819c83&quot; stroke=&quot;none&quot;/&gt;
+          &lt;path d=&quot;m946 313 7-70h22l8 70Z&quot; fill=&quot;#f8f0d8&quot; stroke-width=&quot;1.4&quot;/&gt;
+          &lt;path d=&quot;m950 275 29 6 2 15-33-7Z&quot; fill=&quot;#cc8067&quot; stroke=&quot;none&quot;/&gt;
+          &lt;path d=&quot;M950 241h28v6h-28Z&quot; fill=&quot;#e9e5ca&quot; stroke-width=&quot;1.3&quot;/&gt;
+          &lt;path d=&quot;M956 226h16v15h-16Z&quot; fill=&quot;#c0d7ca&quot; stroke-width=&quot;1.6&quot;/&gt;
+          &lt;path d=&quot;m952 226 12-10 12 10Z&quot; fill=&quot;#526f65&quot;/&gt;
+          &lt;path d=&quot;M964 217v-7M964 230v8&quot; fill=&quot;none&quot; stroke-width=&quot;1.5&quot;/&gt;
+          &lt;path d=&quot;M961 313v-12a4 4 0 0 1 8 0v12&quot; fill=&quot;#607c70&quot; stroke=&quot;none&quot;/&gt;
+        &lt;/g&gt;
+        &lt;path d=&quot;M0 392C153 375 229 400 351 392S533 378 657 390 844 390 938 378 1078 378 1120 386V550H0Z&quot; fill=&quot;#d1d1a6&quot;/&gt;
+        &lt;path d=&quot;M0 420C198 407 346 418 536 414S918 402 1120 414V550H0Z&quot; fill=&quot;#ded8b9&quot;/&gt;
+        &lt;path d=&quot;M0 423Q297 414 553 419T1120 416&quot; fill=&quot;none&quot; stroke=&quot;#f2eacf&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;path d=&quot;M0 537Q281 541 471 535T818 540T1120 529V550H0Z&quot; fill=&quot;#ccd0a2&quot;/&gt;
+        &lt;g id=&quot;road-marks&quot;&gt;
+          &lt;use href=&quot;#ground-tile&quot; x=&quot;-280&quot;/&gt;&lt;use href=&quot;#ground-tile&quot;/&gt;&lt;use href=&quot;#ground-tile&quot; x=&quot;280&quot;/&gt;&lt;use href=&quot;#ground-tile&quot; x=&quot;560&quot;/&gt;&lt;use href=&quot;#ground-tile&quot; x=&quot;840&quot;/&gt;&lt;use href=&quot;#ground-tile&quot; x=&quot;1120&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;roadside-plants&quot;&gt;
+          &lt;use href=&quot;#grass&quot; transform=&quot;translate(124 429) scale(.75)&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; transform=&quot;translate(990 450) scale(.9)&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; transform=&quot;translate(1244 429) scale(.75)&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; transform=&quot;translate(2110 450) scale(.9)&quot;/&gt;
+          &lt;path d=&quot;M178 432h17m769 25h14m320-25h17m769 25h14&quot; stroke=&quot;#87936c&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;/g&gt;
+        &lt;ellipse id=&quot;bike-shadow&quot; cx=&quot;566&quot; cy=&quot;512&quot; rx=&quot;219&quot; ry=&quot;9&quot; fill=&quot;#6f7e61&quot; opacity=&quot;.16&quot;/&gt;
+
+        &lt;!-- All bicycle parts share the same two wheel centers and crank. --&gt;
+        &lt;g stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;g transform=&quot;translate(412 416)&quot;&gt;
+            &lt;use href=&quot;#wheel&quot;/&gt;
+            &lt;g id=&quot;rear-spokes&quot;&gt;&lt;use href=&quot;#spokes&quot;/&gt;&lt;/g&gt;
+            &lt;circle r=&quot;7&quot; fill=&quot;#c8cdb5&quot; stroke=&quot;#304d49&quot; stroke-width=&quot;3&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g transform=&quot;translate(717 416)&quot;&gt;
+            &lt;use href=&quot;#wheel&quot;/&gt;
+            &lt;g id=&quot;front-spokes&quot;&gt;&lt;use href=&quot;#spokes&quot;/&gt;&lt;/g&gt;
+            &lt;circle r=&quot;7&quot; fill=&quot;#c8cdb5&quot; stroke=&quot;#304d49&quot; stroke-width=&quot;3&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g fill=&quot;none&quot;&gt;
+            &lt;path d=&quot;M326 392a90 90 0 0 1 155-38M651 354a90 90 0 0 1 153 38&quot; stroke=&quot;#496157&quot; stroke-width=&quot;5.5&quot;/&gt;
+            &lt;path d=&quot;M326 391a90 90 0 0 1 155-38M651 353a90 90 0 0 1 153 38&quot; stroke=&quot;#e3ba8a&quot; stroke-width=&quot;2.7&quot;/&gt;
+            &lt;path d=&quot;M338 363h91m-79-8h68m-65 8 59 53&quot; stroke=&quot;#516d61&quot; stroke-width=&quot;3&quot;/&gt;
+          &lt;/g&gt;
+          &lt;path id=&quot;far-leg-outline&quot; d=&quot;M505 292 540 355 521 434&quot; fill=&quot;none&quot; stroke=&quot;#40544b&quot; stroke-width=&quot;14&quot;/&gt;
+          &lt;path id=&quot;far-leg&quot; d=&quot;M505 292 540 355 521 434&quot; fill=&quot;none&quot; stroke=&quot;#c59352&quot; stroke-width=&quot;8&quot;/&gt;
+          &lt;g id=&quot;far-pedal&quot; transform=&quot;translate(521 434)&quot;&gt;
+            &lt;path d=&quot;M0 0h0&quot; stroke=&quot;#506458&quot; stroke-width=&quot;5&quot;/&gt;
+            &lt;rect x=&quot;-19&quot; y=&quot;0&quot; width=&quot;38&quot; height=&quot;7&quot; rx=&quot;3&quot; fill=&quot;#42584e&quot;/&gt;
+            &lt;path d=&quot;M-11-9-2-10 7-6 19-4 21 0h-37Z&quot; fill=&quot;#d6a34e&quot; stroke=&quot;#5e684a&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g fill=&quot;none&quot;&gt;
+            &lt;path d=&quot;m500 327-8-25M661 309l-8-34q-1-11 13-11h21q17 0 17 12t-15 12&quot; stroke=&quot;#304d49&quot; stroke-width=&quot;7&quot;/&gt;
+            &lt;path d=&quot;M660 265h27q15 0 15 12&quot; stroke=&quot;#ebead9&quot; stroke-width=&quot;3&quot;/&gt;
+            &lt;path d=&quot;M683 287h9&quot; stroke=&quot;#bd825c&quot; stroke-width=&quot;8&quot;/&gt;
+            &lt;path d=&quot;M695 288q22 43-10 80&quot; stroke=&quot;#526b5e&quot; stroke-width=&quot;1.6&quot;/&gt;
+            &lt;path d=&quot;M412 416 500 327 547 416Z M500 327 661 309 675 340 547 416M675 340l42 76&quot; stroke=&quot;#40554b&quot; stroke-width=&quot;12&quot;/&gt;
+            &lt;path d=&quot;M412 416 500 327 547 416Z M500 327 661 309 675 340 547 416M675 340l42 76&quot; stroke=&quot;#ce7358&quot; stroke-width=&quot;7.5&quot;/&gt;
+            &lt;path d=&quot;m508 327 142-15M553 405l112-66&quot; stroke=&quot;#edaa7d&quot; stroke-width=&quot;1.7&quot;/&gt;
+            &lt;path d=&quot;m669 329 7 15&quot; stroke=&quot;#f0cf9c&quot; stroke-width=&quot;9&quot;/&gt;
+            &lt;path d=&quot;M414 406 546 396a20 20 0 0 1 0 40l-133-10a10 10 0 0 1 1-20Z&quot; stroke=&quot;#718174&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/g&gt;
+          &lt;path d=&quot;M465 298q-3-8 8-9l39 4q12 0 12 7-24 10-56 5Z&quot; fill=&quot;#486252&quot; stroke=&quot;#304d49&quot; stroke-width=&quot;3&quot;/&gt;
+          &lt;path d=&quot;m474 294 34 3&quot; stroke=&quot;#85937b&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;circle cx=&quot;547&quot; cy=&quot;416&quot; r=&quot;22&quot; fill=&quot;#f1e4c3&quot; stroke=&quot;#465e51&quot; stroke-width=&quot;3&quot;/&gt;
+          &lt;circle cx=&quot;547&quot; cy=&quot;416&quot; r=&quot;15&quot; fill=&quot;#8b9c84&quot; stroke=&quot;#d8d9bc&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;g transform=&quot;translate(547 416)&quot;&gt;
+            &lt;g id=&quot;crank&quot;&gt;
+              &lt;path d=&quot;M-32 0H32&quot; stroke=&quot;#334f48&quot; stroke-width=&quot;6&quot;/&gt;
+              &lt;path d=&quot;M-31-1H31&quot; stroke=&quot;#e0e3cc&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;/g&gt;
+          &lt;/g&gt;
+          &lt;circle cx=&quot;547&quot; cy=&quot;416&quot; r=&quot;5&quot; fill=&quot;#304d49&quot;/&gt;
+          &lt;path id=&quot;near-leg-outline&quot; d=&quot;M519 289 580 340 573 398&quot; fill=&quot;none&quot; stroke=&quot;#40544b&quot; stroke-width=&quot;15&quot;/&gt;
+          &lt;path id=&quot;near-leg&quot; d=&quot;M519 289 580 340 573 398&quot; fill=&quot;none&quot; stroke=&quot;#e4ad56&quot; stroke-width=&quot;9&quot;/&gt;
+          &lt;g id=&quot;near-pedal&quot; transform=&quot;translate(573 398)&quot;&gt;
+            &lt;rect x=&quot;-20&quot; y=&quot;0&quot; width=&quot;40&quot; height=&quot;8&quot; rx=&quot;3&quot; fill=&quot;#344e46&quot;/&gt;
+            &lt;path d=&quot;M-12-10-2-11 7-7 18-6 25 0h-40q-6-4 3-10Z&quot; fill=&quot;#efbb61&quot; stroke=&quot;#596144&quot; stroke-width=&quot;2.3&quot;/&gt;
+            &lt;path d=&quot;m5-6 5 4m4-3 5 3&quot; fill=&quot;none&quot; stroke=&quot;#b6823f&quot; stroke-width=&quot;1.4&quot;/&gt;
+            &lt;path d=&quot;M-12 4h8m14 0h7&quot; stroke=&quot;#b2bba3&quot; stroke-width=&quot;1.4&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;!-- The pelican: long hooked bill, deep throat pouch and feathered wing. --&gt;
+          &lt;g id=&quot;pelican&quot;&gt;
+            &lt;g id=&quot;scarf-tail&quot;&gt;
+              &lt;path d=&quot;M552 183C524 183 515 167 486 179S447 173 437 164L441 183 429 190C459 190 468 208 497 198S536 211 555 198Z&quot; fill=&quot;#528b83&quot; stroke=&quot;#385e56&quot; stroke-width=&quot;2.5&quot;/&gt;
+              &lt;path d=&quot;M442 184q25 13 48 3t57 6&quot; fill=&quot;none&quot; stroke=&quot;#91b8a0&quot; stroke-width=&quot;3&quot;/&gt;
+              &lt;path d=&quot;m440 174 10 5m-9 6 12 5&quot; stroke=&quot;#c2d5b6&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;/g&gt;
+            &lt;path d=&quot;m426 269-32-3 19 17-30 4 47 10 19-17Z&quot; fill=&quot;#d9dfcb&quot; stroke=&quot;#3e574e&quot; stroke-width=&quot;3&quot;/&gt;
+            &lt;path d=&quot;m404 284 24 3&quot; fill=&quot;none&quot; stroke=&quot;#91a393&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M429 264C415 240 426 213 450 204 474 195 495 203 510 214 527 216 538 192 541 164 543 122 561 98 596 98 625 97 645 118 639 145 635 165 622 178 609 185 612 210 620 232 606 258 590 291 550 308 501 304 464 305 441 292 429 264Z&quot; fill=&quot;#faf5e3&quot; stroke=&quot;#3e574e&quot; stroke-width=&quot;3.2&quot;/&gt;
+            &lt;path d=&quot;M435 257C451 279 479 290 509 288 559 289 589 267 602 240 600 275 550 306 501 300 465 303 442 285 435 257Z&quot; fill=&quot;#e1e3cc&quot;/&gt;
+            &lt;path d=&quot;M588 168q-19 40-8 72&quot; fill=&quot;none&quot; stroke=&quot;#d6ddc9&quot; stroke-width=&quot;10&quot;/&gt;
+            &lt;path d=&quot;M579 99q-7-13-17-13 3 13 9 18M590 98q-1-12-8-17&quot; fill=&quot;#faf5e3&quot; stroke=&quot;#3e574e&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;path d=&quot;M546 182q17 15 49 7l6 13q-31 13-61-4Z&quot; fill=&quot;#659b8e&quot; stroke=&quot;#3e665b&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;path d=&quot;M546 190q23 12 49 5&quot; fill=&quot;none&quot; stroke=&quot;#c3d8b7&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M550 198q-10 0-11 10 7 8 15-1Z&quot; fill=&quot;#457c71&quot; stroke=&quot;#3e665b&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M631 146 817 157C792 183 752 212 704 215 666 217 643 197 628 166Z&quot; fill=&quot;url(#pouch)&quot; stroke=&quot;#685d42&quot; stroke-width=&quot;2.7&quot;/&gt;
+            &lt;path d=&quot;M645 168q28 58 102 29c-52 28-91 12-107-17Z&quot; fill=&quot;#d78968&quot; opacity=&quot;.55&quot;/&gt;
+            &lt;path d=&quot;M652 175q13 26 42 30&quot; fill=&quot;none&quot; stroke=&quot;#f6d38a&quot; stroke-width=&quot;2.8&quot;/&gt;
+            &lt;path d=&quot;M635 137C678 135 751 147 814 148q20 0 22 6l-10 11-2-9-185 8Z&quot; fill=&quot;#efbd59&quot; stroke=&quot;#685d42&quot; stroke-width=&quot;2.8&quot;/&gt;
+            &lt;path d=&quot;M647 143q85 0 164 10&quot; fill=&quot;none&quot; stroke=&quot;#ffe2a0&quot; stroke-width=&quot;3.2&quot;/&gt;
+            &lt;path d=&quot;m647 158 165-3&quot; fill=&quot;none&quot; stroke=&quot;#bf8844&quot; stroke-width=&quot;1.4&quot;/&gt;
+            &lt;ellipse cx=&quot;615&quot; cy=&quot;131&quot; rx=&quot;12&quot; ry=&quot;13&quot; fill=&quot;#eae4c7&quot;/&gt;
+            &lt;circle cx=&quot;618&quot; cy=&quot;130&quot; r=&quot;6.5&quot; fill=&quot;#2c4843&quot;/&gt;
+            &lt;circle cx=&quot;620&quot; cy=&quot;128&quot; r=&quot;2.1&quot; fill=&quot;#fffcee&quot;/&gt;
+            &lt;path d=&quot;M608 116q7-4 13 0&quot; fill=&quot;none&quot; stroke=&quot;#687662&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M625 149q-9 4-16 0&quot; fill=&quot;none&quot; stroke=&quot;#abbaa2&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;path d=&quot;M462 229C489 213 518 233 543 253 577 278 629 280 679 267 689 264 696 269 687 278 682 284 674 286 666 286 650 295 638 296 625 293 595 306 560 294 539 284 511 306 478 286 465 270 455 257 452 240 462 229Z&quot; fill=&quot;#e8ead6&quot; stroke=&quot;#4c6557&quot; stroke-width=&quot;2.8&quot;/&gt;
+            &lt;path d=&quot;M468 238q16 33 60 40M480 231q28 29 64 39M536 281q34 8 53 5m12 2 24 5m23-14 18 7&quot; fill=&quot;none&quot; stroke=&quot;#afbfaa&quot; stroke-width=&quot;2.2&quot;/&gt;
+            &lt;path d=&quot;M461 245q0 24 22 34&quot; fill=&quot;none&quot; stroke=&quot;#fcf7e4&quot; stroke-width=&quot;4&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+        &lt;g id=&quot;breeze&quot; fill=&quot;none&quot; stroke=&quot;#f9f6e7&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.8&quot;&gt;
+          &lt;path d=&quot;M326 222h45m-63 13h25M350 199h24&quot;/&gt;
+        &lt;/g&gt;
+        &lt;path d=&quot;M0 0h1120v550H0Z&quot; fill=&quot;url(#paper-grain)&quot; pointer-events=&quot;none&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;figcaption class=&quot;scene-caption&quot;&gt;海岸线漫游 · 此刻没有目的地&lt;/figcaption&gt;
+      &lt;span class=&quot;scene-number&quot; aria-hidden=&quot;true&quot;&gt;01 / ∞&lt;/span&gt;
+    &lt;/figure&gt;
+
+    &lt;footer class=&quot;controls&quot;&gt;
+      &lt;div class=&quot;playback&quot;&gt;
+        &lt;button id=&quot;toggle&quot; class=&quot;toggle&quot; type=&quot;button&quot; aria-controls=&quot;coastal-scene&quot; aria-label=&quot;播放动画&quot; aria-keyshortcuts=&quot;Space&quot;&gt;
+          &lt;svg class=&quot;play-icon&quot; viewBox=&quot;0 0 16 16&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M4 2.5a.8.8 0 0 1 1.2-.7l8 5.5a.8.8 0 0 1 0 1.4l-8 5.5a.8.8 0 0 1-1.2-.7Z&quot;/&gt;&lt;/svg&gt;
+          &lt;svg class=&quot;pause-icon&quot; viewBox=&quot;0 0 16 16&quot; aria-hidden=&quot;true&quot;&gt;&lt;rect x=&quot;3&quot; y=&quot;2&quot; width=&quot;3.5&quot; height=&quot;12&quot; rx=&quot;1&quot;/&gt;&lt;rect x=&quot;9.5&quot; y=&quot;2&quot; width=&quot;3.5&quot; height=&quot;12&quot; rx=&quot;1&quot;/&gt;&lt;/svg&gt;
+          &lt;span id=&quot;button-label&quot;&gt;播放动画&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;span class=&quot;key-hint&quot;&gt;&lt;kbd&gt;空格&lt;/kbd&gt;也可以播放 / 暂停&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;endnote&quot;&gt;&lt;span class=&quot;status-dot&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;&lt;span id=&quot;motion-note&quot;&gt;靠岸歇一会儿&lt;/span&gt;&lt;/div&gt;
+    &lt;/footer&gt;
+    &lt;p id=&quot;announcement&quot; class=&quot;sr-only&quot; role=&quot;status&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+    &lt;noscript&gt;&lt;p&gt;启用 JavaScript 即可播放动画。你仍然可以欣赏这幅静态海岸插画。&lt;/p&gt;&lt;/noscript&gt;
+  &lt;/main&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      &#39;use strict&#39;;
+      const byId = id =&gt; document.getElementById(id);
+      const button = byId(&#39;toggle&#39;);
+      const label = byId(&#39;button-label&#39;);
+      const note = byId(&#39;motion-note&#39;);
+      const announcement = byId(&#39;announcement&#39;);
+      const preference = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+      const mobile = window.matchMedia(&#39;(max-width: 600px)&#39;);
+      const scene = byId(&#39;coastal-scene&#39;);
+      const parts = Object.fromEntries([
+        &#39;rear-spokes&#39;, &#39;front-spokes&#39;, &#39;crank&#39;, &#39;near-pedal&#39;, &#39;far-pedal&#39;,
+        &#39;near-leg&#39;, &#39;near-leg-outline&#39;, &#39;far-leg&#39;, &#39;far-leg-outline&#39;,
+        &#39;pelican&#39;, &#39;scarf-tail&#39;, &#39;road-marks&#39;, &#39;roadside-plants&#39;, &#39;water-lines&#39;,
+        &#39;clouds&#39;, &#39;gulls&#39;, &#39;sailboat&#39;, &#39;breeze&#39;, &#39;bike-shadow&#39;
+      ].map(id =&gt; [id, byId(id)]));
+      let playing = false;
+      let manualChoice = false;
+      let frame = null;
+      let lastTime = null;
+      let elapsed = 0;
+      const TAU = Math.PI * 2;
+      const transform = (id, value) =&gt; parts[id].setAttribute(&#39;transform&#39;, value);
+
+      // Equal-length leg segments keep both webbed feet on the moving pedals.
+      function legPath(hipX, hipY, footX, footY, length) {
+        const dx = footX - hipX;
+        const dy = footY - hipY;
+        const distance = Math.hypot(dx, dy);
+        const bend = Math.sqrt(Math.max(0, length * length - distance * distance / 4));
+        const kneeX = (hipX + footX) / 2 + dy / distance * bend;
+        const kneeY = (hipY + footY) / 2 - dx / distance * bend;
+        return `M${hipX.toFixed(2)} ${hipY.toFixed(2)}L${kneeX.toFixed(2)} ${kneeY.toFixed(2)}L${footX.toFixed(2)} ${footY.toFixed(2)}`;
+      }
+
+      function draw(time) {
+        const angle = time * TAU / 2.2 - .6;
+        const bob = Math.sin(time * TAU / 1.1) * 1.6;
+        const pedalX = Math.cos(angle) * 32;
+        const pedalY = Math.sin(angle) * 32;
+        transform(&#39;rear-spokes&#39;, `rotate(${time * 140})`);
+        transform(&#39;front-spokes&#39;, `rotate(${time * 140})`);
+        transform(&#39;crank&#39;, `rotate(${angle * 180 / Math.PI})`);
+        transform(&#39;near-pedal&#39;, `translate(${547 + pedalX} ${416 + pedalY})`);
+        transform(&#39;far-pedal&#39;, `translate(${547 - pedalX} ${416 - pedalY})`);
+        const nearLeg = legPath(519, 289 + bob, 547 + pedalX, 410 + pedalY, 86);
+        const farLeg = legPath(505, 292 + bob, 547 - pedalX, 410 - pedalY, 86);
+        parts[&#39;near-leg&#39;].setAttribute(&#39;d&#39;, nearLeg);
+        parts[&#39;near-leg-outline&#39;].setAttribute(&#39;d&#39;, nearLeg);
+        parts[&#39;far-leg&#39;].setAttribute(&#39;d&#39;, farLeg);
+        parts[&#39;far-leg-outline&#39;].setAttribute(&#39;d&#39;, farLeg);
+        transform(&#39;pelican&#39;, `translate(0 ${bob})`);
+        transform(&#39;scarf-tail&#39;, `rotate(${Math.sin(time * 4) * 3.3} 550 191)`);
+        transform(&#39;road-marks&#39;, `translate(${-((time * 215) % 280)} 0)`);
+        transform(&#39;roadside-plants&#39;, `translate(${-((time * 160) % 1120)} 0)`);
+        transform(&#39;water-lines&#39;, `translate(${-((time * 20) % 400)} 0)`);
+        transform(&#39;clouds&#39;, `translate(${Math.sin(time / 15) * 24} 0)`);
+        transform(&#39;gulls&#39;, `translate(${Math.sin(time / 8) * 12} ${Math.sin(time / 2) * 3})`);
+        transform(&#39;sailboat&#39;, `translate(${Math.sin(time / 12) * 9} ${Math.sin(time * 1.2) * 1.4})`);
+        transform(&#39;breeze&#39;, `translate(${Math.sin(time * 2) * 8} 0)`);
+        parts[&#39;bike-shadow&#39;].setAttribute(&#39;rx&#39;, String(219 + bob * 1.2));
+      }
+
+      function tick(timestamp) {
+        if (!playing || document.hidden) { frame = null; return; }
+        if (lastTime !== null) elapsed += Math.min(timestamp - lastTime, 64) / 1000;
+        lastTime = timestamp;
+        draw(elapsed);
+        frame = requestAnimationFrame(tick);
+      }
+
+      function syncClock() {
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null;
+        lastTime = null;
+        if (playing &amp;&amp; !document.hidden) frame = requestAnimationFrame(tick);
+      }
+
+      function setPlaying(value, announce = false) {
+        playing = value;
+        document.body.dataset.playing = String(playing);
+        const action = playing ? &#39;暂停动画&#39; : &#39;播放动画&#39;;
+        label.textContent = action;
+        button.setAttribute(&#39;aria-label&#39;, action);
+        note.textContent = playing ? &#39;海风正好，慢慢向前&#39; : preference.matches &amp;&amp; !manualChoice ? &#39;已尊重减少动态偏好&#39; : &#39;靠岸歇一会儿&#39;;
+        if (announce) announcement.textContent = playing ? &#39;动画已播放。&#39; : &#39;动画已暂停。&#39;;
+        syncClock();
+      }
+
+      function toggle() { manualChoice = true; setPlaying(!playing, true); }
+      button.addEventListener(&#39;click&#39;, toggle);
+      document.addEventListener(&#39;keydown&#39;, event =&gt; {
+        if ((event.code !== &#39;Space&#39; &amp;&amp; event.key !== &#39; &#39;) || event.altKey || event.ctrlKey || event.metaKey || event.isComposing) return;
+        const target = event.target instanceof Element ? event.target : null;
+        if (target &amp;&amp; (target.isContentEditable || target.closest(&#39;input, textarea, select, a, [role=&quot;textbox&quot;]&#39;))) return;
+        if (target &amp;&amp; target.closest(&#39;button&#39;) &amp;&amp; target.closest(&#39;button&#39;) !== button) return;
+        event.preventDefault();
+        if (!event.repeat) toggle();
+      });
+      document.addEventListener(&#39;visibilitychange&#39;, syncClock);
+      preference.addEventListener(&#39;change&#39;, () =&gt; {
+        if (!manualChoice) setPlaying(!preference.matches);
+      });
+
+      // On phones, frame the complete rider more closely while preserving scale.
+      function fitScene() {
+        scene.setAttribute(&#39;viewBox&#39;, mobile.matches ? &#39;305 0 560 550&#39; : &#39;0 0 1120 550&#39;);
+        scene.setAttribute(&#39;preserveAspectRatio&#39;, mobile.matches ? &#39;xMidYMid meet&#39; : &#39;xMidYMid slice&#39;);
+      }
+      mobile.addEventListener(&#39;change&#39;, fitScene);
+      fitScene();
+      draw(0);
+      setPlaying(!preference.matches);
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>

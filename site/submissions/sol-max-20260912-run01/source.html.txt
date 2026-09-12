@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123f47">
+  <meta name="description" content="一只鹈鹕迎着晨风骑自行车的原创动态插画。">
+  <title>顺风骑行 · 鹈鹕</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23123f47'/%3E%3Ccircle cx='25' cy='43' r='11' fill='none' stroke='%23f5c164' stroke-width='4'/%3E%3Ccircle cx='49' cy='43' r='11' fill='none' stroke='%23f5c164' stroke-width='4'/%3E%3Cpath d='M25 43l9-15 15 15H25l7-12h13' fill='none' stroke='%23fff8e8' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M27 23c0-7 7-11 13-7l15 4-15 5c-5 5-13 2-13-2z' fill='%23fff8e8'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #15363a;
+      --cream: #fff8e8;
+      --sun: #ffd780;
+      --coral: #ef835d;
+      --teal: #1d5a60;
+      --road: #173b3f;
+      --line: rgba(255, 248, 232, 0.82);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100svh;
+      color: var(--cream);
+      background: #123f47;
+      font-family: ui-rounded, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .scene {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      min-height: 100svh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 78% 20%, rgba(255, 216, 130, 0.25), transparent 28rem),
+        #123f47;
+    }
+
+    .scene-art {
+      width: 100%;
+      height: 100svh;
+      min-height: 34rem;
+      display: block;
+    }
+
+    .masthead {
+      position: absolute;
+      z-index: 5;
+      top: max(1.25rem, env(safe-area-inset-top));
+      left: max(1.35rem, env(safe-area-inset-left));
+      pointer-events: none;
+      text-shadow: 0 2px 20px rgba(8, 35, 40, 0.26);
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      margin: 0 0 0.55rem;
+      color: rgba(255, 248, 232, 0.86);
+      font-size: clamp(0.78rem, 1.2vw, 0.93rem);
+      font-weight: 750;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 2.2rem;
+      height: 2px;
+      border-radius: 99px;
+      background: var(--sun);
+      content: "";
+    }
+
+    h1 {
+      max-width: 8ch;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+      font-size: clamp(2.65rem, 6vw, 5.4rem);
+      font-weight: 650;
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+    }
+
+    .control {
+      position: absolute;
+      z-index: 6;
+      top: max(1.25rem, env(safe-area-inset-top));
+      right: max(1.25rem, env(safe-area-inset-right));
+      display: inline-flex;
+      min-width: 7rem;
+      min-height: 3rem;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.72rem 1.05rem;
+      border: 1px solid rgba(255, 248, 232, 0.36);
+      border-radius: 999px;
+      color: var(--cream);
+      background: rgba(11, 44, 49, 0.72);
+      box-shadow: 0 0.75rem 2rem rgba(5, 28, 32, 0.18), inset 0 1px rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 750;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    }
+
+    .control:hover {
+      border-color: rgba(255, 248, 232, 0.68);
+      background: rgba(19, 66, 71, 0.88);
+      transform: translateY(-2px);
+    }
+
+    .control:active { transform: translateY(0); }
+
+    .control:focus-visible {
+      outline: 3px solid var(--sun);
+      outline-offset: 4px;
+    }
+
+    .control-icon {
+      position: relative;
+      width: 1.1rem;
+      height: 1.1rem;
+      flex: 0 0 auto;
+    }
+
+    .control-icon::before,
+    .control-icon::after {
+      position: absolute;
+      top: 0.12rem;
+      width: 0.25rem;
+      height: 0.86rem;
+      border-radius: 0.12rem;
+      background: currentColor;
+      content: "";
+      transition: 160ms ease;
+    }
+
+    .control-icon::before { left: 0.19rem; }
+    .control-icon::after { right: 0.19rem; }
+
+    body:not(.is-playing) .control-icon::before {
+      top: 0.05rem;
+      left: 0.24rem;
+      width: 0;
+      height: 0;
+      border-top: 0.51rem solid transparent;
+      border-bottom: 0.51rem solid transparent;
+      border-left: 0.78rem solid currentColor;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    body:not(.is-playing) .control-icon::after { opacity: 0; }
+
+    .hint {
+      position: absolute;
+      z-index: 5;
+      right: max(1.5rem, env(safe-area-inset-right));
+      bottom: max(1.15rem, env(safe-area-inset-bottom));
+      margin: 0;
+      color: rgba(255, 248, 232, 0.72);
+      font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+      font-weight: 650;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+    }
+
+    .animated {
+      animation-play-state: paused !important;
+      will-change: transform;
+    }
+
+    .is-playing .animated { animation-play-state: running !important; }
+
+    .cloud-track {
+      animation: cloud-drift 38s linear infinite;
+      transform-box: view-box;
+    }
+
+    .sun-ring {
+      animation: sun-breathe 4.5s ease-in-out infinite;
+      transform-box: view-box;
+      transform-origin: 932px 158px;
+    }
+
+    .far-grass {
+      animation: far-drift 10s linear infinite;
+      transform-box: view-box;
+    }
+
+    .road-marks { animation: road-flow 1.15s linear infinite; }
+
+    .speed-lines {
+      animation: speed-flow 1.15s linear infinite;
+      transform-box: view-box;
+    }
+
+    .rider-rig {
+      animation: ride-bob 1.15s ease-in-out infinite;
+      transform-box: view-box;
+      transform-origin: 600px 600px;
+    }
+
+    .rear-spin,
+    .front-spin {
+      animation: wheel-turn 1.15s linear infinite;
+      transform-box: view-box;
+    }
+
+    .rear-spin { transform-origin: 360px 600px; }
+    .front-spin { transform-origin: 840px 600px; }
+
+    .crank-spin {
+      animation: wheel-turn 1.15s linear infinite;
+      transform-box: view-box;
+      transform-origin: 570px 600px;
+    }
+
+    .leg-front,
+    .leg-back {
+      animation-duration: 1.15s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      transform-box: view-box;
+    }
+
+    .leg-front {
+      animation-name: leg-front;
+      transform-origin: 535px 405px;
+    }
+
+    .leg-back {
+      animation-name: leg-back;
+      transform-origin: 555px 408px;
+    }
+
+    .wing {
+      animation: wing-pulse 2.3s ease-in-out infinite;
+      transform-box: view-box;
+      transform-origin: 495px 315px;
+    }
+
+    .head-plume {
+      animation: plume-wave 1.15s ease-in-out infinite;
+      transform-box: view-box;
+      transform-origin: 613px 125px;
+    }
+
+    .tail {
+      animation: tail-wave 1.15s ease-in-out infinite;
+      transform-box: view-box;
+      transform-origin: 454px 352px;
+    }
+
+    @keyframes cloud-drift {
+      from { transform: translateX(0); }
+      to { transform: translateX(-1200px); }
+    }
+
+    @keyframes far-drift {
+      from { transform: translateX(0); }
+      to { transform: translateX(-240px); }
+    }
+
+    @keyframes sun-breathe {
+      0%, 100% { transform: scale(0.96); opacity: 0.55; }
+      50% { transform: scale(1.08); opacity: 0.9; }
+    }
+
+    @keyframes road-flow {
+      to { stroke-dashoffset: 180; }
+    }
+
+    @keyframes speed-flow {
+      from { transform: translateX(0); opacity: 0.72; }
+      to { transform: translateX(-185px); opacity: 0.3; }
+    }
+
+    @keyframes ride-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px) rotate(-0.18deg); }
+    }
+
+    @keyframes wheel-turn { to { transform: rotate(360deg); } }
+
+    @keyframes leg-front {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(7deg); }
+    }
+
+    @keyframes leg-back {
+      0%, 100% { transform: rotate(6deg); }
+      50% { transform: rotate(-5deg); }
+    }
+
+    @keyframes wing-pulse {
+      0%, 100% { transform: rotate(-1deg); }
+      50% { transform: rotate(3deg) translateY(-2px); }
+    }
+
+    @keyframes plume-wave {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(7deg); }
+    }
+
+    @keyframes tail-wave {
+      0%, 100% { transform: rotate(1deg); }
+      50% { transform: rotate(-4deg); }
+    }
+
+    @media (max-width: 700px) {
+      .scene-art { min-height: 32rem; }
+
+      .masthead {
+        top: max(1rem, env(safe-area-inset-top));
+        left: max(1rem, env(safe-area-inset-left));
+      }
+
+      h1 {
+        max-width: 7ch;
+        font-size: clamp(2.35rem, 13vw, 3.6rem);
+      }
+
+      .eyebrow { margin-bottom: 0.4rem; }
+
+      .control {
+        top: auto;
+        right: auto;
+        bottom: max(1.1rem, env(safe-area-inset-bottom));
+        left: 50%;
+        min-width: 8.4rem;
+        transform: translateX(-50%);
+        background: rgba(9, 40, 45, 0.9);
+      }
+
+      .control:hover { transform: translateX(-50%) translateY(-2px); }
+      .control:active { transform: translateX(-50%); }
+      .hint { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .control { transition-duration: 0.01ms; }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <div class="masthead" aria-hidden="true">
+      <p class="eyebrow">晨风 · 07:24</p>
+      <h1>顺风骑行</h1>
+    </div>
+
+    <button class="control" id="motionToggle" type="button" aria-pressed="false" aria-label="播放动画">
+      <span class="control-icon" aria-hidden="true"></span>
+      <span id="controlLabel">播放</span>
+    </button>
+
+    <p class="hint">空格键 · 播放 / 暂停</p>
+
+    <svg class="scene-art" id="sceneArt" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="sceneTitle sceneDescription">
+      <title id="sceneTitle">鹈鹕骑自行车</title>
+      <desc id="sceneDescription">一只长着长喙、橙色喉囊和白色翅膀的鹈鹕，在清晨的海边公路上骑着一辆青绿色自行车前进。</desc>
+
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#15505a"/>
+          <stop offset="0.52" stop-color="#4f8f8b"/>
+          <stop offset="1" stop-color="#f2c98d"/>
+        </linearGradient>
+        <linearGradient id="sea" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#32777a"/>
+          <stop offset="0.62" stop-color="#75aaa0"/>
+          <stop offset="1" stop-color="#d3c58e"/>
+        </linearGradient>
+        <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#214d4d"/>
+          <stop offset="1" stop-color="#102f33"/>
+        </linearGradient>
+        <linearGradient id="bodyWhite" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fffdf5"/>
+          <stop offset="0.58" stop-color="#f4edda"/>
+          <stop offset="1" stop-color="#cfddd2"/>
+        </linearGradient>
+        <linearGradient id="wingWhite" x1="0" y1="0" x2="0.8" y2="1">
+          <stop offset="0" stop-color="#e7efe5"/>
+          <stop offset="1" stop-color="#adc8bf"/>
+        </linearGradient>
+        <linearGradient id="beak" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#f4b64e"/>
+          <stop offset="1" stop-color="#ffdc7c"/>
+        </linearGradient>
+        <linearGradient id="pouch" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f39b59"/>
+          <stop offset="1" stop-color="#df654e"/>
+        </linearGradient>
+        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+          <feGaussianBlur stdDeviation="9"/>
+        </filter>
+        <filter id="sunBlur" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="18"/>
+        </filter>
+        <clipPath id="sceneClip">
+          <rect width="1200" height="800"/>
+        </clipPath>
+      </defs>
+
+      <g clip-path="url(#sceneClip)">
+        <rect width="1200" height="800" fill="url(#sky)"/>
+
+        <g aria-hidden="true">
+          <circle class="sun-ring animated" cx="932" cy="158" r="105" fill="#ffd77b" opacity="0.55" filter="url(#sunBlur)"/>
+          <circle cx="932" cy="158" r="68" fill="#ffe69c" opacity="0.94"/>
+          <circle cx="912" cy="138" r="19" fill="#fff4c8" opacity="0.5"/>
+        </g>
+
+        <g class="cloud-track animated" fill="#fff7de" opacity="0.65" aria-hidden="true">
+          <g transform="translate(180 164)">
+            <ellipse cx="0" cy="18" rx="76" ry="23"/>
+            <circle cx="-31" cy="2" r="29"/>
+            <circle cx="18" cy="-4" r="39"/>
+            <circle cx="55" cy="11" r="27"/>
+          </g>
+          <g transform="translate(682 82) scale(.68)">
+            <ellipse cx="0" cy="18" rx="76" ry="23"/>
+            <circle cx="-31" cy="2" r="29"/>
+            <circle cx="18" cy="-4" r="39"/>
+            <circle cx="55" cy="11" r="27"/>
+          </g>
+          <g transform="translate(1360 164)">
+            <ellipse cx="0" cy="18" rx="76" ry="23"/>
+            <circle cx="-31" cy="2" r="29"/>
+            <circle cx="18" cy="-4" r="39"/>
+            <circle cx="55" cy="11" r="27"/>
+          </g>
+          <g transform="translate(1882 82) scale(.68)">
+            <ellipse cx="0" cy="18" rx="76" ry="23"/>
+            <circle cx="-31" cy="2" r="29"/>
+            <circle cx="18" cy="-4" r="39"/>
+            <circle cx="55" cy="11" r="27"/>
+          </g>
+        </g>
+
+        <path d="M0 388C110 357 195 372 288 341c105-35 195 6 293-20 107-29 177-21 270 8 117 37 219-19 349-2v156H0z" fill="#316f6e" opacity="0.66"/>
+        <path d="M0 423c123-40 214 7 334-23 128-32 213 13 343-6 161-24 269 22 523-6v128H0z" fill="url(#sea)"/>
+        <path d="M0 486c194-14 308 11 473-5 155-15 286 12 428-2 126-12 205-5 299 5v52H0z" fill="#d9bc7d" opacity="0.8"/>
+
+        <g class="far-grass animated" fill="#2c6864" opacity="0.8" aria-hidden="true">
+          <path d="M-30 475l25-55 3 57 30-71-6 73 32-45-8 49zm102 3 19-64 8 65 26-44-9 48 35-67-7 70zm102 5 17-50 5 52 29-69-3 70 35-55-8 58z"/>
+          <path d="M210 479l25-55 3 57 30-71-6 73 32-45-8 49zm102 3 19-64 8 65 26-44-9 48 35-67-7 70zm102 5 17-50 5 52 29-69-3 70 35-55-8 58z"/>
+          <path d="M450 479l25-55 3 57 30-71-6 73 32-45-8 49zm102 3 19-64 8 65 26-44-9 48 35-67-7 70zm102 5 17-50 5 52 29-69-3 70 35-55-8 58z"/>
+          <path d="M690 479l25-55 3 57 30-71-6 73 32-45-8 49zm102 3 19-64 8 65 26-44-9 48 35-67-7 70zm102 5 17-50 5 52 29-69-3 70 35-55-8 58z"/>
+          <path d="M930 479l25-55 3 57 30-71-6 73 32-45-8 49zm102 3 19-64 8 65 26-44-9 48 35-67-7 70zm102 5 17-50 5 52 29-69-3 70 35-55-8 58z"/>
+          <path d="M1170 479l25-55 3 57 30-71-6 73 32-45-8 49zm102 3 19-64 8 65 26-44-9 48 35-67-7 70zm102 5 17-50 5 52 29-69-3 70 35-55-8 58z"/>
+        </g>
+
+        <path d="M0 506c252-21 415 3 610-11 209-16 371-2 590-9v314H0z" fill="url(#road)"/>
+        <path d="M0 516c294-18 433 8 680-7 206-13 341 0 520-8" fill="none" stroke="#f5d486" stroke-width="7" opacity="0.9"/>
+        <path class="road-marks animated" d="M-150 745H1350" fill="none" stroke="#fff3cf" stroke-width="10" stroke-linecap="round" stroke-dasharray="86 94" opacity="0.72"/>
+        <path d="M0 783h1200" stroke="#0d292d" stroke-width="34" opacity="0.56"/>
+
+        <g class="speed-lines animated" stroke="#fff4ca" stroke-linecap="round" opacity="0.38" aria-hidden="true">
+          <path d="M40 575h84m27 0h38M-70 635h118m47 0h52M72 689h154" stroke-width="5"/>
+          <path d="M1250 575h84m27 0h38M1140 635h118m47 0h52M1282 689h154" stroke-width="5"/>
+        </g>
+
+        <ellipse cx="606" cy="738" rx="413" ry="28" fill="#071f22" opacity="0.32" filter="url(#softShadow)" aria-hidden="true"/>
+
+        <g class="rider-rig animated">
+          <g aria-label="自行车">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="360" cy="600" r="139" stroke="#0c292d" stroke-width="19"/>
+              <circle cx="840" cy="600" r="139" stroke="#0c292d" stroke-width="19"/>
+              <circle cx="360" cy="600" r="126" stroke="#d9dfc9" stroke-width="4" opacity="0.9"/>
+              <circle cx="840" cy="600" r="126" stroke="#d9dfc9" stroke-width="4" opacity="0.9"/>
+            </g>
+
+            <g class="rear-spin animated" stroke="#d9dfc9" stroke-width="3" opacity="0.86">
+              <path d="M360 474v252M234 600h252M271 511l178 178M271 689l178-178"/>
+              <circle cx="360" cy="600" r="11" fill="#f1c15f" stroke="none"/>
+            </g>
+            <g class="front-spin animated" stroke="#d9dfc9" stroke-width="3" opacity="0.86">
+              <path d="M840 474v252M714 600h252M751 511l178 178M751 689l178-178"/>
+              <circle cx="840" cy="600" r="11" fill="#f1c15f" stroke="none"/>
+            </g>
+
+            <g fill="none" stroke="#e27353" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M360 600L520 441 570 600H360Z"/>
+              <path d="M520 441H748L570 600"/>
+              <path d="M748 471L840 600"/>
+            </g>
+            <path d="M748 471l-13-63 42-2" fill="none" stroke="#f4c361" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M760 397c6-8 19-14 35-14" fill="none" stroke="#173b3f" stroke-width="11" stroke-linecap="round"/>
+            <path d="M498 427h61" stroke="#173b3f" stroke-width="17" stroke-linecap="round"/>
+            <path d="M520 441l-16-48" stroke="#173b3f" stroke-width="11" stroke-linecap="round"/>
+            <circle cx="570" cy="600" r="28" fill="#f4c361" stroke="#173b3f" stroke-width="10"/>
+            <g class="crank-spin animated" fill="none" stroke="#fff4d4" stroke-linecap="round">
+              <path d="M570 600l64-28M570 600l-64 28" stroke-width="8"/>
+              <path d="M622 567h32M486 633h32" stroke="#173b3f" stroke-width="11"/>
+            </g>
+            <path d="M840 600L748 471" fill="none" stroke="#f4c361" stroke-width="7" stroke-linecap="round"/>
+            <circle cx="570" cy="600" r="8" fill="#173b3f"/>
+          </g>
+
+          <g aria-label="鹈鹕">
+            <g class="tail animated">
+              <path d="M472 340c-46 7-91 30-127 60 53-4 100-13 137-34z" fill="#f4eddb" stroke="#173b3f" stroke-width="6" stroke-linejoin="round"/>
+              <path d="M467 358c-42 16-72 38-96 62 48-10 89-22 119-41z" fill="#bfd1c6" stroke="#173b3f" stroke-width="5" stroke-linejoin="round"/>
+            </g>
+
+            <path d="M487 382c-22 19-29 52-14 76 27 7 52-2 64-24l16-42z" fill="#fff9e9" stroke="#173b3f" stroke-width="7"/>
+            <path d="M463 313c0-68 52-117 118-104 51 10 84 57 74 112-9 56-57 99-127 100-43 1-65-42-65-108z" fill="url(#bodyWhite)" stroke="#173b3f" stroke-width="8"/>
+
+            <path d="M570 262c40-10 62-38 57-75l-5-33c-4-33 17-61 51-64 37-3 66 23 68 60l3 58c2 52-23 92-75 119l-47 25z" fill="url(#bodyWhite)" stroke="#173b3f" stroke-width="8" stroke-linejoin="round"/>
+
+            <g class="head-plume animated" fill="none" stroke="#fff8e8" stroke-width="10" stroke-linecap="round">
+              <path d="M640 118c-15-21-23-39-20-55"/>
+              <path d="M657 108c-4-23 2-40 13-54"/>
+              <path d="M674 109c9-20 21-32 37-39"/>
+            </g>
+
+            <path d="M662 120c25-16 60-11 77 10 16 19 15 49 0 69-17 22-54 28-78 10-28-21-27-70 1-89z" fill="#fffdf5" stroke="#173b3f" stroke-width="8"/>
+
+            <path d="M701 163c65-13 138-3 220 24-82 23-157 26-224 10z" fill="url(#beak)" stroke="#173b3f" stroke-width="8" stroke-linejoin="round"/>
+            <path d="M701 190c68 10 142 7 220-3-37 30-102 51-175 45-22-2-38-15-45-42z" fill="url(#pouch)" stroke="#173b3f" stroke-width="8" stroke-linejoin="round"/>
+            <path d="M725 189c53 8 112 7 174 0" fill="none" stroke="#9e4a3f" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+
+            <circle cx="695" cy="151" r="13" fill="#173b3f"/>
+            <circle cx="699" cy="147" r="4" fill="#fffef5"/>
+            <path d="M676 132c12-8 25-10 38-4" fill="none" stroke="#173b3f" stroke-width="6" stroke-linecap="round"/>
+
+            <g class="wing animated">
+              <path d="M482 277c36-35 95-30 132 8 28 29 30 75 9 108-40 12-88-1-119-31-24-22-32-57-22-85z" fill="url(#wingWhite)" stroke="#173b3f" stroke-width="8"/>
+              <path d="M503 314c30-12 62-2 86 22" fill="none" stroke="#779c92" stroke-width="7" stroke-linecap="round"/>
+              <path d="M504 342c26-4 53 5 72 24" fill="none" stroke="#779c92" stroke-width="7" stroke-linecap="round"/>
+              <path d="M527 285c18 3 36 13 49 28" fill="none" stroke="#fffdf2" stroke-width="7" stroke-linecap="round" opacity="0.8"/>
+            </g>
+
+            <g class="leg-back animated" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M549 399c-5 59-1 111 22 154l-1 47" stroke="#d8754d" stroke-width="17"/>
+              <path d="M570 600l-45 17" stroke="#f0a45f" stroke-width="15"/>
+              <path d="M520 617h-29" stroke="#173b3f" stroke-width="9"/>
+            </g>
+            <g class="leg-front animated" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M525 398c7 54 26 103 61 141l44 36" stroke="#ee9d60" stroke-width="18"/>
+              <path d="M630 575l23-5" stroke="#f0ad68" stroke-width="16"/>
+              <path d="M642 568h31" stroke="#173b3f" stroke-width="9"/>
+            </g>
+
+            <path d="M598 257c24 17 50 44 74 83 21 34 39 51 69 56" fill="none" stroke="#fffdf5" stroke-width="22" stroke-linecap="round"/>
+            <path d="M738 395c13 1 25-1 37-7" fill="none" stroke="#f0a45f" stroke-width="14" stroke-linecap="round"/>
+            <path d="M595 257c26 15 49 42 73 80" fill="none" stroke="#173b3f" stroke-width="6" stroke-linecap="round" opacity="0.16"/>
+          </g>
+        </g>
+
+        <g fill="#f6d27e" opacity="0.7" aria-hidden="true">
+          <circle cx="82" cy="332" r="4"/><circle cx="105" cy="315" r="3"/><circle cx="1128" cy="287" r="4"/>
+          <circle cx="1092" cy="317" r="3"/><circle cx="1017" cy="267" r="3"/>
+        </g>
+      </g>
+    </svg>
+  </main>
+
+  <script>
+    (() => {
+      const button = document.getElementById('motionToggle');
+      const label = document.getElementById('controlLabel');
+      const sceneArt = document.getElementById('sceneArt');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const narrowViewport = window.matchMedia('(max-width: 700px)');
+      const shortViewport = window.matchMedia('(max-height: 500px)');
+      let isPlaying = !reducedMotion.matches;
+
+      const renderFraming = () => {
+        if (narrowViewport.matches && !shortViewport.matches) {
+          sceneArt.setAttribute('viewBox', '170 0 860 800');
+          sceneArt.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        } else if (shortViewport.matches) {
+          sceneArt.setAttribute('viewBox', '0 0 1200 800');
+          sceneArt.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        } else {
+          sceneArt.setAttribute('viewBox', '0 0 1200 800');
+          sceneArt.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+        }
+      };
+
+      const renderState = () => {
+        document.body.classList.toggle('is-playing', isPlaying);
+        button.setAttribute('aria-pressed', String(isPlaying));
+        button.setAttribute('aria-label', isPlaying ? '暂停动画' : '播放动画');
+        label.textContent = isPlaying ? '暂停' : '播放';
+      };
+
+      const toggleMotion = () => {
+        isPlaying = !isPlaying;
+        renderState();
+      };
+
+      button.addEventListener('click', toggleMotion);
+
+      document.addEventListener('keydown', (event) => {
+        if (event.code !== 'Space' || event.altKey || event.ctrlKey || event.metaKey) return;
+
+        const activeElement = document.activeElement;
+        const tagName = activeElement?.tagName;
+        const isTyping = tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT' || activeElement?.isContentEditable;
+        if (isTyping) return;
+
+        event.preventDefault();
+        toggleMotion();
+      });
+
+      reducedMotion.addEventListener?.('change', (event) => {
+        if (event.matches && isPlaying) {
+          isPlaying = false;
+          renderState();
+        }
+      });
+
+      narrowViewport.addEventListener?.('change', renderFraming);
+      shortViewport.addEventListener?.('change', renderFraming);
+
+      renderFraming();
+      renderState();
+    })();
+  </script>
+</body>
+</html>

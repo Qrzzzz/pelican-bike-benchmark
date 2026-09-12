@@ -1,0 +1,6 @@
+* text=auto eol=lf
+# Benchmark byte hashes must survive Windows checkout and Linux CI unchanged.
+site/submissions/**/source.html.txt -text
+site/submissions/**/preview.html -text
+*.png binary
+*.webp binary

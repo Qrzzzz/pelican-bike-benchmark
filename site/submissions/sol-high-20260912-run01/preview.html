@@ -1,0 +1,539 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>GPT-5.6 Sol · high · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="GPT-5.6 Sol · high" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+  &lt;meta name=&quot;theme-color&quot; content=&quot;#0d6070&quot;&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;一只鹈鹕骑着自行车穿过海风与旷野的动态插画。&quot;&gt;
+  &lt;title&gt;鹈鹕的海风骑行&lt;/title&gt;
+  &lt;link rel=&quot;icon&quot; type=&quot;image/svg+xml&quot; href=&quot;data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 64 64&#39;%3E%3Crect width=&#39;64&#39; height=&#39;64&#39; rx=&#39;16&#39; fill=&#39;%230d6070&#39;/%3E%3Ccircle cx=&#39;25&#39; cy=&#39;43&#39; r=&#39;13&#39; fill=&#39;none&#39; stroke=&#39;%23f8df9c&#39; stroke-width=&#39;4&#39;/%3E%3Cpath d=&#39;M20 36c2-16 18-21 27-11L30 30l-10 6Z&#39; fill=&#39;%23fff8e8&#39; stroke=&#39;%23132830&#39; stroke-width=&#39;3&#39; stroke-linejoin=&#39;round&#39;/%3E%3Cpath d=&#39;M39 24h20L43 31Z&#39; fill=&#39;%23ef7d4e&#39; stroke=&#39;%23132830&#39; stroke-width=&#39;3&#39; stroke-linejoin=&#39;round&#39;/%3E%3C/svg%3E&quot;&gt;
+  &lt;style&gt;
+    :root {
+      color-scheme: light;
+      --ink: #122d35;
+      --cream: #fff8e8;
+      --sun: #f8c85c;
+      --coral: #ec704c;
+      --teal: #0d6070;
+      --road: #173b42;
+      --outline: #132f36;
+      font-family: ui-rounded, &quot;Arial Rounded MT Bold&quot;, &quot;Trebuchet MS&quot;, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100svh;
+      display: grid;
+      place-items: stretch;
+      background: #8ed8dd;
+      color: var(--ink);
+    }
+
+    button { font: inherit; }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 520px;
+      overflow: hidden;
+      isolation: isolate;
+      background: #8ed8dd;
+    }
+
+    .scene::after {
+      content: &quot;&quot;;
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.16), transparent 24%),
+        radial-gradient(circle at 50% 45%, transparent 42%, rgba(8,50,57,.14) 118%);
+      mix-blend-mode: multiply;
+    }
+
+    .art {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+    }
+
+    .eyebrow {
+      position: absolute;
+      z-index: 7;
+      top: max(1rem, env(safe-area-inset-top));
+      left: max(1rem, env(safe-area-inset-left));
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      margin: 0;
+      padding: .55rem .78rem;
+      border: 2px solid rgba(18,45,53,.83);
+      border-radius: 999px;
+      background: rgba(255,248,232,.82);
+      box-shadow: 4px 4px 0 rgba(18,45,53,.18);
+      font-family: ui-monospace, &quot;Cascadia Mono&quot;, Consolas, monospace;
+      font-size: clamp(.76rem, 1.1vw, .9rem);
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .eyebrow::before {
+      content: &quot;&quot;;
+      width: .58rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--coral);
+      box-shadow: 0 0 0 3px rgba(236,112,76,.2);
+    }
+
+    .controls {
+      position: absolute;
+      z-index: 8;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+
+    .toggle {
+      min-width: 9.5rem;
+      min-height: 3.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .72rem;
+      padding: .7rem 1.1rem;
+      border: 2px solid var(--outline);
+      border-radius: 999px;
+      color: var(--cream);
+      background: var(--teal);
+      box-shadow: 5px 5px 0 rgba(18,45,53,.25);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+      transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .toggle:hover { background: #084d5a; }
+    .toggle:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 rgba(18,45,53,.28); }
+    .toggle:focus-visible { outline: 4px solid #fff5bd; outline-offset: 4px; }
+
+    .toggle__icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .toggle__icon::before,
+    .toggle__icon::after {
+      content: &quot;&quot;;
+      position: absolute;
+    }
+
+    body[data-playing=&quot;true&quot;] .toggle__icon::before,
+    body[data-playing=&quot;true&quot;] .toggle__icon::after {
+      top: 0;
+      bottom: 0;
+      width: .34rem;
+      border-radius: 2px;
+      background: currentColor;
+    }
+
+    body[data-playing=&quot;true&quot;] .toggle__icon::before { left: .1rem; }
+    body[data-playing=&quot;true&quot;] .toggle__icon::after { right: .1rem; }
+
+    body:not([data-playing=&quot;true&quot;]) .toggle__icon::before {
+      inset: 0;
+      width: 0;
+      height: 0;
+      margin: auto;
+      border-top: .56rem solid transparent;
+      border-bottom: .56rem solid transparent;
+      border-left: .86rem solid currentColor;
+      transform: translateX(.08rem);
+    }
+
+    .anim { animation-play-state: paused !important; }
+    body[data-playing=&quot;true&quot;] .anim { animation-play-state: running !important; }
+
+    .cloud-a { animation: cloudDriftA 16s linear infinite; }
+    .cloud-b { animation: cloudDriftB 21s linear infinite; }
+    .far-hills { animation: farDrift 18s linear infinite; }
+    .near-hills { animation: nearDrift 9s linear infinite; }
+    .road-lines { animation: roadRush .85s linear infinite; }
+    .dust { animation: dustTrail 2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+
+    .rider-bob {
+      animation: riderBob .58s ease-in-out infinite alternate;
+      transform-box: view-box;
+      transform-origin: 570px 405px;
+    }
+
+    .tail-feathers {
+      animation: featherFlutter .44s ease-in-out infinite alternate;
+      transform-box: view-box;
+      transform-origin: 407px 350px;
+    }
+
+    .wing {
+      animation: wingBreathe 1.15s ease-in-out infinite alternate;
+      transform-box: view-box;
+      transform-origin: 520px 347px;
+    }
+
+    .neck-scarf {
+      animation: scarfWave .72s ease-in-out infinite alternate;
+      transform-box: view-box;
+      transform-origin: 634px 306px;
+    }
+
+    .wheel-rear,
+    .wheel-front,
+    .crank {
+      animation: spin .82s linear infinite;
+      transform-box: view-box;
+    }
+
+    .wheel-rear { transform-origin: 360px 604px; }
+    .wheel-front { transform-origin: 835px 604px; }
+    .crank { transform-origin: 565px 590px; }
+
+    .leg-back {
+      animation: legBack .82s ease-in-out infinite alternate;
+      transform-box: view-box;
+      transform-origin: 532px 407px;
+    }
+
+    .leg-front {
+      animation: legFront .82s ease-in-out infinite alternate;
+      transform-box: view-box;
+      transform-origin: 590px 409px;
+    }
+
+    .speed-mark { animation: speedPulse 1.25s ease-in-out infinite; }
+    .speed-mark:nth-child(2) { animation-delay: -.42s; }
+    .speed-mark:nth-child(3) { animation-delay: -.84s; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes roadRush { to { stroke-dashoffset: 180; } }
+    @keyframes cloudDriftA { from { transform: translateX(0); } to { transform: translateX(-420px); } }
+    @keyframes cloudDriftB { from { transform: translateX(0); } to { transform: translateX(-520px); } }
+    @keyframes farDrift { from { transform: translateX(0); } to { transform: translateX(-150px); } }
+    @keyframes nearDrift { from { transform: translateX(0); } to { transform: translateX(-240px); } }
+    @keyframes riderBob { to { transform: translateY(-5px) rotate(.35deg); } }
+    @keyframes wingBreathe { to { transform: rotate(-4deg) translateY(-2px); } }
+    @keyframes featherFlutter { to { transform: rotate(5deg); } }
+    @keyframes scarfWave { to { transform: rotate(8deg) skewX(-5deg); } }
+    @keyframes legBack { to { transform: rotate(5deg) translateY(2px); } }
+    @keyframes legFront { to { transform: rotate(-5deg) translateY(-2px); } }
+    @keyframes dustTrail {
+      0% { opacity: 0; transform: translate(0,0) scale(.55); }
+      25% { opacity: .55; }
+      100% { opacity: 0; transform: translate(-75px,-18px) scale(1.4); }
+    }
+    @keyframes speedPulse {
+      0%, 100% { opacity: .15; transform: translateX(24px); }
+      48% { opacity: .7; transform: translateX(0); }
+    }
+
+    @media (max-width: 600px) {
+      .scene { min-height: 100svh; }
+      .art { min-height: 100svh; }
+      .subject {
+        transform: translateY(72px) scale(.5);
+        transform-box: view-box;
+        transform-origin: 600px 500px;
+      }
+      .eyebrow { max-width: calc(100vw - 2rem); letter-spacing: .08em; }
+      .controls { left: max(1rem, env(safe-area-inset-left)); right: max(1rem, env(safe-area-inset-right)); }
+      .toggle { width: 100%; min-height: 3.55rem; }
+    }
+
+    @media (prefers-contrast: more) {
+      .toggle, .eyebrow { border-width: 3px; }
+      .scene::after { display: none; }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class=&quot;scene&quot; aria-label=&quot;鹈鹕骑自行车穿过海边道路的动态插画&quot;&gt;
+    &lt;p class=&quot;eyebrow&quot;&gt;Coastal Mile · 07&lt;/p&gt;
+
+    &lt;svg class=&quot;art&quot; viewBox=&quot;0 0 1200 800&quot; preserveAspectRatio=&quot;xMidYMid slice&quot; role=&quot;img&quot; aria-labelledby=&quot;scene-title scene-desc&quot;&gt;
+      &lt;title id=&quot;scene-title&quot;&gt;鹈鹕的海风骑行&lt;/title&gt;
+      &lt;desc id=&quot;scene-desc&quot;&gt;一只长喙、带喉囊的鹈鹕骑着有两个轮子、车架、把手和脚踏的自行车，在明亮的海岸道路上向右前进。&lt;/desc&gt;
+      &lt;defs&gt;
+        &lt;linearGradient id=&quot;sky&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#6fc9d7&quot;/&gt;
+          &lt;stop offset=&quot;.58&quot; stop-color=&quot;#bfe9dc&quot;/&gt;
+          &lt;stop offset=&quot;1&quot; stop-color=&quot;#f6ddb0&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;road&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#24525a&quot;/&gt;
+          &lt;stop offset=&quot;1&quot; stop-color=&quot;#102f37&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;beak&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;.5&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#f39a51&quot;/&gt;
+          &lt;stop offset=&quot;1&quot; stop-color=&quot;#e25c3e&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;pouch&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#f4a260&quot;/&gt;
+          &lt;stop offset=&quot;1&quot; stop-color=&quot;#de5c49&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;radialGradient id=&quot;sunGlow&quot;&gt;
+          &lt;stop offset=&quot;0&quot; stop-color=&quot;#fff4b5&quot; stop-opacity=&quot;.95&quot;/&gt;
+          &lt;stop offset=&quot;.5&quot; stop-color=&quot;#ffe28a&quot; stop-opacity=&quot;.5&quot;/&gt;
+          &lt;stop offset=&quot;1&quot; stop-color=&quot;#ffe28a&quot; stop-opacity=&quot;0&quot;/&gt;
+        &lt;/radialGradient&gt;
+        &lt;filter id=&quot;softShadow&quot; x=&quot;-30%&quot; y=&quot;-30%&quot; width=&quot;160%&quot; height=&quot;180%&quot;&gt;
+          &lt;feDropShadow dx=&quot;0&quot; dy=&quot;8&quot; stdDeviation=&quot;5&quot; flood-color=&quot;#0a333a&quot; flood-opacity=&quot;.22&quot;/&gt;
+        &lt;/filter&gt;
+        &lt;filter id=&quot;blur&quot;&gt;&lt;feGaussianBlur stdDeviation=&quot;12&quot;/&gt;&lt;/filter&gt;
+        &lt;pattern id=&quot;grain&quot; width=&quot;26&quot; height=&quot;26&quot; patternUnits=&quot;userSpaceOnUse&quot;&gt;
+          &lt;circle cx=&quot;3&quot; cy=&quot;5&quot; r=&quot;1&quot; fill=&quot;#14353a&quot; opacity=&quot;.08&quot;/&gt;
+          &lt;circle cx=&quot;19&quot; cy=&quot;16&quot; r=&quot;.8&quot; fill=&quot;#fff&quot; opacity=&quot;.16&quot;/&gt;
+        &lt;/pattern&gt;
+      &lt;/defs&gt;
+
+      &lt;!-- Sky and atmosphere --&gt;
+      &lt;rect width=&quot;1200&quot; height=&quot;800&quot; fill=&quot;url(#sky)&quot;/&gt;
+      &lt;circle cx=&quot;976&quot; cy=&quot;138&quot; r=&quot;165&quot; fill=&quot;url(#sunGlow)&quot;/&gt;
+      &lt;circle cx=&quot;976&quot; cy=&quot;138&quot; r=&quot;59&quot; fill=&quot;#ffd86b&quot;/&gt;
+      &lt;circle cx=&quot;958&quot; cy=&quot;119&quot; r=&quot;16&quot; fill=&quot;#fff5bd&quot; opacity=&quot;.5&quot;/&gt;
+
+      &lt;g class=&quot;cloud-a anim&quot; fill=&quot;#fff8e8&quot; opacity=&quot;.84&quot;&gt;
+        &lt;path d=&quot;M-50 177c13-35 49-42 72-18 11-33 64-35 77 1 37-9 66 12 67 43H-50Z&quot;/&gt;
+        &lt;path d=&quot;M370 119c10-26 39-34 59-13 10-34 60-35 72-2 33-6 57 11 62 38H370Z&quot; opacity=&quot;.75&quot;/&gt;
+        &lt;path d=&quot;M1150 177c13-35 49-42 72-18 11-33 64-35 77 1 37-9 66 12 67 43h-216Z&quot;/&gt;
+        &lt;path d=&quot;M1570 119c10-26 39-34 59-13 10-34 60-35 72-2 33-6 57 11 62 38h-193Z&quot; opacity=&quot;.75&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g class=&quot;cloud-b anim&quot; fill=&quot;#e9f5e9&quot; opacity=&quot;.6&quot;&gt;
+        &lt;path d=&quot;M180 258c8-21 32-26 48-10 8-27 47-28 57-2 25-5 45 8 48 31H180Z&quot;/&gt;
+        &lt;path d=&quot;M777 215c9-24 36-30 54-11 9-30 52-31 63-2 28-6 49 9 53 34H777Z&quot;/&gt;
+        &lt;path d=&quot;M1280 258c8-21 32-26 48-10 8-27 47-28 57-2 25-5 45 8 48 31h-153Z&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Birds and speed accents --&gt;
+      &lt;g fill=&quot;none&quot; stroke=&quot;#245b63&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.52&quot;&gt;
+        &lt;path d=&quot;M209 251q14-15 28 0q14-15 28 0&quot;/&gt;
+        &lt;path d=&quot;M883 287q10-11 20 0q10-11 20 0&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g fill=&quot;none&quot; stroke=&quot;#fff8e8&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;&gt;
+        &lt;path class=&quot;speed-mark anim&quot; d=&quot;M131 364h121&quot;/&gt;
+        &lt;path class=&quot;speed-mark anim&quot; d=&quot;M86 402h100&quot;/&gt;
+        &lt;path class=&quot;speed-mark anim&quot; d=&quot;M152 438h75&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Layered landscape --&gt;
+      &lt;g class=&quot;far-hills anim&quot; opacity=&quot;.76&quot;&gt;
+        &lt;path d=&quot;M-160 451 46 310l161 112 164-153 172 151 146-97 190 131 183-152 198 130 170-95 120 113v122H-160Z&quot; fill=&quot;#5fa698&quot;/&gt;
+        &lt;path d=&quot;m46 310 49 96 112 16-161-112Zm325-41 37 119 135 32-172-151Zm691 33 46 111 152 19-198-130Z&quot; fill=&quot;#e8eed1&quot; opacity=&quot;.62&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g class=&quot;near-hills anim&quot;&gt;
+        &lt;path d=&quot;M-250 490q160-138 343-15 135-133 285-8 146-145 324 1 133-123 300 8 118-101 288 2 114-93 230 16v114H-250Z&quot; fill=&quot;#247e78&quot;/&gt;
+        &lt;path d=&quot;M-250 530q172-96 347-18 128-87 286 2 157-105 315 4 155-92 312-3 143-81 280 8 126-68 230 11v92H-250Z&quot; fill=&quot;#17666b&quot; opacity=&quot;.9&quot;/&gt;
+      &lt;/g&gt;
+      &lt;path d=&quot;M0 487c179 38 317 28 474 3 180-29 317 3 438 13 120 11 196-13 288-23v91H0Z&quot; fill=&quot;#7ab39b&quot;/&gt;
+      &lt;g fill=&quot;#f5d979&quot; opacity=&quot;.9&quot;&gt;
+        &lt;circle cx=&quot;89&quot; cy=&quot;500&quot; r=&quot;5&quot;/&gt;&lt;circle cx=&quot;137&quot; cy=&quot;526&quot; r=&quot;4&quot;/&gt;&lt;circle cx=&quot;1092&quot; cy=&quot;504&quot; r=&quot;5&quot;/&gt;
+        &lt;circle cx=&quot;1140&quot; cy=&quot;527&quot; r=&quot;4&quot;/&gt;&lt;circle cx=&quot;1006&quot; cy=&quot;533&quot; r=&quot;3&quot;/&gt;&lt;circle cx=&quot;249&quot; cy=&quot;507&quot; r=&quot;3&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Road --&gt;
+      &lt;path d=&quot;M0 535 Q600 505 1200 535V800H0Z&quot; fill=&quot;url(#road)&quot;/&gt;
+      &lt;path d=&quot;M0 547 Q600 514 1200 547&quot; fill=&quot;none&quot; stroke=&quot;#e9bf61&quot; stroke-width=&quot;8&quot;/&gt;
+      &lt;path class=&quot;road-lines anim&quot; d=&quot;M-40 741 Q600 706 1240 741&quot; fill=&quot;none&quot; stroke=&quot;#f8df9c&quot; stroke-width=&quot;12&quot; stroke-linecap=&quot;round&quot; stroke-dasharray=&quot;92 88&quot;/&gt;
+      &lt;path d=&quot;M0 782 Q600 750 1200 782&quot; fill=&quot;none&quot; stroke=&quot;#0c282e&quot; stroke-width=&quot;5&quot; opacity=&quot;.5&quot;/&gt;
+      &lt;ellipse cx=&quot;603&quot; cy=&quot;730&quot; rx=&quot;399&quot; ry=&quot;30&quot; fill=&quot;#0a252b&quot; opacity=&quot;.21&quot; filter=&quot;url(#blur)&quot;/&gt;
+
+      &lt;g class=&quot;subject&quot;&gt;
+      &lt;!-- Dust puffs --&gt;
+      &lt;g class=&quot;dust anim&quot; fill=&quot;#f5d9a4&quot;&gt;
+        &lt;circle cx=&quot;248&quot; cy=&quot;655&quot; r=&quot;13&quot;/&gt;&lt;circle cx=&quot;218&quot; cy=&quot;667&quot; r=&quot;8&quot;/&gt;&lt;circle cx=&quot;270&quot; cy=&quot;672&quot; r=&quot;7&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Bicycle --&gt;
+      &lt;g filter=&quot;url(#softShadow)&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+        &lt;g class=&quot;wheel-rear anim&quot; fill=&quot;none&quot;&gt;
+          &lt;circle cx=&quot;360&quot; cy=&quot;604&quot; r=&quot;139&quot; stroke=&quot;#102b31&quot; stroke-width=&quot;18&quot;/&gt;
+          &lt;circle cx=&quot;360&quot; cy=&quot;604&quot; r=&quot;126&quot; stroke=&quot;#f6e7c1&quot; stroke-width=&quot;5&quot;/&gt;
+          &lt;g stroke=&quot;#b8d4ca&quot; stroke-width=&quot;3&quot; opacity=&quot;.82&quot;&gt;
+            &lt;path d=&quot;M360 478v252M234 604h252M271 515l178 178M271 693l178-178&quot;/&gt;
+            &lt;path d=&quot;m312 487 96 234M243 556l234 96M243 652l234-96M312 721l96-234&quot;/&gt;
+          &lt;/g&gt;
+          &lt;circle cx=&quot;360&quot; cy=&quot;604&quot; r=&quot;15&quot; fill=&quot;#ef7850&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;6&quot;/&gt;
+          &lt;circle cx=&quot;360&quot; cy=&quot;479&quot; r=&quot;5&quot; fill=&quot;#ef7850&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;g class=&quot;wheel-front anim&quot; fill=&quot;none&quot;&gt;
+          &lt;circle cx=&quot;835&quot; cy=&quot;604&quot; r=&quot;139&quot; stroke=&quot;#102b31&quot; stroke-width=&quot;18&quot;/&gt;
+          &lt;circle cx=&quot;835&quot; cy=&quot;604&quot; r=&quot;126&quot; stroke=&quot;#f6e7c1&quot; stroke-width=&quot;5&quot;/&gt;
+          &lt;g stroke=&quot;#b8d4ca&quot; stroke-width=&quot;3&quot; opacity=&quot;.82&quot;&gt;
+            &lt;path d=&quot;M835 478v252M709 604h252M746 515l178 178M746 693l178-178&quot;/&gt;
+            &lt;path d=&quot;m787 487 96 234M718 556l234 96M718 652l234-96M787 721l96-234&quot;/&gt;
+          &lt;/g&gt;
+          &lt;circle cx=&quot;835&quot; cy=&quot;604&quot; r=&quot;15&quot; fill=&quot;#ef7850&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;6&quot;/&gt;
+          &lt;circle cx=&quot;835&quot; cy=&quot;479&quot; r=&quot;5&quot; fill=&quot;#ef7850&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- frame --&gt;
+        &lt;g fill=&quot;none&quot; stroke=&quot;#f0aa45&quot; stroke-width=&quot;18&quot;&gt;
+          &lt;path d=&quot;M360 604 500 435 565 590 360 604 676 604 500 435&quot;/&gt;
+          &lt;path d=&quot;m565 590 111 14 129-208&quot;/&gt;
+          &lt;path d=&quot;M835 604 805 396&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g fill=&quot;none&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;6&quot;&gt;
+          &lt;path d=&quot;M360 604 500 435 565 590 360 604 676 604 500 435&quot;/&gt;
+          &lt;path d=&quot;m565 590 111 14 129-208&quot;/&gt;
+          &lt;path d=&quot;M835 604 805 396&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- seat and handlebar --&gt;
+        &lt;path d=&quot;M464 423q44-12 83 3&quot; fill=&quot;none&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;20&quot;/&gt;
+        &lt;path d=&quot;M772 385q36 6 71-18&quot; fill=&quot;none&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;12&quot;/&gt;
+        &lt;path d=&quot;M771 385q-7 15 1 31&quot; fill=&quot;none&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;10&quot;/&gt;
+
+        &lt;!-- chain --&gt;
+        &lt;path d=&quot;M565 574 372 590q-18 8-2 28l195-12&quot; fill=&quot;none&quot; stroke=&quot;#d8c89e&quot; stroke-width=&quot;4&quot; stroke-dasharray=&quot;8 7&quot;/&gt;
+        &lt;circle cx=&quot;565&quot; cy=&quot;590&quot; r=&quot;36&quot; fill=&quot;#153a41&quot; stroke=&quot;#f8df9c&quot; stroke-width=&quot;6&quot;/&gt;
+        &lt;g class=&quot;crank anim&quot;&gt;
+          &lt;path d=&quot;M523 590h84&quot; stroke=&quot;#f8df9c&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;circle cx=&quot;522&quot; cy=&quot;590&quot; r=&quot;10&quot; fill=&quot;#ef7850&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot;/&gt;
+          &lt;circle cx=&quot;608&quot; cy=&quot;590&quot; r=&quot;10&quot; fill=&quot;#ef7850&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Pelican rider --&gt;
+      &lt;g class=&quot;rider-bob anim&quot; filter=&quot;url(#softShadow)&quot;&gt;
+        &lt;!-- legs behind body --&gt;
+        &lt;g class=&quot;leg-back anim&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;path d=&quot;M526 401 501 495 522 572&quot; stroke=&quot;#d99a4e&quot; stroke-width=&quot;19&quot;/&gt;
+          &lt;path d=&quot;M520 571q25 4 40 18&quot; stroke=&quot;#d99a4e&quot; stroke-width=&quot;16&quot;/&gt;
+          &lt;path d=&quot;M516 572q29 3 46 17&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- tail --&gt;
+        &lt;g class=&quot;tail-feathers anim&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;path d=&quot;m436 329-103-30 72 70Z&quot; fill=&quot;#e8eadc&quot;/&gt;
+          &lt;path d=&quot;m423 350-114 7 103 37Z&quot; fill=&quot;#fff7e5&quot;/&gt;
+          &lt;path d=&quot;m443 371-91 52 112-16Z&quot; fill=&quot;#d8ddd1&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- body --&gt;
+        &lt;path d=&quot;M403 352c17-83 92-116 161-80 64 34 85 116 37 168-41 44-147 43-184-11-17-25-20-52-14-77Z&quot; fill=&quot;#fff8e8&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;7&quot;/&gt;
+        &lt;path d=&quot;M429 302c25-25 67-39 103-27-40 13-63 42-71 77-8 34 1 73 21 94-47-11-76-43-79-82-2-23 7-45 26-62Z&quot; fill=&quot;#e3e8dc&quot; opacity=&quot;.8&quot;/&gt;
+
+        &lt;!-- neck and head --&gt;
+        &lt;path d=&quot;M557 353c4-46 19-82 53-108 18-14 44-20 69-17 11-34 42-58 80-54 47 5 70 52 50 91-13 25-45 35-78 26-22-6-35-1-45 14-17 25-19 66-14 105-48 15-93-6-115-57Z&quot; fill=&quot;#fff8e8&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;7&quot;/&gt;
+        &lt;path d=&quot;M625 271c20-24 46-36 69-31-17 23-23 54-23 86-15 8-33 7-48-2-4-20-3-38 2-53Z&quot; fill=&quot;#e0e6d9&quot; opacity=&quot;.72&quot;/&gt;
+
+        &lt;!-- beak --&gt;
+        &lt;path d=&quot;M764 209 1012 246 791 271c-27 3-45-10-45-31 0-17 8-28 18-31Z&quot; fill=&quot;url(#beak)&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;7&quot; stroke-linejoin=&quot;round&quot;/&gt;
+        &lt;path d=&quot;M756 244c36 24 126 27 245 3-54 48-168 81-226 33-11-9-17-21-19-36Z&quot; fill=&quot;url(#pouch)&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;7&quot; stroke-linejoin=&quot;round&quot;/&gt;
+        &lt;path d=&quot;m995 245 17 1-16 11&quot; fill=&quot;#f8d172&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot;/&gt;
+
+        &lt;!-- eye --&gt;
+        &lt;circle cx=&quot;765&quot; cy=&quot;210&quot; r=&quot;17&quot; fill=&quot;#f8d468&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;6&quot;/&gt;
+        &lt;circle cx=&quot;769&quot; cy=&quot;209&quot; r=&quot;7&quot; fill=&quot;#122d35&quot;/&gt;
+        &lt;circle cx=&quot;772&quot; cy=&quot;205&quot; r=&quot;2.6&quot; fill=&quot;white&quot;/&gt;
+        &lt;path d=&quot;M738 188q25-20 51 0&quot; fill=&quot;none&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+        &lt;!-- scarf --&gt;
+        &lt;g class=&quot;neck-scarf anim&quot;&gt;
+          &lt;path d=&quot;M635 300q30 16 59 4l-2 25q-28 13-60-5Z&quot; fill=&quot;#0d6070&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot;/&gt;
+          &lt;path d=&quot;m644 323-51 64 69-34 23 65 20-94Z&quot; fill=&quot;#0d6070&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M614 359q16 7 35 3&quot; fill=&quot;none&quot; stroke=&quot;#f8df9c&quot; stroke-width=&quot;5&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- wing --&gt;
+        &lt;g class=&quot;wing anim&quot;&gt;
+          &lt;path d=&quot;M473 311c57-8 100 24 101 69 1 43-34 69-85 53-44-13-68-51-60-82 6-22 21-35 44-40Z&quot; fill=&quot;#d9dfd3&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;path d=&quot;M449 350q51 6 98 50M459 326q61 9 100 49M451 378q39 8 68 39&quot; fill=&quot;none&quot; stroke=&quot;#aebdb2&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M539 356q38 34 87 36&quot; fill=&quot;none&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;15&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M621 392q22 2 38-7&quot; fill=&quot;none&quot; stroke=&quot;#d99a4e&quot; stroke-width=&quot;12&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- front leg --&gt;
+        &lt;g class=&quot;leg-front anim&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;path d=&quot;M589 405 617 492 608 574&quot; stroke=&quot;#f0b55b&quot; stroke-width=&quot;19&quot;/&gt;
+          &lt;path d=&quot;M607 574q25 4 42 18&quot; stroke=&quot;#f0b55b&quot; stroke-width=&quot;16&quot;/&gt;
+          &lt;path d=&quot;M604 574q28 4 47 18&quot; stroke=&quot;#132f36&quot; stroke-width=&quot;5&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- foreground texture --&gt;
+      &lt;rect width=&quot;1200&quot; height=&quot;800&quot; fill=&quot;url(#grain)&quot; pointer-events=&quot;none&quot;/&gt;
+    &lt;/svg&gt;
+
+    &lt;div class=&quot;controls&quot;&gt;
+      &lt;button class=&quot;toggle&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot; aria-label=&quot;暂停动画&quot;&gt;
+        &lt;span class=&quot;toggle__icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;span class=&quot;toggle__text&quot;&gt;暂停动画&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      const button = document.querySelector(&#39;.toggle&#39;);
+      const label = button.querySelector(&#39;.toggle__text&#39;);
+      const reducedMotion = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+      let playing = !reducedMotion.matches;
+
+      const render = () =&gt; {
+        document.body.dataset.playing = String(playing);
+        button.setAttribute(&#39;aria-pressed&#39;, String(playing));
+        button.setAttribute(&#39;aria-label&#39;, playing ? &#39;暂停动画&#39; : &#39;播放动画&#39;);
+        label.textContent = playing ? &#39;暂停动画&#39; : &#39;播放动画&#39;;
+      };
+
+      const toggle = () =&gt; {
+        playing = !playing;
+        render();
+      };
+
+      button.addEventListener(&#39;click&#39;, toggle);
+
+      document.addEventListener(&#39;keydown&#39;, (event) =&gt; {
+        if (event.code !== &#39;Space&#39; || event.repeat) return;
+        const target = event.target;
+        if (target instanceof HTMLElement &amp;&amp; target.matches(&#39;input, textarea, select, [contenteditable=&quot;true&quot;]&#39;)) return;
+        event.preventDefault();
+        toggle();
+      });
+
+      const onMotionPreferenceChange = (event) =&gt; {
+        if (event.matches) {
+          playing = false;
+          render();
+        }
+      };
+
+      if (typeof reducedMotion.addEventListener === &#39;function&#39;) {
+        reducedMotion.addEventListener(&#39;change&#39;, onMotionPreferenceChange);
+      } else if (typeof reducedMotion.addListener === &#39;function&#39;) {
+        reducedMotion.addListener(onMotionPreferenceChange);
+      }
+
+      render();
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>

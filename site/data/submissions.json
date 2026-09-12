@@ -1,0 +1,1284 @@
+[
+  {
+    "id": "demo-seaside",
+    "kind": "demo",
+    "title": "海风里的慢骑",
+    "description": "线条、海风与一辆青色单车。一个轻盈的午后。",
+    "model": "站点演示",
+    "version": "不适用",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "purpose": "手工编写的站点演示，不是独立模型测试",
+      "sampling": "不适用"
+    },
+    "tech": "SVG + CSS",
+    "environment": null,
+    "review": null,
+    "sourceSha256": "5a346eb72d007536ccc6a70a44125ea68e7aaeae11c0f1e8ac43bb10c9c38d4a",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {},
+    "cover": "cover.svg"
+  },
+  {
+    "id": "demo-sunset",
+    "kind": "demo",
+    "title": "追着落日出发",
+    "description": "暖橙色的天空下，让每一圈车轮都有回响。",
+    "model": "站点演示",
+    "version": "不适用",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "purpose": "手工编写的站点演示，不是独立模型测试",
+      "sampling": "不适用"
+    },
+    "tech": "SVG + CSS",
+    "environment": null,
+    "review": null,
+    "sourceSha256": "2e806e27b314688ba3f6118b8ebeae66e17a45b3e002e567510849b65e15efa4",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {},
+    "cover": "cover.svg"
+  },
+  {
+    "id": "demo-midnight",
+    "kind": "demo",
+    "title": "月光骑行俱乐部",
+    "description": "夜色安静，星星亮着。下一站，还可以再远一点。",
+    "model": "站点演示",
+    "version": "不适用",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "purpose": "手工编写的站点演示，不是独立模型测试",
+      "sampling": "不适用"
+    },
+    "tech": "SVG + CSS",
+    "environment": null,
+    "review": null,
+    "sourceSha256": "e722ce2d3da447a7b51085c8ede0832fc0ad629654820cddfb216ab90f21435a",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {},
+    "cover": "cover.svg"
+  },
+  {
+    "id": "deepseek-4-1-flash-max-20260912-run01",
+    "kind": "benchmark",
+    "title": "DeepSeek 4.1 Flash · max",
+    "description": "首份正式投稿：蓝天、海岸与轻快前进的鹈鹕。",
+    "model": "DeepSeek 4.1 Flash",
+    "version": "4.1 Flash（用户标注，精确后端版本未记录）",
+    "generatedAt": null,
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "max",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "未记录",
+      "durationSeconds": "未记录"
+    },
+    "tech": "SVG + JavaScript",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:01:04.522Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "user-submitted",
+      "registeredAt": "2026-09-12",
+      "promptVerification": "用户确认：原样使用站内 v1 完整提示词，无追加提示，首次原始输出",
+      "sourceModifiedAt": "2026-09-12T15:25:29+08:00",
+      "note": "生成日期未记录；文件修改时间不视为生成时间。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n          \\n          \\n        \\n        暂停\\n      \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n          \\n          \\n        \\n        播放\\n      \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n          \\n          \\n        \\n        播放\\n      \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n          \\n          \\n        \\n        暂停\\n      \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n          \\n          \\n        \\n        暂停\\n      \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n          \\n          \\n        \\n        播放\\n      \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n          \\n          \\n        \\n        播放\\n      \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n          \\n          \\n        \\n        暂停\\n      \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "b201b441d6959ece82cd7e972b5d19252e4e82b2fb414bc0781ad3ce8b41f10a",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "533ffe15589ad4c219d9cb99f3e15afddb010985239ea37cfa9d658fbb49ac1c",
+      "mobile": "c0910beea2da178bbc0d16514fbcfd13d29f6027637c423b1c07846832c420b5"
+    }
+  },
+  {
+    "id": "terra-high-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-5.6 Terra · high",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-5.6 Terra",
+    "version": "gpt-5.6-terra",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "high",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 503
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:01:12.235Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-058d-7573-8cd8-db36e72b48af",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199124,
+      "completedAt": 1789199627,
+      "delivery": "html-artifact",
+      "responseSha256": "e1d3fbafbd84a3fea2560508da89f564bc620690b89cccd5e11cbc3185f138ba",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "fail",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"motionObserved\":false}"
+      }
+    ],
+    "sourceSha256": "40fb6da2146f3bf3ccdc9848788b7b5a551981efa03dd1758a118acb3a6393d6",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "58f1431b9450a1b49dd9b55a373d1b02c1b3f210e241f9486a2830c9d6cd5af4",
+      "mobile": "3a16601de1ec6097d337456c6c1233e9964714df1343129ee46c93f44f65e2d5"
+    }
+  },
+  {
+    "id": "terra-max-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-5.6 Terra · max",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-5.6 Terra",
+    "version": "gpt-5.6-terra",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "max",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 354
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:01:20.148Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-08e1-7d50-8fd2-ce90b27d4bb5",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199125,
+      "completedAt": 1789199479,
+      "delivery": "final-response",
+      "responseSha256": "412e41ddfd433bc150db4b219a25bba212c90b7279259063df3f5e707ff81a1a",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":null,\"pressed\":\"true\",\"text\":\"\\n          Ⅱ\\n          暂停动画\\n        \"},\"after\":{\"label\":null,\"pressed\":\"false\",\"text\":\"\\n          ▶\\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":null,\"pressed\":\"false\",\"text\":\"\\n          ▶\\n          播放动画\\n        \"},\"after\":{\"label\":null,\"pressed\":\"true\",\"text\":\"\\n          Ⅱ\\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":null,\"pressed\":\"true\",\"text\":\"\\n          Ⅱ\\n          暂停动画\\n        \"},\"after\":{\"label\":null,\"pressed\":\"false\",\"text\":\"\\n          ▶\\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":null,\"pressed\":\"false\",\"text\":\"\\n          ▶\\n          播放动画\\n        \"},\"after\":{\"label\":null,\"pressed\":\"true\",\"text\":\"\\n          Ⅱ\\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":null,\"pressed\":\"false\",\"text\":\"▶\\n          播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":null,\"pressed\":\"false\",\"text\":\"▶\\n          播放动画\"},\"after\":{\"label\":null,\"pressed\":\"true\",\"text\":\"Ⅱ\\n          暂停动画\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "412e41ddfd433bc150db4b219a25bba212c90b7279259063df3f5e707ff81a1a",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "bd3fcf7091432a4cbab0cdadfe4a3e962ad3df77f4244b25bce178e6b7ee6dc3",
+      "mobile": "2f6847da879dd54f19852a68d997245748905b646c45d90ef44be066a385f877"
+    }
+  },
+  {
+    "id": "sol-low-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-5.6 Sol · low",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-5.6 Sol",
+    "version": "gpt-5.6-sol",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "low",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 315
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:02:14.776Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-0c43-7953-930d-658744f99caf",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199125,
+      "completedAt": 1789199440,
+      "delivery": "html-artifact",
+      "responseSha256": "d398202cc533aaa3c8ee96ffc837bbc05b2acac1e399773de26ca6327cc9f085",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "17ada9ead1ca400369184fa353154d5cb4974d369b2ebd0d53740c9cb934c5c7",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "4f23498055d4f67715b42746aa2cef4d2ca830b612d042f2739dd600b74ac073",
+      "mobile": "16dd978099be97353b28ce3ce41f4f0b43a3ac0e9a87c719e45e97721a5e0c3c"
+    }
+  },
+  {
+    "id": "sol-high-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-5.6 Sol · high",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-5.6 Sol",
+    "version": "gpt-5.6-sol",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "high",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 542
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:02:22.904Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-0fbf-7880-a897-010ee94ab049",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199126,
+      "completedAt": 1789199669,
+      "delivery": "html-artifact",
+      "responseSha256": "76e5953a6f8da70e84d4e7b36383d9ea08d653069e0be01271ce87f454b49895",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n        暂停动画\\n      \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n        播放动画\\n      \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n        播放动画\\n      \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n        暂停动画\\n      \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n        暂停动画\\n      \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n        播放动画\\n      \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n        \\n        播放动画\\n      \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n        \\n        暂停动画\\n      \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "c2cc702d095d39a4c0710a1619a6b426e1f03f2a69627f2766358b7d53916302",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "7e25b664614e2851d9c8c241838c6cab30b95bf018b6939810f69a5e2e7fa029",
+      "mobile": "cf7a994341d31ca81e6aa5d86e1ab524f0fb5bf86877310139b5cc351d50e25f"
+    }
+  },
+  {
+    "id": "astra-low-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-6 Astra · low",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-6 Astra",
+    "version": "gpt-6-astra",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "low",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 208
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:02:30.657Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-16fd-7bc2-bcab-44ac0aff1ccd",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199128,
+      "completedAt": 1789199336,
+      "delivery": "final-response",
+      "responseSha256": "3bd8ac08a6d42126ecdcb540a30ce1958b2e24159ea766d53bb50ac2c4f477e4",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          暂停动画\\n        \"},\"after\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          播放动画\\n        \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          暂停动画\\n        \"},\"after\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          播放动画\\n        \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"暂停动画\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "3bd8ac08a6d42126ecdcb540a30ce1958b2e24159ea766d53bb50ac2c4f477e4",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "f9342d8acb2f6ddbf6e4742e007cf7ee696bf15c5ce1581272165db14fb5e79d",
+      "mobile": "46685cb9d66e9084cfe35c0434beb8369ad6852d1d41f8c103081492b3d9d58c"
+    }
+  },
+  {
+    "id": "astra-high-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-6 Astra · high",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-6 Astra",
+    "version": "gpt-6-astra",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "high",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 710
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:03:47.610Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-1ac1-7000-9dcb-017e39882c88",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199129,
+      "completedAt": 1789199840,
+      "delivery": "html-artifact",
+      "responseSha256": "3ebbd4b754e6b95d0510b7bfc85c0a0c2942c1b67c95ef0428663ff6e45b69f6",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停骑行\"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放骑行\"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放骑行\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停骑行\"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停骑行\"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放骑行\"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放骑行\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停骑行\"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放骑行\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放骑行\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停骑行\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "c089c7d45bc98ebd1e722505acb60f7628a3485f9efba88451c4e8168756cbfa",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "41b7552788e7268c0297bced0ba3a86c501f105938fd3bdda21caf35578895d6",
+      "mobile": "ced3b3fa6bae11a9fe2a88530421e33ce496db4e1718b07e7866e00e9d6fcef6"
+    }
+  },
+  {
+    "id": "sol-max-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-5.6 Sol · max",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-5.6 Sol",
+    "version": "gpt-5.6-sol",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "max",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 843
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:03:56.774Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-13a4-7502-afb3-127d2e5af32d",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199127,
+      "completedAt": 1789199971,
+      "delivery": "html-artifact",
+      "responseSha256": "c2774aed3c0dc9f417f1cc4707084f4ad62c2dffb8060e629c229d0666ca6e11",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n      \\n      暂停\\n    \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n      \\n      播放\\n    \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n      \\n      播放\\n    \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n      \\n      暂停\\n    \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n      \\n      暂停\\n    \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n      \\n      播放\\n    \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n      \\n      播放\\n    \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n      \\n      暂停\\n    \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "aa237b5ff14d8724a4f35593c44e0b0192c0a5db96e23fefd8e9aadab1167a0e",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "050d1b77f61df4cfade0263f5ab5f7f168e7e391afa5845d3b699286e927bda5",
+      "mobile": "0c6517c15d2fe4430c38b93143e699b09381d3edc485b1dfc620f9cbb5d23d30"
+    }
+  },
+  {
+    "id": "luna-max-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-5.6 Luna · max",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-5.6 Luna",
+    "version": "gpt-5.6-luna",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "max",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 981
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:04:05.874Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09493-fee9-7fd1-9527-b7c3567411f4",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199122,
+      "completedAt": 1789200103,
+      "delivery": "html-artifact",
+      "responseSha256": "46e0a9b1d418a1b5975197592c552ec2145527674b53b6420f22686b6f74e09c",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n          \\n          暂停动画\\n        \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n          \\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n          \\n          播放动画\\n        \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n          \\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n          \\n          暂停动画\\n        \"},\"after\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n          \\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"\\n          \\n          播放动画\\n        \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"\\n          \\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":\"false\",\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":\"true\",\"text\":\"暂停动画\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "301e3421ab29d658eef0e7950464fc8ee1483e641d2d7922e084a798b9d19d27",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "cover": "desktop.png",
+    "screenshotSha256": {
+      "desktop": "2f1babe551e6f9cfd5c5bbf4645d27c2abc31c9dbb2c4e5c4bdd5ed31384442f",
+      "mobile": "475cec8b5d2f8ef77d69500a05bd314440ab05bf388bbf5684b1976d7e505e47"
+    }
+  },
+  {
+    "id": "astra-max-20260912-run01",
+    "kind": "benchmark",
+    "title": "GPT-6 Astra · max",
+    "description": "相同 v1 提示词的独立运行，原始产物未经站点维护者修补。",
+    "model": "GPT-6 Astra",
+    "version": "gpt-6-astra",
+    "generatedAt": "2026-09-12",
+    "promptVersion": "v1",
+    "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+    "parameters": {
+      "reasoningEffort": "max",
+      "temperature": "未记录",
+      "seed": "未记录",
+      "tools": "Codex 本地任务环境；允许的工具由各模型自行调用",
+      "durationSeconds": 1549
+    },
+    "tech": "HTML / CSS / JS",
+    "environment": {
+      "browser": "Chromium 152.0.7977.83",
+      "os": "Windows",
+      "captureAt": "load + 3 seconds",
+      "motion": "prefers-reduced-motion: no-preference；默认加载状态",
+      "dpr": 1,
+      "desktop": "1200 × 800",
+      "mobile": "390 × 844",
+      "testedAt": "2026-09-12T08:12:09.252Z",
+      "reducedMotionTest": "独立 Chromium 实例使用 --force-prefers-reduced-motion；上下文 reduce；验证 iframe 媒体查询为 true"
+    },
+    "review": null,
+    "provenance": {
+      "type": "codex-task",
+      "runIndex": 1,
+      "threadId": "01a09494-1e9a-7de2-a45e-87c679ff83d3",
+      "promptSha256": "604c7ccdc88797daa542067876fd453d91e3dc0e845c89a78a000385994d736b",
+      "promptVerification": "已对照任务日志中的原始任务输入，与站内 v1 字节一致",
+      "modelVerification": "已对照运行日志 model / effort，符合本轮指定配置",
+      "startedAt": 1789199130,
+      "completedAt": 1789200679,
+      "delivery": "html-artifact",
+      "responseSha256": "ed1cd9aebb63e29994f52947f14d123a5d2567ac5f573d86d6d445145e458af7",
+      "note": "首次独立运行；可能包含模型在同一任务内的工具调用与自测。"
+    },
+    "runtimeChecks": [
+      {
+        "name": "桌面无横向溢出",
+        "status": "pass",
+        "detail": "1200 × 800，页面宽度 1200px"
+      },
+      {
+        "name": "桌面自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "桌面播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          暂停动画\\n        \"},\"after\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "桌面空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          播放动画\\n        \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "桌面控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "手机无横向溢出",
+        "status": "pass",
+        "detail": "390 × 844，页面宽度 390px"
+      },
+      {
+        "name": "手机自动动态",
+        "status": "pass",
+        "detail": "相隔 3 秒的画面像素发生变化；不等同于轮子与脚踏质量评分"
+      },
+      {
+        "name": "手机播放／暂停按钮",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          暂停动画\\n        \"},\"after\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          播放动画\\n        \"}}"
+      },
+      {
+        "name": "手机空格键切换",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          播放动画\\n        \"},\"after\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"\\n          \\n          \\n          暂停动画\\n        \"}}"
+      },
+      {
+        "name": "手机控制台",
+        "status": "pass",
+        "detail": "未捕获脚本异常或 error 级控制台消息"
+      },
+      {
+        "name": "减少动态：默认静止",
+        "status": "pass",
+        "detail": "{\"environment\":\"浏览器启动参数 force-prefers-reduced-motion，上下文 reduce；已核对 iframe 媒体查询\",\"media\":true,\"stablePixels\":true,\"runningAnimations\":0,\"button\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"播放动画\"}}"
+      },
+      {
+        "name": "减少动态：可手动播放",
+        "status": "pass",
+        "detail": "{\"before\":{\"label\":\"播放动画\",\"pressed\":null,\"text\":\"播放动画\"},\"after\":{\"label\":\"暂停动画\",\"pressed\":null,\"text\":\"暂停动画\"},\"motionObserved\":true}"
+      }
+    ],
+    "sourceSha256": "bb34b0d6ddc73dee4d567cab54f15e25be0098968ca45702cad40853581cbb46",
+    "staticCheck": {
+      "passed": true,
+      "issues": [],
+      "version": 2
+    },
+    "screenshots": {
+      "desktop": "desktop.png",
+      "mobile": "mobile.png"
+    },
+    "screenshotSha256": {
+      "desktop": "60dd271c263741f7d91cf471f1554d6832f08a8655deb11e1b545713221930c8",
+      "mobile": "50054f33433341092efb1324a73e84d169b40f4d050f2cb158b78ed133828d08"
+    },
+    "cover": "desktop.png"
+  }
+]

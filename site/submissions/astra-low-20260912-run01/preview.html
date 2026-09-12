@@ -1,0 +1,434 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>GPT-6 Astra · low · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="GPT-6 Astra · low" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta name=&quot;theme-color&quot; content=&quot;#f5f1e7&quot;&gt;
+  &lt;title&gt;乘风慢行 · 鹈鹕骑行记&lt;/title&gt;
+  &lt;style&gt;
+    :root {
+      color-scheme: light;
+      --paper: #f5f1e7;
+      --ink: #254b47;
+      --muted: #667b70;
+      --orange: #dd683f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 280px;
+      min-height: 100svh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: &quot;Segoe UI&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif;
+    }
+
+    main {
+      width: min(1120px, 100%);
+      min-height: 100svh;
+      margin-inline: auto;
+      padding: 38px 40px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    header, footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .edition {
+      margin: 0 0 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, &quot;Songti SC&quot;, &quot;SimSun&quot;, serif;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 500;
+      letter-spacing: .06em;
+    }
+
+    .stamp {
+      width: 66px;
+      height: 66px;
+      flex-shrink: 0;
+      border: 1px solid #9ca99a;
+      border-radius: 50%;
+      display: grid;
+      place-content: center;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1.7;
+      letter-spacing: .12em;
+      transform: rotate(9deg);
+    }
+
+    .stamp strong { font: italic 23px Georgia, serif; }
+
+    .scene {
+      position: relative;
+      margin: 22px 0 25px;
+      overflow: hidden;
+      border-radius: 48% 48% 14px 14px / 12% 12% 14px 14px;
+      background: #e5ede5;
+    }
+
+    svg { width: 100%; height: auto; display: block; }
+
+    footer {
+      padding-top: 21px;
+      border-top: 1px solid #cbd0c2;
+    }
+
+    .caption { margin: 0; font-size: 14px; line-height: 1.8; }
+    .caption span { display: block; color: var(--muted); font-size: 11px; letter-spacing: .1em; }
+    .controls { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .shortcut { color: var(--muted); font-size: 11px; }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      min-width: 116px;
+      padding: 11px 18px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #39645a; }
+    button:focus-visible { outline: 3px solid var(--orange); outline-offset: 5px; }
+    .control-icon { width: 12px; height: 14px; position: relative; }
+    .control-icon::before, .control-icon::after {
+      content: &quot;&quot;;
+      position: absolute;
+      top: 1px;
+      width: 3px;
+      height: 12px;
+      background: currentColor;
+    }
+    .control-icon::before { left: 1px; }
+    .control-icon::after { right: 1px; }
+    .paused .control-icon::before {
+      width: 0;
+      height: 0;
+      left: 2px;
+      top: 0;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid currentColor;
+      background: transparent;
+    }
+    .paused .control-icon::after { display: none; }
+
+    .wheel { animation: revolve 1.6s linear infinite; }
+    .rear-wheel { transform-origin: 350px 433px; }
+    .front-wheel { transform-origin: 701px 433px; }
+    .crank { transform-origin: 490px 426px; animation: revolve 1.6s linear infinite; }
+    .rider { animation: bounce .8s ease-in-out infinite; }
+    .scarf { transform-origin: 567px 223px; animation: flutter .8s ease-in-out infinite alternate; }
+    .wing { transform-origin: 485px 271px; animation: wing 1.6s ease-in-out infinite; }
+    .road-marks { animation: travel 1.6s linear infinite; }
+    .clouds { animation: drift 22s linear infinite; }
+    .grass-near { animation: travel 3.2s linear infinite; }
+    .paused .motion { animation-play-state: paused; }
+
+    @keyframes revolve { to { transform: rotate(360deg); } }
+    @keyframes bounce { 50% { transform: translateY(-3px) rotate(.3deg); } }
+    @keyframes flutter { to { transform: rotate(-7deg) scaleY(.86); } }
+    @keyframes wing { 50% { transform: rotate(-3deg); } }
+    @keyframes travel { to { transform: translateX(-240px); } }
+    @keyframes drift { to { transform: translateX(-120px); } }
+
+    @media (max-width: 600px) {
+      main { padding: 26px 18px 22px; }
+      .scene { margin-top: 28px; border-radius: 100px 100px 12px 12px / 35px 35px 12px 12px; }
+      .scene svg { width: 150%; max-width: none; margin-left: -25%; }
+      .stamp { width: 54px; height: 54px; font-size: 8px; }
+      .stamp strong { font-size: 20px; }
+      footer { align-items: flex-start; gap: 14px; }
+      .caption { font-size: 12px; }
+      .caption span { font-size: 9px; max-width: 180px; }
+      .shortcut { display: none; }
+      button { min-width: 102px; padding-inline: 13px; }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&quot;paused&quot;&gt;
+  &lt;main&gt;
+    &lt;header&gt;
+      &lt;div&gt;
+        &lt;p class=&quot;edition&quot;&gt;Little journeys / No. 01&lt;/p&gt;
+        &lt;h1&gt;乘风，慢一点。&lt;/h1&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;stamp&quot; aria-hidden=&quot;true&quot;&gt;COASTAL&lt;strong&gt;club&lt;/strong&gt;海岸骑行社&lt;/div&gt;
+    &lt;/header&gt;
+
+    &lt;div class=&quot;scene&quot;&gt;
+      &lt;svg viewBox=&quot;0 0 1040 570&quot; role=&quot;img&quot; aria-labelledby=&quot;scene-title scene-description&quot;&gt;
+        &lt;title id=&quot;scene-title&quot;&gt;一只骑着橙色自行车的鹈鹕&lt;/title&gt;
+        &lt;desc id=&quot;scene-description&quot;&gt;蓝绿色的海岸天空下，白色鹈鹕戴着红围巾，长长的金色喙下垂着喉囊。它握着车把，双脚踩动脚踏，沿着海边小路向右骑行。&lt;/desc&gt;
+        &lt;defs&gt;
+          &lt;linearGradient id=&quot;sky&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+            &lt;stop stop-color=&quot;#dce9e4&quot;/&gt;
+            &lt;stop offset=&quot;1&quot; stop-color=&quot;#edf0df&quot;/&gt;
+          &lt;/linearGradient&gt;
+          &lt;linearGradient id=&quot;pouch&quot; x2=&quot;.3&quot; y2=&quot;1&quot;&gt;
+            &lt;stop stop-color=&quot;#efba62&quot;/&gt;
+            &lt;stop offset=&quot;1&quot; stop-color=&quot;#dc9152&quot;/&gt;
+          &lt;/linearGradient&gt;
+          &lt;pattern id=&quot;grain&quot; width=&quot;29&quot; height=&quot;29&quot; patternUnits=&quot;userSpaceOnUse&quot;&gt;
+            &lt;circle cx=&quot;4&quot; cy=&quot;8&quot; r=&quot;.65&quot; fill=&quot;#355b4b&quot; opacity=&quot;.07&quot;/&gt;
+            &lt;circle cx=&quot;21&quot; cy=&quot;23&quot; r=&quot;.5&quot; fill=&quot;#fff&quot; opacity=&quot;.4&quot;/&gt;
+          &lt;/pattern&gt;
+          &lt;g id=&quot;spokes&quot; stroke=&quot;#64817a&quot; stroke-width=&quot;1.6&quot; opacity=&quot;.7&quot;&gt;
+            &lt;path d=&quot;M-78 0H78M0-78V78M-55-55L55 55M-55 55L55-55M-72-30L72 30M-72 30L72-30M-30-72L30 72M-30 72L30-72&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g id=&quot;grass&quot; fill=&quot;none&quot; stroke=&quot;#6c8869&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;&gt;
+            &lt;path d=&quot;M0 0l-6-15M0 0l4-21M0 0l12-10&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/defs&gt;
+
+        &lt;path fill=&quot;url(#sky)&quot; d=&quot;M0 0H1040V570H0z&quot;/&gt;
+        &lt;circle cx=&quot;786&quot; cy=&quot;115&quot; r=&quot;48&quot; fill=&quot;#f6cb7c&quot;/&gt;
+        &lt;circle cx=&quot;786&quot; cy=&quot;115&quot; r=&quot;59&quot; fill=&quot;none&quot; stroke=&quot;#f6cb7c&quot; opacity=&quot;.28&quot;/&gt;
+
+        &lt;g class=&quot;clouds motion&quot; fill=&quot;#faf9ed&quot; opacity=&quot;.85&quot;&gt;
+          &lt;path d=&quot;M145 122c4-17 24-24 40-13 3-29 47-35 58-7 19-10 41 1 42 20z&quot;/&gt;
+          &lt;path d=&quot;M839 187c7-17 24-20 36-9 5-24 37-27 48-6 18-7 29 2 33 15z&quot;/&gt;
+          &lt;path d=&quot;M406 69c6-11 20-13 27-5 10-16 33-14 40 5z&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g stroke=&quot;#62877d&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; stroke-linecap=&quot;round&quot;&gt;
+          &lt;path d=&quot;M674 88q9-9 18 0 9-9 18 0M856 99q6-6 12 0 6-6 12 0&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;path d=&quot;M0 300Q124 266 239 296T469 300T699 281T1040 291V427H0Z&quot; fill=&quot;#b7cec0&quot;/&gt;
+        &lt;path d=&quot;M0 327Q171 293 321 330T648 320T1040 316V434H0Z&quot; fill=&quot;#91b5a7&quot;/&gt;
+        &lt;path d=&quot;M0 357Q155 340 323 363T627 352T1040 355V430H0Z&quot; fill=&quot;#c5d7bc&quot;/&gt;
+        &lt;path d=&quot;M0 409Q226 378 431 402T1040 392V570H0Z&quot; fill=&quot;#e7d9b9&quot;/&gt;
+        &lt;path d=&quot;M0 463Q280 437 520 455T1040 442V543Q789 555 534 535T0 549Z&quot; fill=&quot;#efe7d5&quot;/&gt;
+        &lt;path d=&quot;M0 462Q280 436 520 454T1040 441&quot; fill=&quot;none&quot; stroke=&quot;#d4c7a7&quot; stroke-width=&quot;2&quot;/&gt;
+
+        &lt;g class=&quot;grass-near motion&quot;&gt;
+          &lt;use href=&quot;#grass&quot; x=&quot;100&quot; y=&quot;429&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; x=&quot;340&quot; y=&quot;429&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; x=&quot;580&quot; y=&quot;429&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; x=&quot;820&quot; y=&quot;429&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; x=&quot;1060&quot; y=&quot;429&quot;/&gt;
+          &lt;use href=&quot;#grass&quot; x=&quot;1300&quot; y=&quot;429&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g class=&quot;road-marks motion&quot; stroke=&quot;#cebea0&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;&gt;
+          &lt;path d=&quot;M0 533h56m184 0h56m184 0h56m184 0h56m184 0h56m184 0h56&quot;/&gt;
+          &lt;path d=&quot;M102 472h22m218 0h22m218 0h22m218 0h22m218 0h22&quot; opacity=&quot;.65&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;ellipse cx=&quot;525&quot; cy=&quot;519&quot; rx=&quot;267&quot; ry=&quot;12&quot; fill=&quot;#73846a&quot; opacity=&quot;.12&quot;/&gt;
+
+        &lt;!-- Wheels remain centered while their spokes and valve marks rotate. --&gt;
+        &lt;g fill=&quot;#eae5cf&quot; fill-opacity=&quot;.3&quot; stroke=&quot;#294d48&quot; stroke-width=&quot;10&quot;&gt;
+          &lt;circle cx=&quot;350&quot; cy=&quot;433&quot; r=&quot;85&quot;/&gt;
+          &lt;circle cx=&quot;701&quot; cy=&quot;433&quot; r=&quot;85&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g fill=&quot;none&quot; stroke=&quot;#fbf4df&quot; stroke-width=&quot;3&quot;&gt;
+          &lt;circle cx=&quot;350&quot; cy=&quot;433&quot; r=&quot;78&quot;/&gt;
+          &lt;circle cx=&quot;701&quot; cy=&quot;433&quot; r=&quot;78&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g class=&quot;wheel rear-wheel motion&quot;&gt;
+          &lt;use href=&quot;#spokes&quot; x=&quot;350&quot; y=&quot;433&quot;/&gt;
+          &lt;path d=&quot;M350 356v7&quot; stroke=&quot;#d9754c&quot; stroke-width=&quot;4&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g class=&quot;wheel front-wheel motion&quot;&gt;
+          &lt;use href=&quot;#spokes&quot; x=&quot;701&quot; y=&quot;433&quot;/&gt;
+          &lt;path d=&quot;M701 356v7&quot; stroke=&quot;#d9754c&quot; stroke-width=&quot;4&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- Far leg and pedal. --&gt;
+        &lt;path id=&quot;far-leg&quot; d=&quot;M466 307L480 366L459 426&quot; fill=&quot;none&quot; stroke=&quot;#b98345&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+        &lt;path id=&quot;far-foot&quot; d=&quot;M453 426h23&quot; stroke=&quot;#bb884e&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+        &lt;!-- Step-through bicycle frame. --&gt;
+        &lt;g fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;
+          &lt;path d=&quot;M350 433L432 337L490 426Z&quot; stroke=&quot;#b95135&quot; stroke-width=&quot;9&quot;/&gt;
+          &lt;path d=&quot;M432 337L490 426Q553 428 651 337M432 337Q539 363 651 337L701 433&quot; stroke=&quot;#de7048&quot; stroke-width=&quot;11&quot;/&gt;
+          &lt;path d=&quot;M435 340L422 312M650 339L637 296Q634 282 650 280L675 280&quot; stroke=&quot;#345750&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;path d=&quot;M667 280h23&quot; stroke=&quot;#294941&quot; stroke-width=&quot;11&quot;/&gt;
+          &lt;path d=&quot;M409 316h43&quot; stroke=&quot;#314f45&quot; stroke-width=&quot;12&quot;/&gt;
+          &lt;path d=&quot;M416 310h28&quot; stroke=&quot;#875d42&quot; stroke-width=&quot;7&quot;/&gt;
+          &lt;path d=&quot;M651 290Q718 306 696 371&quot; stroke=&quot;#6d8171&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;path d=&quot;M264 409a89 89 0 0 1 169-15M623 393a89 89 0 0 1 166 17&quot; stroke=&quot;#ba6748&quot; stroke-width=&quot;4&quot;/&gt;
+          &lt;path d=&quot;M350 433L489 438Q507 438 507 425Q507 411 490 411L350 426Z&quot; stroke=&quot;#658174&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;/g&gt;
+        &lt;circle cx=&quot;350&quot; cy=&quot;433&quot; r=&quot;7&quot; fill=&quot;#36584e&quot;/&gt;
+        &lt;circle cx=&quot;701&quot; cy=&quot;433&quot; r=&quot;7&quot; fill=&quot;#36584e&quot;/&gt;
+        &lt;circle cx=&quot;490&quot; cy=&quot;426&quot; r=&quot;22&quot; fill=&quot;#f0d5a5&quot; stroke=&quot;#c56240&quot; stroke-width=&quot;5&quot;/&gt;
+        &lt;g class=&quot;crank motion&quot; stroke=&quot;#34554d&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;&gt;
+          &lt;path d=&quot;M459 426h62&quot;/&gt;
+          &lt;circle cx=&quot;490&quot; cy=&quot;426&quot; r=&quot;5&quot; fill=&quot;#34554d&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;g class=&quot;rider motion&quot;&gt;
+          &lt;!-- Tail, body, curved neck and head form a single readable silhouette. --&gt;
+          &lt;path d=&quot;M432 281Q387 282 356 249L370 283L348 278Q372 313 423 317&quot; fill=&quot;#e4e7d8&quot; stroke=&quot;#38594e&quot; stroke-width=&quot;2.5&quot; stroke-linejoin=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M420 260Q443 239 493 250Q524 253 529 220L527 178Q526 144 552 133Q579 121 595 144Q607 162 591 187Q574 215 585 251Q597 286 559 310Q518 336 468 326Q430 320 417 291Q410 276 420 260Z&quot; fill=&quot;#fcfaeb&quot; stroke=&quot;#38594e&quot; stroke-width=&quot;2.5&quot;/&gt;
+          &lt;path d=&quot;M567 193Q551 241 568 271Q559 300 522 307Q475 321 442 299Q460 334 511 326Q571 326 586 287Q596 267 579 238L582 198Z&quot; fill=&quot;#dce3d5&quot;/&gt;
+
+          &lt;g class=&quot;scarf motion&quot;&gt;
+            &lt;path d=&quot;M552 218Q511 215 484 198Q464 187 440 201L450 212L438 222Q476 222 511 239L554 235Z&quot; fill=&quot;#d86b46&quot;/&gt;
+            &lt;path d=&quot;M543 225Q502 224 469 211&quot; fill=&quot;none&quot; stroke=&quot;#f19b69&quot; stroke-width=&quot;3&quot;/&gt;
+          &lt;/g&gt;
+          &lt;path d=&quot;M530 215Q552 226 578 215L581 228Q557 240 533 230Z&quot; fill=&quot;#c9583b&quot;/&gt;
+          &lt;path d=&quot;M559 224l-5 12 13 6 8-11Z&quot; fill=&quot;#e78051&quot;/&gt;
+
+          &lt;!-- Golden throat pouch below the exceptionally long bill. --&gt;
+          &lt;path d=&quot;M586 164L748 178Q716 185 692 209Q665 233 635 221Q606 210 586 177Z&quot; fill=&quot;url(#pouch)&quot; stroke=&quot;#8b653c&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;path d=&quot;M599 179Q624 211 657 216&quot; fill=&quot;none&quot; stroke=&quot;#f7ce86&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M588 157Q659 157 752 174Q761 177 749 181L591 176Z&quot; fill=&quot;#efbc5e&quot; stroke=&quot;#82663e&quot; stroke-width=&quot;2&quot; stroke-linejoin=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M602 171L741 177&quot; stroke=&quot;#c18a3e&quot; stroke-width=&quot;1.5&quot;/&gt;
+          &lt;circle cx=&quot;574&quot; cy=&quot;157&quot; r=&quot;9&quot; fill=&quot;#eac66f&quot;/&gt;
+          &lt;circle cx=&quot;575&quot; cy=&quot;156&quot; r=&quot;4.5&quot; fill=&quot;#273f37&quot;/&gt;
+          &lt;circle cx=&quot;576.5&quot; cy=&quot;154.5&quot; r=&quot;1.4&quot; fill=&quot;#fff&quot;/&gt;
+          &lt;path d=&quot;M564 141q8-5 14 0&quot; fill=&quot;none&quot; stroke=&quot;#456054&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M536 140l-10-5m13 0-5-10&quot; stroke=&quot;#38594e&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+          &lt;!-- Wing reaches forward to the handlebar. --&gt;
+          &lt;g class=&quot;wing motion&quot;&gt;
+            &lt;path d=&quot;M450 263Q478 247 514 275Q550 300 585 291L658 279Q667 280 659 287Q620 308 571 312Q517 321 475 298Q452 288 450 263Z&quot; fill=&quot;#eceee0&quot; stroke=&quot;#38594e&quot; stroke-width=&quot;2.5&quot;/&gt;
+            &lt;path d=&quot;M467 269Q503 299 549 301M475 282Q505 305 534 305&quot; fill=&quot;none&quot; stroke=&quot;#becbbd&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;path d=&quot;M643 287l17-3&quot; stroke=&quot;#38594e&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+
+        &lt;!-- Animated leg follows the near pedal through its full orbit. --&gt;
+        &lt;path id=&quot;near-leg&quot; d=&quot;M514 316L529 371L521 426&quot; fill=&quot;none&quot; stroke=&quot;#d7a258&quot; stroke-width=&quot;12&quot; stroke-linejoin=&quot;round&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path id=&quot;near-leg-highlight&quot; d=&quot;M514 316L529 371L521 426&quot; fill=&quot;none&quot; stroke=&quot;#efc17a&quot; stroke-width=&quot;3&quot; stroke-linejoin=&quot;round&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path id=&quot;near-foot&quot; d=&quot;M513 426h26&quot; fill=&quot;none&quot; stroke=&quot;#c38c45&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path id=&quot;near-pedal&quot; d=&quot;M509 434h29&quot; stroke=&quot;#31544c&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;path id=&quot;far-pedal&quot; d=&quot;M447 434h29&quot; stroke=&quot;#31544c&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+        &lt;g fill=&quot;none&quot; stroke=&quot;#f7f5e8&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot; opacity=&quot;.85&quot;&gt;
+          &lt;path d=&quot;M280 247h45M295 259h20M240 330h49&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g fill=&quot;#f6f0db&quot;&gt;
+          &lt;ellipse cx=&quot;147&quot; cy=&quot;395&quot; rx=&quot;7&quot; ry=&quot;3&quot;/&gt;
+          &lt;ellipse cx=&quot;906&quot; cy=&quot;409&quot; rx=&quot;9&quot; ry=&quot;3&quot;/&gt;
+        &lt;/g&gt;
+        &lt;path fill=&quot;url(#grain)&quot; d=&quot;M0 0H1040V570H0z&quot; pointer-events=&quot;none&quot;/&gt;
+        &lt;text x=&quot;38&quot; y=&quot;548&quot; fill=&quot;#7c8068&quot; font-family=&quot;Georgia, serif&quot; font-size=&quot;11&quot; letter-spacing=&quot;3&quot;&gt;A GOOD DAY TO GO SLOW&lt;/text&gt;
+      &lt;/svg&gt;
+    &lt;/div&gt;
+
+    &lt;footer&gt;
+      &lt;p class=&quot;caption&quot;&gt;不赶时间，只追海风。&lt;span&gt;沿海公路 · 今日的目的地：好心情&lt;/span&gt;&lt;/p&gt;
+      &lt;div class=&quot;controls&quot;&gt;
+        &lt;span class=&quot;shortcut&quot; aria-hidden=&quot;true&quot;&gt;空格键 · 播放 / 暂停&lt;/span&gt;
+        &lt;button id=&quot;toggle&quot; type=&quot;button&quot; aria-label=&quot;播放动画&quot; aria-describedby=&quot;motion-help&quot;&gt;
+          &lt;span class=&quot;control-icon&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+          &lt;span id=&quot;button-label&quot;&gt;播放动画&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/footer&gt;
+    &lt;p id=&quot;motion-help&quot; hidden&gt;点击按钮或按空格键切换动画。偏好减少动态时，默认暂停。&lt;/p&gt;
+  &lt;/main&gt;
+  &lt;script&gt;
+    (() =&gt; {
+      &quot;use strict&quot;;
+
+      const button = document.getElementById(&quot;toggle&quot;);
+      const label = document.getElementById(&quot;button-label&quot;);
+      const preference = window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;);
+      const parts = Object.fromEntries([
+        &quot;near-leg&quot;, &quot;near-leg-highlight&quot;, &quot;far-leg&quot;, &quot;near-foot&quot;,
+        &quot;far-foot&quot;, &quot;near-pedal&quot;, &quot;far-pedal&quot;
+      ].map(id =&gt; [id, document.getElementById(id)]));
+
+      let playing = false;
+      let manuallyChosen = false;
+      let elapsed = 0;
+      let previous = null;
+      let frame = null;
+
+      function drawLeg(side, angle) {
+        const near = side === &quot;near&quot;;
+        const x = 490 + 31 * Math.cos(angle);
+        const y = 426 + 31 * Math.sin(angle);
+        const hipX = near ? 514 : 466;
+        const hipY = near ? 316 : 307;
+        const kneeX = (hipX + x) / 2 + (near ? 23 : -19);
+        const kneeY = (hipY + y) / 2 - 1;
+        const path = `M${hipX} ${hipY}L${kneeX} ${kneeY}L${x} ${y}`;
+        parts[`${side}-leg`].setAttribute(&quot;d&quot;, path);
+        if (near) parts[&quot;near-leg-highlight&quot;].setAttribute(&quot;d&quot;, path);
+        parts[`${side}-foot`].setAttribute(&quot;d&quot;, `M${x - 8} ${y}h26`);
+        parts[`${side}-pedal`].setAttribute(&quot;d&quot;, `M${x - 12} ${y + 8}h29`);
+      }
+
+      function render() {
+        const angle = elapsed / 1600 * Math.PI * 2;
+        drawLeg(&quot;near&quot;, angle);
+        drawLeg(&quot;far&quot;, angle + Math.PI);
+      }
+
+      function tick(now) {
+        if (!playing) return;
+        if (previous !== null) elapsed += now - previous;
+        previous = now;
+        render();
+        frame = requestAnimationFrame(tick);
+      }
+
+      function setPlaying(value) {
+        playing = value;
+        document.body.classList.toggle(&quot;paused&quot;, !playing);
+        const text = playing ? &quot;暂停动画&quot; : &quot;播放动画&quot;;
+        label.textContent = text;
+        button.setAttribute(&quot;aria-label&quot;, text);
+        previous = null;
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = playing ? requestAnimationFrame(tick) : null;
+      }
+
+      function toggle() {
+        manuallyChosen = true;
+        setPlaying(!playing);
+      }
+
+      button.addEventListener(&quot;click&quot;, toggle);
+      document.addEventListener(&quot;keydown&quot;, event =&gt; {
+        if (event.code !== &quot;Space&quot; || event.altKey || event.ctrlKey || event.metaKey) return;
+        const target = event.target;
+        if (target instanceof HTMLElement &amp;&amp;
+            (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+        event.preventDefault();
+        if (!event.repeat) toggle();
+      });
+
+      preference.addEventListener(&quot;change&quot;, event =&gt; {
+        if (!manuallyChosen) setPlaying(!event.matches);
+      });
+
+      document.addEventListener(&quot;visibilitychange&quot;, () =&gt; {
+        previous = null;
+      });
+
+      render();
+      setPlaying(!preference.matches);
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"></iframe></body></html>
