@@ -1,0 +1,323 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>Kimi K2.6 · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="Kimi K2.6" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;鹈鹕骑行&lt;/title&gt;
+&lt;style&gt;
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #87CEEB;
+    font-family: system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, &quot;Noto Sans&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 场景渐变 */
+  .scene {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 40%, #c3e6cb 40%, #a8dba8 42%, #7bc87b 42%, #5da65d 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 通用动画状态 */
+  .animating .spin { animation: spin 0.8s linear infinite; }
+  .animating .counter-spin { animation: counterSpin 0.8s linear infinite; }
+  .animating .bob { animation: bob 0.6s ease-in-out infinite alternate; }
+  .animating .bob-slow { animation: bob 1.2s ease-in-out infinite alternate; }
+  .animating .wing { animation: wing 0.9s ease-in-out infinite alternate; }
+  .animating .road-dash { animation: roadMove 0.6s linear infinite; }
+  .animating .cloud { animation: cloudDrift linear infinite; }
+  .animating .sun-pulse { animation: sunPulse 4s ease-in-out infinite alternate; }
+  .animating .sac { animation: sacWobble 1.2s ease-in-out infinite alternate; }
+
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes counterSpin { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+  @keyframes wing { from { transform: rotate(0deg); } to { transform: rotate(6deg); } }
+  @keyframes roadMove { from { transform: translateX(0); } to { transform: translateX(-120px); } }
+  @keyframes sunPulse { from { transform: scale(1); opacity: 0.9; } to { transform: scale(1.05); opacity: 1; } }
+  @keyframes cloudDrift1 { from { transform: translateX(0); } to { transform: translateX(-1400px); } }
+  @keyframes cloudDrift2 { from { transform: translateX(0); } to { transform: translateX(-1200px); } }
+  @keyframes sacWobble { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+
+  .animating .cloud1 { animation-name: cloudDrift1; animation-duration: 35s; }
+  .animating .cloud2 { animation-name: cloudDrift2; animation-duration: 45s; }
+  .animating .cloud3 { animation-name: cloudDrift1; animation-duration: 55s; }
+
+  /* 减少动态 */
+  @media (prefers-reduced-motion: reduce) {
+    .animating .spin,
+    .animating .counter-spin,
+    .animating .bob,
+    .animating .bob-slow,
+    .animating .wing,
+    .animating .road-dash,
+    .animating .cloud,
+    .animating .sun-pulse,
+    .animating .sac {
+      animation: none !important;
+    }
+  }
+
+  /* 按钮 */
+  .controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+  button#toggleBtn {
+    background: #ffffff;
+    color: #1a1a1a;
+    border: 2px solid #1a1a1a;
+    border-radius: 999px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+  }
+  button#toggleBtn:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+  button#toggleBtn:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
+  }
+  button#toggleBtn:active {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* 响应式 */
+  @media (max-width: 640px) {
+    button#toggleBtn {
+      font-size: 15px;
+      padding: 10px 20px;
+      bottom: 12px;
+    }
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;scene&quot; id=&quot;scene&quot;&gt;
+  &lt;svg viewBox=&quot;0 0 1200 800&quot; preserveAspectRatio=&quot;xMidYMid slice&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-label=&quot;一只鹈鹕在道路上骑自行车的插画&quot;&gt;
+    &lt;defs&gt;
+      &lt;!-- 太阳渐变 --&gt;
+      &lt;radialGradient id=&quot;sunGrad&quot; cx=&quot;50%&quot; cy=&quot;50%&quot; r=&quot;50%&quot;&gt;
+        &lt;stop offset=&quot;0%&quot; stop-color=&quot;#fff7db&quot;/&gt;
+        &lt;stop offset=&quot;60%&quot; stop-color=&quot;#ffe082&quot;/&gt;
+        &lt;stop offset=&quot;100%&quot; stop-color=&quot;#ffd54f&quot; stop-opacity=&quot;0&quot;/&gt;
+      &lt;/radialGradient&gt;
+      &lt;!-- 轮子辐条遮罩 --&gt;
+      &lt;mask id=&quot;wheelMask&quot;&gt;
+        &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;60&quot; fill=&quot;white&quot;/&gt;
+        &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;52&quot; fill=&quot;black&quot;/&gt;
+      &lt;/mask&gt;
+      &lt;!-- 踏板符号 --&gt;
+      &lt;g id=&quot;pedal&quot;&gt;
+        &lt;rect x=&quot;-10&quot; y=&quot;-4&quot; width=&quot;20&quot; height=&quot;8&quot; rx=&quot;2&quot; fill=&quot;#333&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;-28&quot; stroke=&quot;#555&quot; stroke-width=&quot;4&quot;/&gt;
+      &lt;/g&gt;
+    &lt;/defs&gt;
+
+    &lt;!-- 太阳 --&gt;
+    &lt;g transform=&quot;translate(1000, 140)&quot;&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;70&quot; fill=&quot;url(#sunGrad)&quot; class=&quot;sun-pulse&quot;/&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;28&quot; fill=&quot;#fff176&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 远山 --&gt;
+    &lt;path d=&quot;M0,320 L200,220 L400,300 L600,200 L800,290 L1000,180 L1200,280 L1200,320 Z&quot; fill=&quot;#81b29a&quot; opacity=&quot;0.7&quot;/&gt;
+    &lt;path d=&quot;M-100,340 L150,260 L350,330 L550,240 L750,320 L950,230 L1150,310 L1300,340 Z&quot; fill=&quot;#6a9c7e&quot; opacity=&quot;0.8&quot;/&gt;
+
+    &lt;!-- 云朵 --&gt;
+    &lt;g class=&quot;cloud cloud1&quot; transform=&quot;translate(1400, 100)&quot;&gt;
+      &lt;path d=&quot;M0,0 Q20,-20 40,0 Q60,-25 90,0 Q110,-15 120,5 Q130,20 110,25 L10,25 Q-15,20 0,0Z&quot; fill=&quot;#ffffff&quot; opacity=&quot;0.85&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g class=&quot;cloud cloud2&quot; transform=&quot;translate(1600, 160)&quot;&gt;
+      &lt;path d=&quot;M0,0 Q25,-18 50,0 Q75,-22 100,0 Q120,-12 130,8 Q140,22 120,26 L10,26 Q-15,22 0,0Z&quot; fill=&quot;#ffffff&quot; opacity=&quot;0.75&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g class=&quot;cloud cloud3&quot; transform=&quot;translate(1300, 70)&quot;&gt;
+      &lt;path d=&quot;M0,0 Q18,-15 36,0 Q55,-20 80,0 Q95,-10 105,6 Q110,18 90,22 L5,22 Q-12,18 0,0Z&quot; fill=&quot;#ffffff&quot; opacity=&quot;0.9&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 道路 --&gt;
+    &lt;rect x=&quot;0&quot; y=&quot;540&quot; width=&quot;1200&quot; height=&quot;260&quot; fill=&quot;#4a4a4a&quot;/&gt;
+    &lt;rect x=&quot;0&quot; y=&quot;530&quot; width=&quot;1200&quot; height=&quot;10&quot; fill=&quot;#888&quot;/&gt;
+
+    &lt;!-- 道路虚线（移动） --&gt;
+    &lt;g transform=&quot;translate(0, 660)&quot;&gt;
+      &lt;g class=&quot;road-dash&quot;&gt;
+        &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;200&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;400&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;600&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;800&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;1000&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;1200&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+        &lt;rect x=&quot;1400&quot; y=&quot;0&quot; width=&quot;80&quot; height=&quot;10&quot; fill=&quot;#e8e8e8&quot;/&gt;
+      &lt;/g&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 自行车与鹈鹕主体 --&gt;
+    &lt;g transform=&quot;translate(500, 420)&quot; class=&quot;bob&quot;&gt;
+      &lt;!-- 阴影 --&gt;
+      &lt;ellipse cx=&quot;120&quot; cy=&quot;230&quot; rx=&quot;140&quot; ry=&quot;12&quot; fill=&quot;#000&quot; opacity=&quot;0.18&quot;/&gt;
+
+      &lt;!-- 后轮 --&gt;
+      &lt;g transform=&quot;translate(0, 180)&quot;&gt;
+        &lt;g class=&quot;spin&quot;&gt;
+          &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;60&quot; fill=&quot;none&quot; stroke=&quot;#2c2c2c&quot; stroke-width=&quot;6&quot;/&gt;
+          &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;54&quot; fill=&quot;none&quot; stroke=&quot;#ddd&quot; stroke-width=&quot;1.5&quot; stroke-dasharray=&quot;8 6&quot;/&gt;
+          &lt;g mask=&quot;url(#wheelMask)&quot;&gt;
+            &lt;line x1=&quot;0&quot; y1=&quot;-60&quot; x2=&quot;0&quot; y2=&quot;60&quot; stroke=&quot;#bbb&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;-52&quot; y1=&quot;-30&quot; x2=&quot;52&quot; y2=&quot;30&quot; stroke=&quot;#bbb&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;-52&quot; y1=&quot;30&quot; x2=&quot;52&quot; y2=&quot;-30&quot; stroke=&quot;#bbb&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 前轮 --&gt;
+      &lt;g transform=&quot;translate(240, 180)&quot;&gt;
+        &lt;g class=&quot;spin&quot;&gt;
+          &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;60&quot; fill=&quot;none&quot; stroke=&quot;#2c2c2c&quot; stroke-width=&quot;6&quot;/&gt;
+          &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;54&quot; fill=&quot;none&quot; stroke=&quot;#ddd&quot; stroke-width=&quot;1.5&quot; stroke-dasharray=&quot;8 6&quot;/&gt;
+          &lt;g mask=&quot;url(#wheelMask)&quot;&gt;
+            &lt;line x1=&quot;0&quot; y1=&quot;-60&quot; x2=&quot;0&quot; y2=&quot;60&quot; stroke=&quot;#bbb&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;-52&quot; y1=&quot;-30&quot; x2=&quot;52&quot; y2=&quot;30&quot; stroke=&quot;#bbb&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;-52&quot; y1=&quot;30&quot; x2=&quot;52&quot; y2=&quot;-30&quot; stroke=&quot;#bbb&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 车架 --&gt;
+      &lt;path d=&quot;M0,180 L100,180 L70,80 L180,120 L240,180 L200,80 L70,80&quot; fill=&quot;none&quot; stroke=&quot;#d84315&quot; stroke-width=&quot;7&quot; stroke-linejoin=&quot;round&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M70,80 L55,55&quot; fill=&quot;none&quot; stroke=&quot;#d84315&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M180,120 L200,80&quot; fill=&quot;none&quot; stroke=&quot;#d84315&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- 把手 --&gt;
+      &lt;path d=&quot;M55,55 Q35,30 60,20&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;circle cx=&quot;60&quot; cy=&quot;20&quot; r=&quot;4&quot; fill=&quot;#111&quot;/&gt;
+      &lt;!-- 座垫 --&gt;
+      &lt;path d=&quot;M85,70 Q115,65 125,78 L115,85 Q90,80 85,70Z&quot; fill=&quot;#5d4037&quot; stroke=&quot;#3e2723&quot; stroke-width=&quot;2&quot;/&gt;
+
+      &lt;!-- 链轮 / 牙盘 --&gt;
+      &lt;g transform=&quot;translate(100, 180)&quot;&gt;
+        &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;18&quot; fill=&quot;#555&quot;/&gt;
+        &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;8&quot; fill=&quot;#333&quot;/&gt;
+        &lt;g class=&quot;spin&quot;&gt;
+          &lt;use href=&quot;#pedal&quot; x=&quot;0&quot; y=&quot;-28&quot;/&gt;
+          &lt;use href=&quot;#pedal&quot; x=&quot;0&quot; y=&quot;28&quot; transform=&quot;rotate(180 0 28)&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 踏板曲柄连杆（视觉遮挡修正） --&gt;
+      &lt;line x1=&quot;0&quot; y1=&quot;180&quot; x2=&quot;100&quot; y2=&quot;180&quot; stroke=&quot;#444&quot; stroke-width=&quot;2&quot;/&gt;
+
+      &lt;!-- 鹈鹕腿部 --&gt;
+      &lt;path d=&quot;M100,105 L100,160 L105,180&quot; fill=&quot;none&quot; stroke=&quot;#e67e22&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M112,105 L120,150 L102,180&quot; fill=&quot;none&quot; stroke=&quot;#e67e22&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+
+      &lt;!-- 鹈鹕身体 --&gt;
+      &lt;path d=&quot;M60,100 Q40,90 35,65 Q32,40 50,30 Q70,20 90,35 Q110,55 115,80 Q118,100 100,110 Q80,115 60,100Z&quot; fill=&quot;#f5f7fa&quot; stroke=&quot;#cfd8dc&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;!-- 翅膀（外侧） --&gt;
+      &lt;g class=&quot;wing&quot; style=&quot;transform-origin: 90px 80px;&quot;&gt;
+        &lt;path d=&quot;M75,60 Q105,50 125,75 Q120,100 90,95 Q70,85 75,60Z&quot; fill=&quot;#e1e7ec&quot; stroke=&quot;#b0bec5&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;path d=&quot;M85,65 Q100,62 110,75 Q105,85 90,82 Q80,75 85,65Z&quot; fill=&quot;#cfd8dc&quot;/&gt;
+      &lt;/g&gt;
+      &lt;!-- 内侧翅膀轮廓（扶把的手感） --&gt;
+      &lt;path d=&quot;M55,60 Q40,55 30,70 Q35,85 55,80 Q65,70 55,60Z&quot; fill=&quot;#dfe5ea&quot; stroke=&quot;#b0bec5&quot; stroke-width=&quot;2&quot;/&gt;
+
+      &lt;!-- 头颈 --&gt;
+      &lt;path d=&quot;M55,45 Q45,30 50,10 Q52,-5 65,-5 Q78,-5 80,10 Q82,25 75,40 Q70,48 60,50Z&quot; fill=&quot;#f5f7fa&quot; stroke=&quot;#cfd8dc&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;!-- 眼睛 --&gt;
+      &lt;ellipse cx=&quot;68&quot; cy=&quot;8&quot; rx=&quot;5&quot; ry=&quot;5&quot; fill=&quot;#ffffff&quot; stroke=&quot;#cfd8dc&quot; stroke-width=&quot;1&quot;/&gt;
+      &lt;circle cx=&quot;70&quot; cy=&quot;8&quot; r=&quot;2&quot; fill=&quot;#111&quot;/&gt;
+      &lt;!-- 喙 --&gt;
+      &lt;path d=&quot;M80,5 Q110,-2 150,2 Q145,12 110,15 Q90,18 80,12Z&quot; fill=&quot;#ffcc80&quot; stroke=&quot;#ffa726&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;line x1=&quot;82&quot; y1=&quot;12&quot; x2=&quot;130&quot; y2=&quot;9&quot; stroke=&quot;#fb8c00&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;!-- 喉囊 --&gt;
+      &lt;g class=&quot;sac&quot; style=&quot;transform-origin: 95px 12px;&quot;&gt;
+        &lt;path d=&quot;M82,12 Q85,32 110,28 Q120,24 118,14 Q100,18 82,12Z&quot; fill=&quot;#ffe0b2&quot; stroke=&quot;#ff9800&quot; stroke-width=&quot;1.5&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 爪子（握住把手处） --&gt;
+      &lt;path d=&quot;M55,50 Q52,45 48,48&quot; fill=&quot;none&quot; stroke=&quot;#ff9800&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;path d=&quot;M58,52 Q54,47 50,50&quot; fill=&quot;none&quot; stroke=&quot;#ff9800&quot; stroke-width=&quot;3&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- 前景草丛点缀 --&gt;
+    &lt;path d=&quot;M0,800 L1200,800 L1200,780 Q1100,760 1000,780 Q900,740 800,780 Q700,770 600,785 Q500,760 400,780 Q300,775 200,785 Q100,765 0,780Z&quot; fill=&quot;#4caf50&quot;/&gt;
+    &lt;path d=&quot;M-50,800 L1250,800 L1250,790 Q1150,775 1050,790 Q950,770 850,790 Q750,780 650,795 Q550,775 450,790 Q350,785 250,795 Q150,780 50,790Z&quot; fill=&quot;#388e3c&quot; opacity=&quot;0.5&quot;/&gt;
+  &lt;/svg&gt;
+
+  &lt;div class=&quot;controls&quot;&gt;
+    &lt;button id=&quot;toggleBtn&quot; aria-label=&quot;暂停动画&quot;&gt;⏸ 暂停&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function() {
+  &#39;use strict&#39;;
+  const scene = document.getElementById(&#39;scene&#39;);
+  const btn = document.getElementById(&#39;toggleBtn&#39;);
+  const reduceMotion = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;).matches;
+  let isPlaying = false;
+
+  function updateState() {
+    if (isPlaying) {
+      scene.classList.add(&#39;animating&#39;);
+      btn.textContent = &#39;⏸ 暂停&#39;;
+      btn.setAttribute(&#39;aria-label&#39;, &#39;暂停动画&#39;);
+    } else {
+      scene.classList.remove(&#39;animating&#39;);
+      btn.textContent = &#39;▶ 播放&#39;;
+      btn.setAttribute(&#39;aria-label&#39;, &#39;播放动画&#39;);
+    }
+  }
+
+  function togglePlay() {
+    isPlaying = !isPlaying;
+    updateState();
+  }
+
+  btn.addEventListener(&#39;click&#39;, togglePlay);
+
+  window.addEventListener(&#39;keydown&#39;, function(e) {
+    if (e.code === &#39;Space&#39;) {
+      e.preventDefault();
+      togglePlay();
+    }
+  });
+
+  // 默认行为：若无减少动态偏好则自动播放
+  if (!reduceMotion) {
+    isPlaying = true;
+  }
+  updateState();
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>
