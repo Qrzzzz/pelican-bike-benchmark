@@ -1,0 +1,30 @@
+/* Adapted from Qrzzzz/Qrzzzz.github.io theme tokens; see THIRD_PARTY_NOTICES.md. */
+:root {
+  color-scheme: light;
+  --bg: #f5f0e6;
+  --surface: #fbf8f1;
+  --soft: #ece7dc;
+  --ink: #30332f;
+  --muted: #65675f;
+  --line: #d8d2c6;
+  --accent: #00b8d4;
+  --link: #006778;
+  --selection: rgba(0, 184, 212, 0.22);
+  --serif: Georgia, "Songti SC", SimSun, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "Cascadia Code", Consolas, monospace;
+  --radius: 7px;
+  --reading: 740px;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #252724;
+  --surface: #2e312c;
+  --soft: #30332e;
+  --ink: #e9e4da;
+  --muted: #b1b1a5;
+  --line: #45483f;
+  --accent: #22d3ee;
+  --link: #22d3ee;
+  --selection: rgba(34, 211, 238, 0.26);
+}

@@ -18,7 +18,7 @@ npm run dev
 
 - `site/index.html`：作品库、搜索、模型与类型筛选、2–4 项选择、提示词复制。
 - `site/compare.html?ids=run-a,run-b`：2–4 项对比，1200×800 / 390×844 固定视口，静态图或沙盒运行；链接可分享。
-- `site/entry.html?id=run-a`：预览、原始输出、浏览器端 SHA-256 核对、参数、完整输入、环境与评分记录。
+- `site/entry.html?id=run-a`：默认沙盒运行预览（可切换桌面／手机，无静态图切换）、原始输出、浏览器端 SHA-256 核对、参数、完整输入、环境与评分记录。
 - `site/method.html`：测试约定、完整 v1 提示词、评分维度、环境与导入说明。
 - `site/data/prompt.v1.json`：固定输入，哈希基于 text 字段 UTF-8 字节（LF，无末尾换行）。
 - `site/data/submissions.json`：作品索引，每项与 `submissions/<id>/meta.json` 必须一致。
@@ -26,6 +26,12 @@ npm run dev
 站点收录用户提交的 DeepSeek 4.1 Flash · max 原始输出，以及相同 v1 提示词生成的 Codex 模型作品。模型与推理强度逐项登记，原始字节与哈希保留；没有主观评分。正式作品附桌面／手机实测截图及浏览器检查记录。
 
 视觉参考 Qrzzzz 个人站的暖纸色、炭灰双主题、青色点缀、衬线标题与留白；插画独立编写。主题遵循系统偏好，可切换并保存在本机。
+
+主题变量集中在 `site/assets/tokens.css`，复用来源与 MIT 声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。四页复用参考站的首页标记、GitHub 图标、太阳／月亮主题开关与淡入淡出过渡，共享排版、键盘焦点与减少动态规则；未手动选定主题时持续跟随系统，禁用本地存储也可切换。
+
+固定提示词以独立滚动的阅读弹窗展开，关闭与复制按钮保持可见，复制反馈在弹窗内显示。
+
+搜索、模型和类型筛选保存在 URL 中；已选作品在本次会话内保留，可在底部清单逐项移除。提示词和作品索引独立加载，失败可重试；运行预览在切换时取消过期请求并释放观察器。
 
 ## 通过 PR 投稿
 
@@ -46,6 +52,8 @@ npm run check
 
 id 仅允许小写字母、数字和连字符（最多 80 字符），已有 id 不得覆盖。导入器保留原始字节、生成 SHA-256 和静态报告；原始输出超过 1 MiB 时拒绝导入。静态失败结果仍登记，但不生成运行预览。元数据不能指定任意资源路径或伪造检查结论。
 
+导入使用 `site/data/.import.lock` 防止多个导入进程覆盖索引；忙时重试。若进程被强制终止，只在确认没有导入进程运行后手动移除该锁。PNG 尺寸不符合协议时在写入作品前拒绝。
+
 截图仅接受 PNG / WebP，每张不超过 10 MiB。传入截图时，environment 必须包含 browser（名称及完整版本）、captureAt（如 load + 3 seconds）、motion（动态偏好与播放状态）、dpr: 1。桌面截图应为 1200×800，手机为 390×844，导入者须核对。未提供时显示待补充。可额外记录操作系统、捕获时间和交互实测结论。
 
 评分可保留为 null。如记录评审，review 必须有 reviewer、date、scores 和 notes；后两者均含 runnable、visual、animation、accessibility、quality 五个键。scores 为 0–10 数字，notes 为对应文字依据。权重为 20%、30%、20%、20%、10%。演示作品不得计分。
@@ -62,6 +70,8 @@ id 仅允许小写字母、数字和连字符（最多 80 字符），已有 id 
 `npm run check` 覆盖导入保真、拒绝重复 id / 路径穿越 / 提示词不一致、危险资源、失效作品停用、评分约束，并核验全部哈希、静态报告、沙盒包装与页面静态链接。PR 工作流与 Pages 发布前执行同一检查。
 
 既有工作流在 main 推送或手动触发时部署 site/，无需站点构建步骤。
+
+本地预览服务支持流式文件响应、HEAD 和 ETag 条件请求，禁止非读取方法，并检查解码路径及真实文件路径的站点边界。这些响应头仅属于本地服务，线上 GitHub Pages 缓存策略由托管平台控制。
 
 - 仓库：https://github.com/Qrzzzz/pelican-bike-benchmark
 - 目标地址：https://qrzzzz.github.io/pelican-bike-benchmark/
