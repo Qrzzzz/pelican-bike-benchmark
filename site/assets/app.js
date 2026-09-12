@@ -1,3 +1,4 @@
+import { runThemeTransition } from "./theme-transition.js";
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escape = (value) =>
@@ -46,11 +47,15 @@ const totalScore = (item) =>
       ).toFixed(1)
     : "未评分";
 async function json(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
   if (!response.ok) throw new Error("读取失败");
   return response.json();
 }
 function notify(message) {
+  if ($("#prompt-dialog").open) {
+    $("#dialog-status").textContent = message;
+    return;
+  }
   const toast = $("#toast");
   toast.textContent = message;
   toast.hidden = false;
@@ -71,28 +76,47 @@ function saveSelection() {
   } catch {}
 }
 function setThemeButton() {
+  const dark = document.documentElement.dataset.theme === "dark";
+  $("#theme-toggle").classList.toggle("is-dark", dark);
+  $("#theme-toggle").setAttribute("aria-checked", String(dark));
   $("#theme-toggle").setAttribute(
     "aria-label",
     document.documentElement.dataset.theme === "dark"
       ? "切换为浅色主题"
       : "切换为深色主题",
   );
+  $("#theme-toggle").title = $("#theme-toggle").getAttribute("aria-label");
 }
 setThemeButton();
-$("#theme-toggle").addEventListener("click", () => {
+document.addEventListener("themechange", setThemeButton);
+let switchingTheme = false;
+$("#theme-toggle").addEventListener("click", async () => {
+  if (switchingTheme) return;
+  switchingTheme = true;
+  $("#theme-toggle").setAttribute("aria-busy", "true");
   const next =
     document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = next;
   try {
-    localStorage.setItem("pelican-theme", next);
-  } catch {}
-  setThemeButton();
+    await runThemeTransition({ documentObject: document, windowObject: window,
+      origin: $("#theme-toggle"), update: () => window.setPelicanTheme(next) });
+  } finally {
+    switchingTheme = false;
+    $("#theme-toggle").removeAttribute("aria-busy");
+  }
 });
 $("#close-prompt").addEventListener("click", () => $("#prompt-dialog").close());
+$("#prompt-dialog").addEventListener("click", (event) => {
+  if (event.target !== event.currentTarget) return;
+  const rect = event.currentTarget.getBoundingClientRect();
+  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)
+    event.currentTarget.close();
+});
 $$("[data-prompt]").forEach((button) =>
   button.addEventListener("click", () => {
     if (!prompt) return notify("提示词尚未载入，请刷新后重试");
+    $("#dialog-status").textContent = "";
     $("#prompt-dialog").showModal();
+    $(".dialog-body").scrollTop = 0;
   }),
 );
 $$("[data-copy-prompt]").forEach((button) =>
@@ -106,9 +130,30 @@ function updateTray() {
   tray.hidden = !selected.length;
   $("#selection-count").textContent = `已选 ${selected.length} / 4 个作品`;
   $("#start-compare").disabled = selected.length < 2;
+  let list = $("#selected-items");
+  if (!list) {
+    list = document.createElement("div");
+    list.id = "selected-items";
+    list.className = "selected-items";
+    tray.append(list);
+  }
+  list.innerHTML = selected.map((id) => {
+    const item = submissions.find((s) => s.id === id);
+    return `<button class="selection-chip" data-remove="${id}" aria-label="移除 ${escape(item.title)}">${escape(item.title)} <span aria-hidden="true">×</span></button>`;
+  }).join("");
+  $$('[data-remove]', list).forEach((button) => button.addEventListener("click", () => {
+    const position = selected.indexOf(button.dataset.remove);
+    selected = selected.filter((id) => id !== button.dataset.remove);
+    const input = $(`[data-select="${button.dataset.remove}"]`);
+    if (input) input.checked = false;
+    saveSelection();
+    updateTray();
+    ($$("[data-remove]", list)[Math.min(position, selected.length - 1)] || input || $("#search")).focus();
+  }));
 }
 function home() {
-  let filter = "all";
+  let filter = params.get("kind") === "benchmark" ? "benchmark" : "all";
+  $("#search").value = params.get("q") || "";
   [...new Set(submissions.filter((s) => !isDemo(s)).map((s) => s.model))]
     .sort()
     .forEach((model) => {
@@ -117,6 +162,9 @@ function home() {
       option.textContent = model;
       $("#model-filter").append(option);
     });
+  $("#model-filter").value = params.get("model") || "";
+  if ($("#model-filter").selectedIndex < 0) $("#model-filter").value = "";
+  $$("[data-filter]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === filter)));
   $("#total-count").textContent = String(submissions.length).padStart(2, "0");
   const formal = submissions.filter((s) => !isDemo(s)).length;
   $("#demo-note").textContent = formal
@@ -125,11 +173,17 @@ function home() {
   function render() {
     const query = $("#search").value.trim().toLocaleLowerCase();
     const model = $("#model-filter").value;
+    const url = new URL(location.href);
+    for (const [key, value] of Object.entries({ q: $("#search").value.trim(), model, kind: filter === "all" ? "" : filter })) {
+      if (value) url.searchParams.set(key, value);
+      else url.searchParams.delete(key);
+    }
+    history.replaceState(null, "", url);
     const shown = submissions.filter(
       (s) =>
         (filter === "all" || s.kind === filter) &&
         (!model || s.model === model) &&
-        `${s.title} ${s.model} ${s.version} ${s.description}`
+        `${s.title} ${s.model} ${s.version} ${s.description} ${s.parameters?.reasoningEffort || ""}`
           .toLocaleLowerCase()
           .includes(query),
     );
@@ -207,7 +261,10 @@ function specs(item) {
   return `<dl class="spec-list">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${escape(v)}</dd></div>`).join("")}</dl>`;
 }
 const observers = new Map();
+const previewRequests = new Set();
 function clearPreviews() {
+  previewRequests.forEach((controller) => controller.abort());
+  previewRequests.clear();
   observers.forEach((observer) => observer.disconnect());
   observers.clear();
 }
@@ -241,7 +298,9 @@ function mountPreview(container, item) {
   );
   container.append(frame);
   // Reuse the validated wrapper's srcdoc in a single sandbox, avoiding nested scaled frames.
-  fetch(asset(item, "preview.html"))
+  const controller = new AbortController();
+  previewRequests.add(controller);
+  fetch(asset(item, "preview.html"), { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) })
     .then((response) => {
       if (!response.ok) throw new Error();
       return response.text();
@@ -255,10 +314,12 @@ function mountPreview(container, item) {
       if (frame.isConnected) frame.srcdoc = source;
     })
     .catch(() => {
+      if (controller.signal.aborted) return;
       if (frame.isConnected)
         container.innerHTML =
           '<div class="preview-placeholder">预览文件暂时无法载入，请重新加载。</div>';
-    });
+    })
+    .finally(() => previewRequests.delete(controller));
   const width = viewport === "mobile" ? 390 : 1200,
     height = viewport === "mobile" ? 844 : 800;
   frame.style.width = width + "px";
@@ -346,6 +407,7 @@ function compare() {
   render();
 }
 async function entry() {
+  mode = "live";
   const item = submissions.find((s) => s.id === params.get("id"));
   if (!item) {
     $("#entry-content").innerHTML =
@@ -354,7 +416,7 @@ async function entry() {
   }
   document.title = `${item.title} · 鹈鹕骑车`;
   $("#entry-content").innerHTML =
-    `<div class="page-title"><div class="breadcrumbs"><a href="index.html#gallery">作品陈列室</a><span>/</span><span>${escape(item.title)}</span></div><h1>${escape(item.title)}</h1><p class="lede">${escape(item.description)}</p></div>${isDemo(item) ? '<p class="note">这是用于验证站点功能的演示作品，不代表任何模型的参测结果。静态封面为插画，不是实测截图。</p>' : ""}<div class="detail-layout"><div><div class="toolbar"><div class="tabs" aria-label="预览视口"><button class="tab" data-viewport="desktop" aria-pressed="true">桌面 1200 × 800</button><button class="tab" data-viewport="mobile" aria-pressed="false">手机 390 × 844</button></div><div class="tabs" aria-label="预览方式"><button class="tab" data-mode="image" aria-pressed="true">静态图</button><button class="tab" data-mode="live" aria-pressed="false">运行预览</button></div><button class="button" id="reload-previews">重新加载</button></div><div class="preview-surface" id="entry-preview"></div><div class="detail-section"><h2>原始输出</h2><p class="hash">SHA-256 · ${escape(item.sourceSha256)}</p><div class="actions"><button class="button" id="show-source" aria-expanded="false">展开源码</button><button class="button" id="copy-source">复制源码 ⧉</button><a class="button" href="${asset(item, "source.html.txt")}" download>下载原始文本 ↓</a></div><pre class="code" id="source-code" hidden></pre><p class="hash" id="integrity-status" role="status">正在校验原始输出…</p></div><div class="detail-section"><h2>检查与评审</h2><p class="note">${item.staticCheck.passed ? "静态检查通过。此结果不等于浏览器运行、无障碍或性能验收通过。" : "静态检查未通过，预览已停用。原始输出仍完整保留。"}</p><ul>${item.staticCheck.issues.map((issue) => `<li>${escape(issue)}</li>`).join("")}</ul>${
+    `<div class="page-title"><div class="breadcrumbs"><a href="index.html#gallery">作品陈列室</a><span>/</span><span>${escape(item.title)}</span></div><h1>${escape(item.title)}</h1><p class="lede">${escape(item.description)}</p></div>${isDemo(item) ? '<p class="note">这是用于验证站点功能的演示作品，不代表任何模型的参测结果。静态封面为插画，不是实测截图。</p>' : ""}<div class="detail-layout"><div><div class="toolbar"><div class="tabs" aria-label="预览视口"><button class="tab" data-viewport="desktop" aria-pressed="true">桌面 1200 × 800</button><button class="tab" data-viewport="mobile" aria-pressed="false">手机 390 × 844</button></div><button class="button" id="reload-previews">重新加载</button></div><div class="preview-surface" id="entry-preview"></div><div class="detail-section"><h2>原始输出</h2><p class="hash">SHA-256 · ${escape(item.sourceSha256)}</p><div class="actions"><button class="button" id="show-source" aria-expanded="false">展开源码</button><button class="button" id="copy-source">复制源码 ⧉</button><a class="button" href="${asset(item, "source.html.txt")}" download>下载原始文本 ↓</a></div><pre class="code" id="source-code" hidden></pre><p class="hash" id="integrity-status" role="status">正在校验原始输出…</p></div><div class="detail-section"><h2>检查与评审</h2><p class="note">${item.staticCheck.passed ? "静态检查通过。此结果不等于浏览器运行、无障碍或性能验收通过。" : "静态检查未通过，预览已停用。原始输出仍完整保留。"}</p><ul>${item.staticCheck.issues.map((issue) => `<li>${escape(issue)}</li>`).join("")}</ul>${
       item.review
         ? `<p>评审：${escape(item.review.reviewer)} · ${escape(item.review.date)}</p><table><tbody>${Object.keys(
             weights,
@@ -386,7 +448,7 @@ async function entry() {
   render();
   let source;
   try {
-    const response = await fetch(asset(item, "source.html.txt"));
+    const response = await fetch(asset(item, "source.html.txt"), { signal: AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error();
     const bytes = await response.arrayBuffer();
     source = new TextDecoder().decode(bytes);
@@ -412,11 +474,23 @@ async function entry() {
     source === undefined ? notify("源码未载入，请刷新后重试") : copy(source),
   );
 }
+const page = document.body.dataset.page;
+const promptTask = json("data/prompt.v1.json").then((value) => {
+  if (typeof value.text !== "string" || typeof value.sha256 !== "string") throw new Error("Invalid prompt");
+  prompt = value;
+  $("#dialog-prompt").textContent = prompt.text;
+  $("#dialog-hash").textContent = `SHA-256 · ${prompt.sha256}`;
+  if ($("#method-prompt")) {
+    $("#method-prompt").textContent = prompt.text;
+    $("#prompt-hash").textContent = `SHA-256 · ${prompt.sha256}`;
+  }
+}).catch(() => {
+  if ($("#method-prompt")) $("#method-prompt").textContent = "提示词暂时无法载入，请刷新重试。";
+  notify("提示词暂时无法载入，作品浏览不受影响");
+});
 try {
-  [prompt, submissions] = await Promise.all([
-    json("data/prompt.v1.json"),
-    json("data/submissions.json"),
-  ]);
+  submissions = page === "method" ? [] : await json("data/submissions.json");
+  if (!Array.isArray(submissions)) throw new Error("Invalid index");
   submissions = submissions
     .filter((s) => safeId(s.id))
     .sort((a, b) => Number(isDemo(a)) - Number(isDemo(b)));
@@ -429,13 +503,6 @@ try {
         ...new Set(stored.filter((id) => submissions.some((s) => s.id === id))),
       ].slice(0, 4);
   } catch {}
-  $("#dialog-prompt").textContent = prompt.text;
-  $("#dialog-hash").textContent = `SHA-256 · ${prompt.sha256}`;
-  if ($("#method-prompt")) {
-    $("#method-prompt").textContent = prompt.text;
-    $("#prompt-hash").textContent = `SHA-256 · ${prompt.sha256}`;
-  }
-  const page = document.body.dataset.page;
   if (page === "index") home();
   else if (page === "compare") compare();
   else if (page === "entry") await entry();
@@ -443,7 +510,9 @@ try {
   const target = $("#cards") || $("#compare-content") || $("#entry-content");
   if (target)
     target.innerHTML =
-      '<div class="empty"><h2>作品数据暂时无法载入。</h2><p>请检查连接并刷新页面。本地预览请通过 npm run dev 打开。</p></div>';
+      '<div class="empty"><h2>作品数据暂时无法载入。</h2><p>请检查连接后重试。</p><button class="button" id="retry-data">重新加载</button></div>';
+  $("#retry-data")?.addEventListener("click", () => location.reload());
   if ($("#result-count")) $("#result-count").textContent = "读取失败";
   notify("未能读取站点数据，请刷新后重试");
 }
+await promptTask;

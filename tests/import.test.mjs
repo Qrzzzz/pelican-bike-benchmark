@@ -63,6 +63,37 @@ test("同一 id 不能覆盖原始结果", async () => {
     source,
   );
 });
+
+test("并发导入不会互相覆盖索引，失败后释放锁", async () => {
+  const f = await fixture();
+  const secondPath = join(f.root, "second-meta.json");
+  const second = { ...JSON.parse(await readFile(f.metaPath, "utf8")), id: "second-run" };
+  await writeFile(secondPath, JSON.stringify(second));
+  const inputs = [f, { ...f, metaPath: secondPath }];
+  const results = await Promise.allSettled(inputs.map(importEntry));
+  assert.equal(results.filter((r) => r.status === "fulfilled").length, 1);
+  assert.match(results.find((r) => r.status === "rejected").reason.message, /导入正在进行|已存在/);
+  assert.equal(JSON.parse(await readFile(join(f.root, "data/submissions.json"), "utf8")).length, 1);
+  assert(!(await readdir(join(f.root, "data"))).includes(".import.lock"));
+  await importEntry(inputs[results.findIndex((r) => r.status === "rejected")]);
+  assert.deepEqual(JSON.parse(await readFile(join(f.root, "data/submissions.json"), "utf8")).map((s) => s.id).sort(), ["second-run", "test-run"]);
+  await assert.rejects(importEntry(f), /已存在/);
+  assert(!(await readdir(join(f.root, "data"))).includes(".import.lock"));
+});
+
+test("截图尺寸不合约时在写入作品前拒绝", async () => {
+  const f = await fixture();
+  const desktop = join(f.root, "wrong.png");
+  const png = Buffer.alloc(33);
+  Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]).copy(png);
+  png.write("IHDR", 12);
+  png.writeUInt32BE(640, 16);
+  png.writeUInt32BE(480, 20);
+  await writeFile(desktop, png);
+  await assert.rejects(importEntry({ ...f, desktop }), /截图尺寸/);
+  assert.deepEqual(await readdir(join(f.root, "submissions")), []);
+  assert.equal(await readFile(join(f.root, "data/submissions.json"), "utf8"), "[]");
+});
 test("路径穿越被拒绝，索引不变", async () => {
   const f = await fixture({ id: "../outside" });
   await assert.rejects(importEntry(f), /id/);

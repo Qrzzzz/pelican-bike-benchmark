@@ -1,8 +1,20 @@
-import { readFile, writeFile, mkdir, rename, rm } from "node:fs/promises";
+import { readFile, writeFile, mkdir, rename, rm, open } from "node:fs/promises";
 import { resolve, join, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { checkSource, makePreview, sha256, validateMeta } from "./lib.mjs";
-export async function importEntry({
+export async function importEntry(options) {
+  const root = options.root || resolve("site");
+  const lockPath = join(root, "data", ".import.lock");
+  let lock;
+  try { lock = await open(lockPath, "wx"); }
+  catch (error) {
+    if (error.code === "EEXIST") throw new Error("另一个导入正在进行；请稍后重试。如上次进程异常退出，请确认没有导入进程后移除 data/.import.lock。");
+    throw error;
+  }
+  try { return await importUnlocked({ ...options, root }); }
+  finally { await lock.close(); await rm(lockPath, { force: true }); }
+}
+async function importUnlocked({
   sourcePath,
   metaPath,
   desktop,
@@ -50,6 +62,10 @@ export async function importEntry({
         image.toString("ascii", 8, 12) !== "WEBP")
     )
       throw new Error("WebP 文件格式无效");
+    if (extension === ".png" && (image.length < 33 || image.toString("ascii", 12, 16) !== "IHDR" ||
+      image.readUInt32BE(16) !== (view === "desktop" ? 1200 : 390) ||
+      image.readUInt32BE(20) !== (view === "desktop" ? 800 : 844)))
+      throw new Error("PNG 截图尺寸必须为桌面 1200×800 或手机 390×844");
     if (
       !meta.environment?.browser ||
       !meta.environment?.captureAt ||
