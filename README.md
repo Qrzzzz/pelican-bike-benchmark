@@ -23,9 +23,13 @@ npm run dev
 - `site/data/prompt.v1.json`：固定输入，哈希基于 text 字段 UTF-8 字节（LF，无末尾换行）。
 - `site/data/submissions.json`：作品索引，每项与 `submissions/<id>/meta.json` 必须一致。
 
-站点收录用户提交的 DeepSeek 4.1 Flash · max 原始输出，以及相同 v1 提示词生成的 Codex 模型作品。模型与推理强度逐项登记，原始字节与哈希保留；没有主观评分。正式作品附桌面／手机实测截图及浏览器检查记录。另有 3 个明确标识的站点演示，它们是手工编写的 SVG / CSS 场景变体，封面插画不是实测截图，不参与模型测试。
+站点收录用户提交的 DeepSeek 4.1 Flash · max 原始输出，以及相同 v1 提示词生成的 Codex 模型作品。模型与推理强度逐项登记，原始字节与哈希保留；没有主观评分。正式作品附桌面／手机实测截图及浏览器检查记录。
 
 视觉参考 Qrzzzz 个人站的暖纸色、炭灰双主题、青色点缀、衬线标题与留白；插画独立编写。主题遵循系统偏好，可切换并保存在本机。
+
+## 通过 PR 投稿
+
+完整操作与验收规范见 [CONTRIBUTING.md](CONTRIBUTING.md)。使用 `npm run submission:init -- <id>` 生成含固定提示词的元数据，然后导入作品并提交 PR。`Submission contract / submission-contract` 检查原文不可变、投稿范围和声明，上传 JSON 检查报告；合并到 main 后自动发布。
 
 ## 导入真实作品
 
@@ -46,7 +50,6 @@ id 仅允许小写字母、数字和连字符（最多 80 字符），已有 id 
 
 评分可保留为 null。如记录评审，review 必须有 reviewer、date、scores 和 notes；后两者均含 runnable、visual、animation、accessibility、quality 五个键。scores 为 0–10 数字，notes 为对应文字依据。权重为 20%、30%、20%、20%、10%。演示作品不得计分。
 
-`npm run demo` 可重建本项目演示、插画及模板，保留正式作品；不要用它生成模型测试结果。
 
 ## 预览隔离与限制
 

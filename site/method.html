@@ -113,7 +113,7 @@
               </li>
             </ol>
             <p>
-              站点演示仅用于说明浏览、比较和代码查看功能，使用单独标识，永远不计入正式测试数量。
+              作品库只展示正式投稿；原始输出与评审证据分别保存。
             </p>
           </section>
           <section id="prompt">
@@ -207,7 +207,7 @@
               </tbody>
             </table>
             <p>
-              演示插画是静态封面，不是浏览器实测截图。详情页会明确区分；缺失正式截图时显示待补充，不用封面替代证据。
+              截图必须来自真实浏览器；缺失截图时显示待补充，不用插画替代证据。
             </p>
           </section>
           <section id="contribute">
@@ -227,7 +227,9 @@
             </div>
             <pre class="code">
 npm ci
-npm run import -- --source ./result.txt --meta ./meta.json
+npm run submission:init -- model-effort-yyyymmdd-run01
+# 填写 output/model-effort-yyyymmdd-run01.meta.json
+npm run import -- --source ./result.txt --meta ./output/model-effort-yyyymmdd-run01.meta.json
 npm run check
 npm run dev</pre>
             <p>
@@ -237,8 +239,7 @@ npm run dev</pre>
               导入，并需在元数据中填写环境。
             </p>
             <p>
-              本网站没有上传后端。将生成的文件通过仓库变更提交，经检查后由现有
-              GitHub Pages 工作流发布。完整字段说明见仓库 README。
+              将生成的作品目录与索引提交 PR。Action 自动检查提示词、原始文件哈希、投稿声明与变更范围，并提供检查报告。人工审阅合并后自动发布。<a href="https://github.com/Qrzzzz/pelican-bike-benchmark/blob/main/CONTRIBUTING.md">阅读完整 PR 投稿规范 ↗</a>
             </p>
           </section>
           <section id="limitations">
@@ -255,7 +256,7 @@ npm run dev</pre>
               预览在仅允许脚本执行的独立沙盒中运行，不赋予同源、弹窗、表单或顶层导航权限，并通过内容安全策略限制网络与外部资源。静态检查是保守的诊断，不等于完整安全审计，也可能拒绝合规代码。
             </p>
             <p>
-              沙盒限制可能改变原始作品的表现。静态检查失败、截图缺失、未评分、演示作品分别标注。原始输出以文本保存，复制或下载后仍应先审阅再自行运行。
+              沙盒限制可能改变原始作品的表现。静态检查失败、截图缺失、未评分分别标注。原始输出以文本保存，复制或下载后仍应先审阅再自行运行。
             </p>
           </section>
         </article>

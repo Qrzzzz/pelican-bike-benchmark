@@ -6,8 +6,9 @@
     "dev": "node scripts/serve.mjs",
     "check": "node --test tests/*.test.mjs && node scripts/check.mjs",
     "import": "node scripts/import.mjs",
-    "demo": "node scripts/create-demos.mjs",
-    "prepare:capture": "node scripts/prepare-capture.mjs"
+    "prepare:capture": "node scripts/prepare-capture.mjs",
+    "submission:init": "node scripts/init-submission.mjs",
+    "check:pr": "node scripts/check-pr.mjs"
   },
   "devDependencies": {
     "parse5": "^8.0.0"
