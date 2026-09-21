@@ -65,32 +65,23 @@
       </header>
       <section class="section" id="gallery" aria-label="作品索引">
         <span class="sr-only" id="total-count"></span>
-        <div class="filters">
-          <div class="tabs" aria-label="作品类型">
-            <button class="tab" data-filter="all" aria-pressed="true">
-              全部作品</button
-            ><button class="tab" data-filter="benchmark" aria-pressed="false">
-              正式测试</button
-            >
+        <div class="filters" aria-label="筛选作品">
+          <label class="search"><span class="sr-only">搜索作品</span><input id="search" type="search" placeholder="搜索作品、模型…" autocomplete="off" /></label>
+          <div class="filter-controls">
+            <div class="tabs" aria-label="作品类型">
+              <button class="tab" data-filter="all" aria-pressed="true">全部作品</button>
+              <button class="tab" data-filter="benchmark" aria-pressed="false">正式测试</button>
+            </div>
+            <div class="filter-selects">
+              <select id="provider-filter" aria-label="厂家"><option value="">厂家 · 所有厂家</option></select>
+              <select id="model-filter" aria-label="模型"><option value="">模型 · 所有模型</option></select>
+              <select id="effort-filter" aria-label="推理强度"><option value="">推理强度 · 全部</option></select>
+            </div>
           </div>
-          <label class="search"
-            ><span class="sr-only">搜索作品</span
-            ><input
-              id="search"
-              type="search"
-              placeholder="搜索作品、模型…"
-              autocomplete="off" /></label
-          ><label
-            ><span>厂家</span><select id="provider-filter"><option value="">所有厂家</option></select></label><label><span>模型</span
-            ><select id="model-filter">
-              <option value="">所有模型</option>
-            </select></label
-          >
-          <label><span>推理强度</span><select id="effort-filter"><option value="">所有推理强度</option></select></label>
-        </div>
-        <div class="result-line">
-          <span id="result-count" role="status">正在读取作品…</span
-          ><span>选取 2–4 个作品，放在一起看</span>
+          <div class="result-line">
+            <span id="result-count" role="status">正在读取作品…</span>
+            <span>选取 2–4 个作品对比</span>
+          </div>
         </div>
         <div class="catalog" id="cards"></div>
         <div class="note" id="demo-note">

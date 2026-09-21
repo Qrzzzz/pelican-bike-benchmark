@@ -38,23 +38,25 @@ h3 { margin: 32px 0 16px; font: 600 21px/1.35 var(--serif); }
 .catalog-links a { display: inline-flex; align-items: center; min-height: 44px; }
 .section { padding-block: 24px; }
 #gallery { padding-top: 0; }
-.filters { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
-.filters > label { min-width: 0; }
-.tabs { display: flex; flex-wrap: wrap; gap: 4px; }
+.filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 27%); grid-template-areas: "tabs search" "selects results"; align-items: center; gap: 12px; padding-block: 12px; }
+.filter-controls { display: contents; }
+.filter-selects { grid-area: selects; display: flex; gap: 12px; min-width: 0; }
+.filter-selects select { flex: 1 1 0; width: 0; text-overflow: ellipsis; }
+.filters .tabs { grid-area: tabs; }
+.filters :is(button, input, select) { height: 44px; min-height: 44px; padding-block: 0; }
+.tabs { display: flex; flex-wrap: nowrap; gap: 12px; }
 .tab { padding: 8px 12px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--muted); font-size: 13px; }
 .tab:hover { background: var(--site-accent-soft); }
 .tab[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
-.search { margin-left: auto; }
+.search { grid-area: search; min-width: 0; }
 .search input, select { max-width: 100%; min-width: 0; min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); color: var(--ink); font-size: 14px; }
-.search input { width: 280px; }
-.result-line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 24px 0 8px; color: var(--muted); font-size: 12px; }
+.search input { width: 100%; }
+.result-line { grid-area: results; display: flex; flex-direction: column; align-items: flex-end; min-width: 0; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 24px; }
 .provider-section { margin-block: 36px 56px; }
 .provider-title { margin: 0 0 20px; color: var(--muted); font: 500 14px/1.6 var(--sans); }
 .model-section { margin-block: 28px; }
 .model-title { margin: 0 0 16px; font: 600 24px/1.5 var(--sans); }
-.filters > label:not(.search) { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
-.filters > label > span { flex-shrink: 0; }
 .effort-label { margin-bottom: 4px; }
 .card { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 10px; padding: 0; min-width: 0; }
 .card-cover { display: block; overflow: hidden; aspect-ratio: 3/2; border: 1px solid var(--line); border-radius: 3px; background: var(--soft); }
@@ -146,12 +148,19 @@ body:has(dialog[open]) { overflow: hidden; }
   .card { grid-template-columns: 180px minmax(0, 1fr); gap: 24px; }
 }
 @media (max-width: 639px) {
+  .filters { grid-template-columns: minmax(0, 1fr); grid-template-areas: "search" "controls" "results"; padding-block: 12px; row-gap: 12px; }
+  .filter-controls { grid-area: controls; display: flex; gap: 12px; overflow-x: auto; scrollbar-width: thin; padding: 3px; margin: -3px; }
+  .filter-controls > * { flex: 0 0 auto; }
+  .filter-selects select { flex: 0 0 auto; width: auto; max-width: 240px; }
+  .filters .tab { white-space: nowrap; }
+  .filters :is(button, input, select) { height: 40px; min-height: 40px; }
+  .result-line { flex-direction: row; justify-content: space-between; gap: 12px; font-size: 11px; line-height: 12px; white-space: nowrap; }
+}
+@media (max-width: 639px) {
   .shell { padding-inline: 24px; }
   .catalog-header { padding-top: 36px; margin-bottom: 32px; }
   .catalog-links { gap: 8px 16px; }
-  .filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .search { grid-row: 1; margin: 0; }
-  .search input, .filters select { width: 100%; font-size: 16px; }
+  .search input, .filters select { font-size: 16px; }
   .card { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 0; }
   .card h2 { font-size: 18px; }
   .card p { font-size: 13px; }

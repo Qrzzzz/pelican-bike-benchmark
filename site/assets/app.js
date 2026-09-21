@@ -156,9 +156,9 @@ function home() {
   $("#search").value = params.get("q") || "";
   function syncFilters(requested) {
     const state = cascade(submissions, requested);
-    for (const [key, values, title] of [["provider", state.providers, "所有厂家"], ["model", state.models, "所有模型"], ["effort", state.efforts, "所有推理强度"]]) {
+    for (const [key, values, label, title] of [["provider", state.providers, "厂家", "所有厂家"], ["model", state.models, "模型", "所有模型"], ["effort", state.efforts, "推理强度", "全部"]]) {
       const select = $(`#${key}-filter`);
-      select.innerHTML = `<option value="">${title}</option>` + values.map((value) => `<option value="${escape(value)}">${escape(value)}</option>`).join("");
+      select.innerHTML = `<option value="">${label} · ${title}</option>` + values.map((value) => `<option value="${escape(value)}">${label} · ${escape(value)}</option>`).join("");
       select.value = state[key];
     }
   }
