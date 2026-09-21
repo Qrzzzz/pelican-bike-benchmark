@@ -25,3 +25,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 The header also adapts `NavActions.vue` (sun/moon switch and GitHub SVG), the `Q\` home mark from `Layout.vue` / `styles/site.css`, and reuses `themeTransitionRuntime.mjs` as `site/assets/theme-transition.js` from the same reference commit. Links and accessible labels are localized for this site; the MIT notice above applies.
+
+Current design adaptation (2026-09-21): native HTML layouts use the reference project's current tokens.css, site.css, catalog.css and content.css. The locally hosted font subsets retain the reference fonts' original SIL Open Font License texts in site/assets/fonts/{source-han-serif,source-han-sans,newsreader,maple-mono}/OFL.txt. Font unicode-range declarations are preserved; only ranges used by the current site's text are included, with system fallbacks for other characters.

@@ -1,30 +1,101 @@
-/* Adapted from Qrzzzz/Qrzzzz.github.io theme tokens; see THIRD_PARTY_NOTICES.md. */
+/* Adapted from current personal-docs tokens.css; see THIRD_PARTY_NOTICES.md. */
 :root {
   color-scheme: light;
-  --bg: #f5f0e6;
-  --surface: #fbf8f1;
-  --soft: #ece7dc;
-  --ink: #30332f;
-  --muted: #65675f;
-  --line: #d8d2c6;
-  --accent: #00b8d4;
-  --link: #006778;
-  --selection: rgba(0, 184, 212, 0.22);
-  --serif: Georgia, "Songti SC", SimSun, serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --mono: "Cascadia Code", Consolas, monospace;
-  --radius: 7px;
-  --reading: 740px;
+
+  --site-canvas: #eef2f3;
+  --site-surface: #f6f8fa;
+  --site-surface-subtle: #e4eaf0;
+  --site-text: #172439;
+  --site-text-muted: #566580;
+  --site-text-faint: #596984;
+  --site-line: #d2d9e2;
+  --site-line-strong: #a3b1c5;
+  --site-accent: #243ecd;
+  --site-accent-hover: #243ecd;
+  --site-accent-soft: rgba(36, 62, 205, 0.06);
+  --site-selection: rgba(36, 62, 205, 0.18);
+  --site-accent-ink: #172439;
+  --site-link: #243ecd;
+  --site-home-wash: #d2d9e2;
+  --site-content-accent: #243ecd;
+  --site-content-accent-soft: rgba(36, 62, 205, 0.09);
+  --site-content-surface: #f6f8fa;
+  --site-content-line: #d2d9e2;
+  --site-content-muted: #566580;
+  --site-emphasis-text: #243ecd;
+  --site-inline-code-bg: color-mix(
+    in srgb,
+    var(--site-content-accent) 8%,
+    var(--site-content-surface)
+  );
+  --site-inline-code-border: color-mix(
+    in srgb,
+    var(--site-content-accent) 28%,
+    var(--site-content-line)
+  );
+  --site-inline-code-text: var(--site-emphasis-text);
+  --site-cursor: #243ecd;
+  --site-nav-bg: #eef2f3;
+  --site-code-bg: #151d37;
+  --site-code-text: #f0f4ff;
+  --site-spark-primary: #243ecd;
+  --site-spark-secondary: #172439;
+
+  --site-font-reading: "Newsreader", "Site Han Serif", "Songti SC", SimSun, serif;
+  --site-font-sans: "Arial", "Site Han Sans", -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+    "Noto Sans SC", sans-serif;
+  --site-font-brand: "Site Han Sans", "Arial Black", "Avenir Next Heavy", "Segoe UI Black",
+    var(--site-font-sans);
+  --site-font-mono: "Maple Mono", ui-monospace, "SFMono-Regular", "Cascadia Code", "Roboto Mono",
+    Consolas, "Liberation Mono", monospace;
+
+  --site-max: 1320px;
+  --site-ease: cubic-bezier(.2, .7, .25, 1);
+  --site-motion-short: 180ms;
+  --site-motion-settle: 320ms;
+  --site-reading: 740px;
+  --site-article: 690px;
+  --site-nav-height: 88px;
+  --site-radius-sm: 3px;
+  --site-radius-md: 5px;
+  --site-radius-lg: 8px;
+  --site-shadow-float: 0 18px 56px rgba(28, 29, 31, 0.1);
+
 }
+
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #252724;
-  --surface: #2e312c;
-  --soft: #30332e;
-  --ink: #e9e4da;
-  --muted: #b1b1a5;
-  --line: #45483f;
-  --accent: #22d3ee;
-  --link: #22d3ee;
-  --selection: rgba(34, 211, 238, 0.26);
+
+  --site-canvas: #151d37;
+  --site-surface: #1d2844;
+  --site-surface-subtle: #202d4b;
+  --site-text: #f0f4ff;
+  --site-text-muted: #a6b0cd;
+  --site-text-faint: #a6b0cd;
+  --site-line: #303b58;
+  --site-line-strong: #536487;
+  --site-accent: #a7bcff;
+  --site-link: #a7bcff;
+  --site-home-wash: #303b58;
+  --site-content-accent: #a7bcff;
+  --site-content-accent-soft: rgba(167, 188, 255, 0.12);
+  --site-content-surface: #1d2844;
+  --site-content-line: #303b58;
+  --site-content-muted: #a6b0cd;
+  --site-emphasis-text: #c0ceff;
+  --site-accent-hover: #d1dcff;
+  --site-accent-soft: rgba(167, 188, 255, 0.07);
+  --site-selection: rgba(167, 188, 255, 0.22);
+  --site-accent-ink: #151d37;
+  --site-cursor: #a7bcff;
+  --site-nav-bg: #151d37;
+  --site-code-bg: #10172b;
+  --site-code-text: #f0f4ff;
+  --site-spark-primary: #a7bcff;
+  --site-spark-secondary: #f0f4ff;
+  --site-shadow-float: 0 22px 64px rgba(0, 0, 0, 0.34);
+
 }
+
+:root { --bg: var(--site-canvas); --surface: var(--site-surface); --soft: var(--site-surface-subtle); --ink: var(--site-text); --muted: var(--site-text-muted); --line: var(--site-line); --accent: var(--site-accent); --link: var(--site-link); --selection: var(--site-selection); --serif: var(--site-font-reading); --sans: var(--site-font-sans); --mono: var(--site-font-mono); --radius: var(--site-radius-md); --reading: var(--site-reading); }

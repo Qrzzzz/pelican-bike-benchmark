@@ -151,12 +151,6 @@
   }
 }
 
-.header-inner { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; min-height: 72px; gap: 20px; }
-.header-inner nav { justify-content: flex-end; width: auto; }
-.home-link { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 8px; }
-.site-brand-mark { display: grid; place-items: center; color: var(--link); font: 900 23px/1 "Arial Black", "Segoe UI Black", var(--sans); letter-spacing: -0.04em; transform: translateY(-1px); }
-.home-link:hover, .home-link:focus-visible { background: var(--selection); }
-.NavActions { margin-left: 0; }
 .theme-toggle, .nav-github { width: 44px; height: 44px; flex-basis: 44px; }
 .theme-toggle__icon { inset: 7px; }
 .theme-toggle__icon svg { width: 18px; height: 18px; }
@@ -167,10 +161,19 @@ html.theme-fade-out body { animation: theme-page-fade-out 144ms ease both; }
 html.theme-fade-in body { animation: theme-page-fade-in 176ms ease both; }
 @keyframes theme-page-fade-out { from { opacity: 1; } to { opacity: 0; } }
 @keyframes theme-page-fade-in { from { opacity: 0; } to { opacity: 1; } }
-@media (max-width: 620px) {
-  .header-inner { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 0 12px; padding-block: 8px; }
+/* Navigation dimensions from current site.css, without line markers. */
+.header-inner { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; min-height: 88px; gap: 20px; }
+.header-inner nav { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.header-inner nav a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 10px; font-size: 12px; color: var(--muted); }
+.header-inner nav a:hover, .header-inner nav a[aria-current="page"] { color: var(--link); text-decoration: none; }
+.home-link { display: inline-flex; align-items: center; width: auto; min-height: 44px; padding: 0; border-radius: 3px; }
+.site-brand { color: var(--ink); font: 400 18px/1.4 var(--sans); letter-spacing: -.7px; white-space: nowrap; }
+.NavActions { gap: 4px; border: 0; margin: 0; padding: 0; }
+.theme-toggle, .nav-github { border-radius: 3px; }
+@media (max-width: 639px) {
+  .header-inner { grid-template-columns: auto minmax(0, 1fr) auto; gap: 0 12px; padding-block: 8px; }
   .home-link { grid-column: 1; grid-row: 1; }
-  .NavActions { grid-column: 3; grid-row: 1; border-left: 0; padding-left: 0; }
-  .header-inner nav { grid-column: 1 / -1; grid-row: 2; justify-content: space-between; gap: 16px; }
-  .header-inner nav a { font-size: 13px; }
+  .NavActions { grid-column: 3; grid-row: 1; }
+  .header-inner nav { grid-column: 1 / -1; grid-row: 2; justify-content: space-between; gap: 4px; }
+  .header-inner nav a { padding-inline: 0; }
 }

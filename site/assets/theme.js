@@ -12,7 +12,7 @@
       meta.name = "theme-color";
       document.head.append(meta);
     }
-    meta.content = theme === "dark" ? "#252724" : "#f5f0e6";
+    meta.content = theme === "dark" ? "#151d37" : "#eef2f3";
     document.dispatchEvent(new Event("themechange"));
   };
   window.setPelicanTheme = (theme) => {

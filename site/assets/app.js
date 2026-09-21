@@ -193,7 +193,7 @@ function home() {
       ? shown
           .map(
             (s, i) =>
-              `<article class="card"><a class="card-cover" href="${detailUrl(s)}" aria-label="查看${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}${isDemo(s) ? "演示插画" : "桌面截图"}" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-meta"><span>${String(i + 1).padStart(2, "0")} / ${escape(s.tech || "HTML")}</span><span class="badge">${escape(label(s))}</span></div><h3><a href="${detailUrl(s)}">${escape(s.title)} ↗</a></h3><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"} · ${isDemo(s) ? "不参与评分" : totalScore(s)}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(s.title)}</span></label></div></article>`,
+              `<article class="card"><a class="card-cover" href="${detailUrl(s)}" aria-label="查看${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}${isDemo(s) ? "演示插画" : "桌面截图"}" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><div class="card-meta"><span>${String(i + 1).padStart(2, "0")} / ${escape(s.tech || "HTML")}</span><span class="badge">${escape(label(s))}</span></div><h2><a href="${detailUrl(s)}">${escape(s.title)} ↗</a></h2><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"} · ${isDemo(s) ? "不参与评分" : totalScore(s)}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(s.title)}</span></label></div></div></article>`,
           )
           .join("")
       : '<div class="empty"><h3>这里暂时没有作品。</h3><p>试试其他关键词或筛选条件。</p><button class="button" id="reset-filters">重置筛选</button></div>';
@@ -427,7 +427,7 @@ async function entry() {
             )
             .join("")}</tbody></table>`
         : '<p class="lede">尚无评分或人工评审记录。</p>'
-    }</div></div><aside class="detail-aside"><h2>运行档案</h2>${specs(item)}<div class="actions"><a class="button" href="compare.html?ids=${item.id}">加入并排对比 →</a><a class="text-link" href="${asset(item, "meta.json")}" download>下载元数据 ↓</a></div><h3 style="margin-top:32px">生成参数</h3><pre class="code">${escape(JSON.stringify(item.parameters, null, 2))}</pre><h3 style="margin-top:26px">观察环境</h3><p class="hash">${escape(item.environment ? JSON.stringify(item.environment, null, 2) : "未记录实测环境")}</p><h3 style="margin-top:26px">完整输入</h3><details><summary>查看本次输入</summary><pre class="code">${escape(item.input)}</pre></details></aside></div>`;
+    }</div></div><section class="detail-aside" aria-label="运行档案"><h2>运行档案</h2>${specs(item)}<div class="actions"><a class="button" href="compare.html?ids=${item.id}">加入并排对比 →</a><a class="text-link" href="${asset(item, "meta.json")}" download>下载元数据 ↓</a></div><h3 style="margin-top:32px">生成参数</h3><pre class="code">${escape(JSON.stringify(item.parameters, null, 2))}</pre><h3 style="margin-top:26px">观察环境</h3><p class="hash">${escape(item.environment ? JSON.stringify(item.environment, null, 2) : "未记录实测环境")}</p><h3 style="margin-top:26px">完整输入</h3><details><summary>查看本次输入</summary><pre class="code">${escape(item.input)}</pre></details></section></div>`;
   if (item.runtimeChecks?.length) {
     const section = document.createElement("section");
     section.className = "detail-section";
