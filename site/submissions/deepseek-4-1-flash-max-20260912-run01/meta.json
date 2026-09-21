@@ -111,5 +111,6 @@
   "screenshotSha256": {
     "desktop": "533ffe15589ad4c219d9cb99f3e15afddb010985239ea37cfa9d658fbb49ac1c",
     "mobile": "c0910beea2da178bbc0d16514fbcfd13d29f6027637c423b1c07846832c420b5"
-  }
+  },
+  "modelProvider": "DeepSeek"
 }

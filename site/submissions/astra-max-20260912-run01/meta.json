@@ -117,5 +117,6 @@
     "desktop": "60dd271c263741f7d91cf471f1554d6832f08a8655deb11e1b545713221930c8",
     "mobile": "50054f33433341092efb1324a73e84d169b40f4d050f2cb158b78ed133828d08"
   },
-  "cover": "desktop.png"
+  "cover": "desktop.png",
+  "modelProvider": "OpenAI"
 }

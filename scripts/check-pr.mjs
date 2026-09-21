@@ -20,8 +20,8 @@ export function checkContract(before, after, paths) {
       assert.equal(e.provenance?.[key], true, `${e.id} 缺少来源声明 ${key}`);
     for (const key of ["submitter", "executionEnvironment"])
       assert(typeof e.provenance?.[key] === "string" && e.provenance[key].trim() && !e.provenance[key].includes("填写"), `${e.id} 请填写 ${key}`);
-    for (const key of ["model", "version"])
-      assert(typeof e[key] === "string" && !e[key].includes("填写"), `${e.id} 请填写 ${key}`);
+    for (const key of ["modelProvider", "model", "version"])
+      assert(typeof e[key] === "string" && e[key].trim() && !e[key].includes("填写"), `${e.id} 请填写 ${key}`);
     for (const key of ["reasoningEffort", "tools"])
       assert(typeof e.parameters?.[key] === "string" && e.parameters[key].trim(), `${e.id} 请记录参数 ${key}`);
     assert.equal(e.review, null, "新投稿不附自评分；评审通过后续独立 PR 提交");

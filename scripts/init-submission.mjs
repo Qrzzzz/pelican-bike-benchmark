@@ -10,4 +10,4 @@ meta.promptVersion = prompt.version;
 await mkdir("output", { recursive: true });
 const path = `output/${id}.meta.json`;
 await writeFile(path, JSON.stringify(meta, null, 2) + "\n", { flag: "wx" });
-console.log(`已创建 ${path}。填写模型、参数与来源声明后，用 npm run import 登记原始输出。`);
+console.log(`已创建 ${path}。填写厂家、模型、参数与来源声明后，用 npm run import 登记原始输出。`);

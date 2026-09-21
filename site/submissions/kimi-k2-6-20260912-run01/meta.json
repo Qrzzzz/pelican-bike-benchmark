@@ -111,5 +111,6 @@
     "desktop": "265b8121c815c19a1533559c5a08c323285ba36e1dd5eb5625a2fd297a392ebc",
     "mobile": "2a269f35e690524980351038eed1817eebaa8e6c516cc0e62b6c3b38529ab662"
   },
-  "cover": "desktop.png"
+  "cover": "desktop.png",
+  "modelProvider": "Moonshot"
 }

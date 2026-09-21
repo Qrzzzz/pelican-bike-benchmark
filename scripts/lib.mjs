@@ -132,6 +132,9 @@ export function validateMeta(meta, prompt) {
   for (const key of ["title", "description", "model", "version", "input"])
     if (typeof meta[key] !== "string" || !meta[key].trim())
       throw new Error(`缺少字段：${key}`);
+  if (meta.kind === "benchmark" &&
+      (typeof meta.modelProvider !== "string" || !meta.modelProvider.trim() || meta.modelProvider.includes("填写")))
+    throw new Error("请填写 modelProvider");
   if (
     meta.generatedAt !== null &&
     (!/^\d{4}-\d{2}-\d{2}$/.test(meta.generatedAt) ||

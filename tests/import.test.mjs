@@ -19,6 +19,7 @@ async function fixture(overrides = {}) {
     kind: "benchmark",
     title: "测试作品",
     description: "Test",
+    modelProvider: "Test provider",
     model: "Test model",
     version: "test-version",
     generatedAt: "2026-09-12",
@@ -38,6 +39,9 @@ test("原始输出字节、输入、哈希与沙盒一致", async () => {
   const entry = await importEntry(f);
   assert.equal(entry.sourceSha256, sha256(source));
   assert.equal(entry.input, prompt.text);
+  assert.equal(entry.modelProvider, "Test provider");
+  assert.equal(JSON.parse(await readFile(join(f.root, "submissions/test-run/meta.json"), "utf8")).modelProvider, "Test provider");
+  assert.equal(JSON.parse(await readFile(join(f.root, "data/submissions.json"), "utf8"))[0].modelProvider, "Test provider");
   assert(entry.staticCheck.passed);
   assert.equal(
     await readFile(
@@ -50,6 +54,15 @@ test("原始输出字节、输入、哈希与沙盒一致", async () => {
     await readFile(join(f.root, "submissions/test-run/preview.html"), "utf8"),
     makePreview(source, "测试作品"),
   );
+});
+
+test("正式导入拒绝缺失、空白与占位厂家", async () => {
+  for (const modelProvider of [undefined, null, "", "  ", "填写厂家名称", 42]) {
+    const f = await fixture({ modelProvider });
+    await assert.rejects(importEntry(f), /modelProvider/);
+    assert.deepEqual(JSON.parse(await readFile(join(f.root, "data/submissions.json"), "utf8")), []);
+    assert.deepEqual(await readdir(join(f.root, "submissions")), []);
+  }
 });
 test("同一 id 不能覆盖原始结果", async () => {
   const f = await fixture();

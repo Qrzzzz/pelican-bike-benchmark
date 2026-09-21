@@ -85,6 +85,7 @@ async function importUnlocked({
     kind: meta.kind,
     title: meta.title,
     description: meta.description,
+    modelProvider: meta.modelProvider,
     model: meta.model,
     version: meta.version,
     generatedAt: meta.generatedAt,

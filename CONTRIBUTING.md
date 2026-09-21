@@ -23,6 +23,7 @@ npm run submission:init -- model-effort-20260912-run01
 | --- | --- |
 | id | 小写字母、数字、连字符，最多 80 字符；建议 模型-强度-日期-runNN，不覆盖旧 id |
 | title / description | 作品标题与简短描述 |
+| modelProvider | 必填：实际厂家，如 OpenAI、DeepSeek、智谱、Moonshot；不得根据模型名自动推断 |
 | model / version | 实际模型名称和精确版本；未提供精确版本则明确写“未记录” |
 | generatedAt | 实际生成日期 YYYY-MM-DD；未知填 null，不用上传日期代替 |
 | promptVersion / input | 初始化自动填入，不修改 |

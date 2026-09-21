@@ -117,5 +117,6 @@
   "screenshotSha256": {
     "desktop": "7e25b664614e2851d9c8c241838c6cab30b95bf018b6939810f69a5e2e7fa029",
     "mobile": "cf7a994341d31ca81e6aa5d86e1ab524f0fb5bf86877310139b5cc351d50e25f"
-  }
+  },
+  "modelProvider": "OpenAI"
 }

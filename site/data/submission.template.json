@@ -3,6 +3,7 @@
   "kind": "benchmark",
   "title": "作品标题",
   "description": "一句话描述作品",
+  "modelProvider": "填写厂家名称",
   "model": "填写模型名称",
   "version": "填写精确模型版本",
   "generatedAt": null,

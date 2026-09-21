@@ -111,5 +111,6 @@
     "desktop": "7f53137fbc532dd1615de409f77b556e75903aeda58e88f6578532472ab3ad11",
     "mobile": "b6094eb930a936d688f43ac05ace2277a1ae3244eba2bea3dfab42308b17e916"
   },
-  "cover": "desktop.png"
+  "cover": "desktop.png",
+  "modelProvider": "智谱"
 }

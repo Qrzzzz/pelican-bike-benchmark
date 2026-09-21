@@ -3,10 +3,15 @@ import assert from "node:assert/strict";
 import { checkContract } from "../scripts/check-pr.mjs";
 const old = { id: "old-run", sourceSha256: "original", title: "Original" };
 const entry = () => ({
-  id: "new-run", kind: "benchmark", model: "Model", version: "v1",
+  id: "new-run", kind: "benchmark", modelProvider: "Test provider", model: "Model", version: "v1",
   sourceSha256: "new", parameters: { reasoningEffort: "max", tools: "未记录" },
   provenance: { submitter: "contributor", executionEnvironment: "Web UI", firstOutput: true, unmodified: true, promptUnchanged: true },
   review: null,
+});
+
+test("新投稿必须填写厂家，拒绝空白与模板占位值", () => {
+  for (const modelProvider of [undefined, null, "", "  ", "填写厂家名称", 42])
+    assert.throws(() => checkContract([], [{ ...entry(), modelProvider }], []), /modelProvider/);
 });
 test("新投稿允许生成目录与索引，失败作品不被隐藏", () => {
   const next = { ...entry(), staticCheck: { passed: false } };

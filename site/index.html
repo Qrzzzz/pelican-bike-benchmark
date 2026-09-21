@@ -81,17 +81,18 @@
               placeholder="搜索作品、模型…"
               autocomplete="off" /></label
           ><label
-            ><span class="sr-only">筛选模型</span
+            ><span>厂家</span><select id="provider-filter"><option value="">所有厂家</option></select></label><label><span>模型</span
             ><select id="model-filter">
               <option value="">所有模型</option>
             </select></label
           >
+          <label><span>推理强度</span><select id="effort-filter"><option value="">所有推理强度</option></select></label>
         </div>
         <div class="result-line">
           <span id="result-count" role="status">正在读取作品…</span
           ><span>选取 2–4 个作品，放在一起看</span>
         </div>
-        <div class="gallery" id="cards"></div>
+        <div class="catalog" id="cards"></div>
         <div class="note" id="demo-note">
           正在加载正式投稿。
         </div>

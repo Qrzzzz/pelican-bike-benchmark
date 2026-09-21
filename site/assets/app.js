@@ -1,3 +1,4 @@
+import { cascade, groupCatalog, effortOf, identityOf } from "./catalog.js";
 import { runThemeTransition } from "./theme-transition.js";
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -35,7 +36,6 @@ const asset = (item, file) =>
   `submissions/${encodeURIComponent(item.id)}/${file}`;
 const detailUrl = (item) => `entry.html?id=${encodeURIComponent(item.id)}`;
 const isDemo = (item) => item.kind === "demo";
-const label = (item) => (isDemo(item) ? "站点演示" : item.model);
 const totalScore = (item) =>
   item.review &&
   Object.keys(weights).every((k) => Number.isFinite(item.review.scores?.[k]))
@@ -154,16 +154,16 @@ function updateTray() {
 function home() {
   let filter = params.get("kind") === "benchmark" ? "benchmark" : "all";
   $("#search").value = params.get("q") || "";
-  [...new Set(submissions.filter((s) => !isDemo(s)).map((s) => s.model))]
-    .sort()
-    .forEach((model) => {
-      const option = document.createElement("option");
-      option.value = model;
-      option.textContent = model;
-      $("#model-filter").append(option);
-    });
-  $("#model-filter").value = params.get("model") || "";
-  if ($("#model-filter").selectedIndex < 0) $("#model-filter").value = "";
+  function syncFilters(requested) {
+    const state = cascade(submissions, requested);
+    for (const [key, values, title] of [["provider", state.providers, "所有厂家"], ["model", state.models, "所有模型"], ["effort", state.efforts, "所有推理强度"]]) {
+      const select = $(`#${key}-filter`);
+      select.innerHTML = `<option value="">${title}</option>` + values.map((value) => `<option value="${escape(value)}">${escape(value)}</option>`).join("");
+      select.value = state[key];
+    }
+  }
+  const currentFilters = () => Object.fromEntries(["provider", "model", "effort"].map((key) => [key, $(`#${key}-filter`).value]));
+  syncFilters(Object.fromEntries(params));
   $$("[data-filter]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === filter)));
   $("#total-count").textContent = String(submissions.length).padStart(2, "0");
   const formal = submissions.filter((s) => !isDemo(s)).length;
@@ -172,9 +172,9 @@ function home() {
     : "目前尚无正式参测结果。";
   function render() {
     const query = $("#search").value.trim().toLocaleLowerCase();
-    const model = $("#model-filter").value;
+    const { provider, model, effort } = currentFilters();
     const url = new URL(location.href);
-    for (const [key, value] of Object.entries({ q: $("#search").value.trim(), model, kind: filter === "all" ? "" : filter })) {
+    for (const [key, value] of Object.entries({ q: $("#search").value.trim(), provider, model, effort, kind: filter === "all" ? "" : filter })) {
       if (value) url.searchParams.set(key, value);
       else url.searchParams.delete(key);
     }
@@ -182,25 +182,22 @@ function home() {
     const shown = submissions.filter(
       (s) =>
         (filter === "all" || s.kind === filter) &&
+        (!provider || s.modelProvider === provider) &&
         (!model || s.model === model) &&
-        `${s.title} ${s.model} ${s.version} ${s.description} ${s.parameters?.reasoningEffort || ""}`
+        (!effort || effortOf(s) === effort) &&
+        `${s.title} ${s.modelProvider || ""} ${s.model} ${s.version} ${s.description} ${s.parameters?.reasoningEffort || ""}`
           .toLocaleLowerCase()
           .includes(query),
     );
     $("#result-count").textContent =
       `${shown.length} 个作品 · ${formal} 个正式测试`;
     $("#cards").innerHTML = shown.length
-      ? shown
-          .map(
-            (s, i) =>
-              `<article class="card"><a class="card-cover" href="${detailUrl(s)}" aria-label="查看${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}${isDemo(s) ? "演示插画" : "桌面截图"}" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><div class="card-meta"><span>${String(i + 1).padStart(2, "0")} / ${escape(s.tech || "HTML")}</span><span class="badge">${escape(label(s))}</span></div><h2><a href="${detailUrl(s)}">${escape(s.title)} ↗</a></h2><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"} · ${isDemo(s) ? "不参与评分" : totalScore(s)}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(s.title)}</span></label></div></div></article>`,
-          )
-          .join("")
+      ? groupCatalog(shown).map(({ provider, models }) => `<section class="provider-section"><h2 class="provider-title">${escape(provider)}</h2>${models.map(({ model, items }) => `<section class="model-section"><h3 class="model-title">${escape(model)}</h3><div class="gallery">${items.map((s) => `<article class="card"><div class="effort-label"><span class="badge">${escape(effortOf(s))}</span></div><a class="card-cover" href="${detailUrl(s)}" aria-label="查看 ${escape(identityOf(s))}：${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}桌面截图" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(identityOf(s))} · ${escape(s.title)}</span></label></div></div></article>`).join("")}</div></section>`).join("")}</section>`).join("")
       : '<div class="empty"><h3>这里暂时没有作品。</h3><p>试试其他关键词或筛选条件。</p><button class="button" id="reset-filters">重置筛选</button></div>';
     $("#reset-filters")?.addEventListener("click", () => {
       filter = "all";
       $("#search").value = "";
-      $("#model-filter").value = "";
+      syncFilters({});
       $$("[data-filter]").forEach((b) =>
         b.setAttribute("aria-pressed", String(b.dataset.filter === filter)),
       );
@@ -232,7 +229,12 @@ function home() {
     }),
   );
   $("#search").addEventListener("input", render);
-  $("#model-filter").addEventListener("change", render);
+  for (const key of ["provider", "model", "effort"]) {
+    $(`#${key}-filter`).addEventListener("change", () => {
+      syncFilters(currentFilters());
+      render();
+    });
+  }
   $("#clear-selection").addEventListener("click", () => {
     selected = [];
     saveSelection();
@@ -248,12 +250,11 @@ function home() {
 function specs(item) {
   const rows = [
     ["类型", isDemo(item) ? "功能演示 · 非模型测试" : "正式测试"],
-    [
-      "模型 / 版本",
-      isDemo(item) ? "不适用" : `${item.model} / ${item.version}`,
-    ],
+    ["厂家", isDemo(item) ? "不适用" : item.modelProvider],
+    ["模型", isDemo(item) ? "不适用" : item.model],
+    ["版本", isDemo(item) ? "不适用" : item.version],
     ["生成日期", item.generatedAt || "未记录"],
-    ["推理强度", item.parameters.reasoningEffort || "未记录"],
+    ["推理强度", effortOf(item)],
     ["提示词版本", item.promptVersion],
     ["静态检查", item.staticCheck.passed ? "通过" : "未通过"],
     ["评分", isDemo(item) ? "不参与评分" : totalScore(item)],
@@ -379,7 +380,7 @@ function compare() {
     $("#compare-picker").innerHTML = ids
       .map(
         (id, i) =>
-          `<label>作品 ${String(i + 1).padStart(2, "0")}<select data-slot="${i}"><option value="">${i < 2 ? "选择作品" : "可选：添加作品"}</option>${submissions.map((s) => `<option value="${s.id}" ${s.id === id ? "selected" : ""} ${ids.includes(s.id) && s.id !== id ? "disabled" : ""}>${escape(s.title)}${s.title.includes(s.model) ? "" : " · " + escape(label(s))}</option>`).join("")}</select></label>`,
+          `<label>作品 ${String(i + 1).padStart(2, "0")}<select data-slot="${i}"><option value="">${i < 2 ? "选择作品" : "可选：添加作品"}</option>${groupCatalog(submissions).map(({ provider, models }) => `<optgroup label="${escape(provider)}">${models.flatMap(({ items }) => items).map((s) => `<option value="${s.id}" ${s.id === id ? "selected" : ""} ${ids.includes(s.id) && s.id !== id ? "disabled" : ""}>${escape(identityOf(s))} · ${escape(s.title)}</option>`).join("")}</optgroup>`).join("")}</select></label>`,
       )
       .join("");
     $$("[data-slot]").forEach((select) =>
@@ -393,7 +394,7 @@ function compare() {
     const items = chosen.map((id) => submissions.find((s) => s.id === id));
     $("#compare-content").innerHTML =
       items.length >= 2
-        ? `<div class="compare-grid" style="--columns:${items.length}">${items.map((s) => `<article class="compare-column"><span class="badge">${escape(label(s))}</span><h2><a href="${detailUrl(s)}">${escape(s.title)}&nbsp;↗</a></h2><div class="preview-surface" data-preview="${s.id}"></div><p class="mono">${isDemo(s) ? "演示插画 / 非实测截图" : escape(s.model)}</p>${specs(s)}</article>`).join("")}</div>`
+        ? `<div class="compare-grid" style="--columns:${items.length}">${items.map((s) => `<article class="compare-column"><h2><a href="${detailUrl(s)}">${escape(identityOf(s))}&nbsp;↗</a></h2><div class="preview-surface" data-preview="${s.id}"></div>${specs(s)}</article>`).join("")}</div>`
         : '<div class="empty"><h2>选两只鹈鹕，开始观察。</h2><p>请在上方选择至少两个不同作品。</p><a class="button" href="index.html#gallery">浏览作品</a></div>';
     $$("[data-preview]").forEach((el) =>
       mountPreview(

@@ -112,7 +112,8 @@
     "screenshotSha256": {
       "desktop": "533ffe15589ad4c219d9cb99f3e15afddb010985239ea37cfa9d658fbb49ac1c",
       "mobile": "c0910beea2da178bbc0d16514fbcfd13d29f6027637c423b1c07846832c420b5"
-    }
+    },
+    "modelProvider": "DeepSeek"
   },
   {
     "id": "terra-high-20260912-run01",
@@ -233,7 +234,8 @@
     "screenshotSha256": {
       "desktop": "58f1431b9450a1b49dd9b55a373d1b02c1b3f210e241f9486a2830c9d6cd5af4",
       "mobile": "3a16601de1ec6097d337456c6c1233e9964714df1343129ee46c93f44f65e2d5"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "terra-max-20260912-run01",
@@ -354,7 +356,8 @@
     "screenshotSha256": {
       "desktop": "bd3fcf7091432a4cbab0cdadfe4a3e962ad3df77f4244b25bce178e6b7ee6dc3",
       "mobile": "2f6847da879dd54f19852a68d997245748905b646c45d90ef44be066a385f877"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "sol-low-20260912-run01",
@@ -475,7 +478,8 @@
     "screenshotSha256": {
       "desktop": "4f23498055d4f67715b42746aa2cef4d2ca830b612d042f2739dd600b74ac073",
       "mobile": "16dd978099be97353b28ce3ce41f4f0b43a3ac0e9a87c719e45e97721a5e0c3c"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "sol-high-20260912-run01",
@@ -596,7 +600,8 @@
     "screenshotSha256": {
       "desktop": "7e25b664614e2851d9c8c241838c6cab30b95bf018b6939810f69a5e2e7fa029",
       "mobile": "cf7a994341d31ca81e6aa5d86e1ab524f0fb5bf86877310139b5cc351d50e25f"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "astra-low-20260912-run01",
@@ -717,7 +722,8 @@
     "screenshotSha256": {
       "desktop": "f9342d8acb2f6ddbf6e4742e007cf7ee696bf15c5ce1581272165db14fb5e79d",
       "mobile": "46685cb9d66e9084cfe35c0434beb8369ad6852d1d41f8c103081492b3d9d58c"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "astra-high-20260912-run01",
@@ -838,7 +844,8 @@
     "screenshotSha256": {
       "desktop": "41b7552788e7268c0297bced0ba3a86c501f105938fd3bdda21caf35578895d6",
       "mobile": "ced3b3fa6bae11a9fe2a88530421e33ce496db4e1718b07e7866e00e9d6fcef6"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "sol-max-20260912-run01",
@@ -959,7 +966,8 @@
     "screenshotSha256": {
       "desktop": "050d1b77f61df4cfade0263f5ab5f7f168e7e391afa5845d3b699286e927bda5",
       "mobile": "0c6517c15d2fe4430c38b93143e699b09381d3edc485b1dfc620f9cbb5d23d30"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "luna-max-20260912-run01",
@@ -1080,7 +1088,8 @@
     "screenshotSha256": {
       "desktop": "2f1babe551e6f9cfd5c5bbf4645d27c2abc31c9dbb2c4e5c4bdd5ed31384442f",
       "mobile": "475cec8b5d2f8ef77d69500a05bd314440ab05bf388bbf5684b1976d7e505e47"
-    }
+    },
+    "modelProvider": "OpenAI"
   },
   {
     "id": "astra-max-20260912-run01",
@@ -1201,7 +1210,8 @@
       "desktop": "60dd271c263741f7d91cf471f1554d6832f08a8655deb11e1b545713221930c8",
       "mobile": "50054f33433341092efb1324a73e84d169b40f4d050f2cb158b78ed133828d08"
     },
-    "cover": "desktop.png"
+    "cover": "desktop.png",
+    "modelProvider": "OpenAI"
   },
   {
     "id": "glm-5-2-default-20260912-run01",
@@ -1316,7 +1326,8 @@
       "desktop": "7f53137fbc532dd1615de409f77b556e75903aeda58e88f6578532472ab3ad11",
       "mobile": "b6094eb930a936d688f43ac05ace2277a1ae3244eba2bea3dfab42308b17e916"
     },
-    "cover": "desktop.png"
+    "cover": "desktop.png",
+    "modelProvider": "智谱"
   },
   {
     "id": "kimi-k2-6-20260912-run01",
@@ -1431,7 +1442,8 @@
       "desktop": "265b8121c815c19a1533559c5a08c323285ba36e1dd5eb5625a2fd297a392ebc",
       "mobile": "2a269f35e690524980351038eed1817eebaa8e6c516cc0e62b6c3b38529ab662"
     },
-    "cover": "desktop.png"
+    "cover": "desktop.png",
+    "modelProvider": "Moonshot"
   },
   {
     "id": "glm-5-3-20260912-run01",
@@ -1546,6 +1558,7 @@
       "desktop": "952a018e85f1a9060c7518841c438b852b823dddbc0d8f6cfd9aa74deb23b6dc",
       "mobile": "716cc654c30f0eaa14f79f5d9871960bb886d9224cf6c7be26f2fabc30e4cc9c"
     },
-    "cover": "desktop.png"
+    "cover": "desktop.png",
+    "modelProvider": "智谱"
   }
 ]
