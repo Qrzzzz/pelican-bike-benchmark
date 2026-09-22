@@ -334,6 +334,12 @@ function mountPreview(container, item) {
 }
 function bindViewControls(render) {
   $$("[data-viewport]").forEach((b) =>
+    b.setAttribute("aria-pressed", String(b.dataset.viewport === viewport)),
+  );
+  $$("[data-mode]").forEach((b) =>
+    b.setAttribute("aria-pressed", String(b.dataset.mode === mode)),
+  );
+  $$("[data-viewport]").forEach((b) =>
     b.addEventListener("click", () => {
       viewport = b.dataset.viewport;
       $$("[data-viewport]").forEach((x) =>
@@ -360,6 +366,8 @@ function bindViewControls(render) {
   });
 }
 function compare() {
+  viewport = params.get("viewport") === "mobile" ? "mobile" : "desktop";
+  mode = params.get("mode") === "live" ? "live" : "image";
   let ids = (params.has("ids") ? params.get("ids").split(",") : selected)
     .filter(
       (id, i, all) =>
@@ -376,6 +384,8 @@ function compare() {
     saveSelection();
     const url = new URL(location.href);
     url.searchParams.set("ids", chosen.join(","));
+    url.searchParams.set("viewport", viewport);
+    url.searchParams.set("mode", mode);
     history.replaceState(null, "", url);
     $("#compare-picker").innerHTML = ids
       .map(
@@ -428,7 +438,18 @@ async function entry() {
             )
             .join("")}</tbody></table>`
         : '<p class="lede">尚无评分或人工评审记录。</p>'
-    }</div></div><section class="detail-aside" aria-label="运行档案"><h2>运行档案</h2>${specs(item)}<div class="actions"><a class="button" href="compare.html?ids=${item.id}">加入并排对比 →</a><a class="text-link" href="${asset(item, "meta.json")}" download>下载元数据 ↓</a></div><h3 style="margin-top:32px">生成参数</h3><pre class="code">${escape(JSON.stringify(item.parameters, null, 2))}</pre><h3 style="margin-top:26px">观察环境</h3><p class="hash">${escape(item.environment ? JSON.stringify(item.environment, null, 2) : "未记录实测环境")}</p><h3 style="margin-top:26px">完整输入</h3><details><summary>查看本次输入</summary><pre class="code">${escape(item.input)}</pre></details></section></div>`;
+    }</div></div><section class="detail-aside" aria-label="运行档案"><h2>运行档案</h2>${specs(item)}<div class="actions"><button class="button" id="add-to-compare">加入并排对比 →</button><a class="text-link" href="${asset(item, "meta.json")}" download>下载元数据 ↓</a></div><h3 style="margin-top:32px">生成参数</h3><pre class="code">${escape(JSON.stringify(item.parameters, null, 2))}</pre><h3 style="margin-top:26px">观察环境</h3><p class="hash">${escape(item.environment ? JSON.stringify(item.environment, null, 2) : "未记录实测环境")}</p><h3 style="margin-top:26px">完整输入</h3><details><summary>查看本次输入</summary><pre class="code">${escape(item.input)}</pre></details></section></div>`;
+  $("#add-to-compare").addEventListener("click", () => {
+    if (!selected.includes(item.id)) {
+      if (selected.length >= 4) {
+        notify("最多对比 4 个作品，请先在陈列室或对比页移除一个作品");
+        return;
+      }
+      selected.push(item.id);
+    }
+    saveSelection();
+    location.href = `compare.html?ids=${selected.join(",")}`;
+  });
   if (item.runtimeChecks?.length) {
     const section = document.createElement("section");
     section.className = "detail-section";

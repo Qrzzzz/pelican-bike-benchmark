@@ -145,7 +145,6 @@ body:has(dialog[open]) { overflow: hidden; }
   .compare-grid, .compare-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .method-layout { grid-template-columns: 160px minmax(0, 1fr); gap: 32px; }
   body[data-page="method"] .page-title { margin-left: 192px; }
-  .card { grid-template-columns: 180px minmax(0, 1fr); gap: 24px; }
 }
 @media (max-width: 639px) {
   .filters { grid-template-columns: minmax(0, 1fr); grid-template-areas: "search" "controls" "results"; padding-block: 12px; row-gap: 12px; }
