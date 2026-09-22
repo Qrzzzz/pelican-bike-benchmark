@@ -153,7 +153,13 @@ function updateTray() {
 }
 function home() {
   let filter = params.get("kind") === "benchmark" ? "benchmark" : "all";
+  $(".filters .tabs").hidden = new Set(submissions.map((s) => s.kind)).size < 2;
   $("#search").value = params.get("q") || "";
+  $("#filter-toggle").addEventListener("click", () => {
+    const expanded = $("#filter-toggle").getAttribute("aria-expanded") !== "true";
+    $("#filter-toggle").setAttribute("aria-expanded", String(expanded));
+    $("#filter-toggle").textContent = expanded ? "收起筛选" : "筛选条件";
+  });
   function syncFilters(requested) {
     const state = cascade(submissions, requested);
     for (const [key, values, label, title] of [["provider", state.providers, "厂家", "所有厂家"], ["model", state.models, "模型", "所有模型"], ["effort", state.efforts, "推理强度", "全部"]]) {
@@ -173,6 +179,9 @@ function home() {
   function render() {
     const query = $("#search").value.trim().toLocaleLowerCase();
     const { provider, model, effort } = currentFilters();
+    const conditions = [query && `搜索：${$("#search").value.trim()}`, filter === "benchmark" && "正式测试", provider, model, effort].filter(Boolean);
+    $("#filter-summary").hidden = !conditions.length;
+    $("#active-filters").textContent = conditions.join(" / ");
     const url = new URL(location.href);
     for (const [key, value] of Object.entries({ q: $("#search").value.trim(), provider, model, effort, kind: filter === "all" ? "" : filter })) {
       if (value) url.searchParams.set(key, value);
@@ -194,15 +203,7 @@ function home() {
     $("#cards").innerHTML = shown.length
       ? groupCatalog(shown).map(({ provider, models }) => `<section class="provider-section"><h2 class="provider-title">${escape(provider)}</h2>${models.map(({ model, items }) => `<section class="model-section"><h3 class="model-title">${escape(model)}</h3><div class="gallery">${items.map((s) => `<article class="card"><div class="effort-label"><span class="badge">${escape(effortOf(s))}</span></div><a class="card-cover" href="${detailUrl(s)}" aria-label="查看 ${escape(identityOf(s))}：${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}桌面截图" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(identityOf(s))} · ${escape(s.title)}</span></label></div></div></article>`).join("")}</div></section>`).join("")}</section>`).join("")
       : '<div class="empty"><h3>这里暂时没有作品。</h3><p>试试其他关键词或筛选条件。</p><button class="button" id="reset-filters">重置筛选</button></div>';
-    $("#reset-filters")?.addEventListener("click", () => {
-      filter = "all";
-      $("#search").value = "";
-      syncFilters({});
-      $$("[data-filter]").forEach((b) =>
-        b.setAttribute("aria-pressed", String(b.dataset.filter === filter)),
-      );
-      render();
-    });
+    $("#reset-filters")?.addEventListener("click", resetFilters);
     $$("[data-select]").forEach((input) =>
       input.addEventListener("change", () => {
         const id = input.dataset.select;
@@ -219,6 +220,17 @@ function home() {
       }),
     );
   }
+  function resetFilters() {
+    filter = "all";
+    $("#search").value = "";
+    syncFilters({});
+    $$("[data-filter]").forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.filter === filter)),
+    );
+    render();
+    $("#search").focus();
+  }
+  $("#clear-filters").addEventListener("click", resetFilters);
   $$("[data-filter]").forEach((b) =>
     b.addEventListener("click", () => {
       filter = b.dataset.filter;
@@ -269,15 +281,19 @@ function clearPreviews() {
   observers.forEach((observer) => observer.disconnect());
   observers.clear();
 }
-function mountPreview(container, item) {
-  container.classList.toggle("mobile", viewport === "mobile");
+function mountPreview(container, item, { previewViewport = viewport, previewMode = mode } = {}) {
+  container.classList.toggle("mobile", previewViewport === "mobile");
   container.replaceChildren();
-  if (mode === "image") {
-    const file = isDemo(item) ? item.cover : item.screenshots?.[viewport];
+  if (previewMode === "image") {
+    const file = isDemo(item) ? item.cover : item.screenshots?.[previewViewport];
     if (file) {
       const img = document.createElement("img");
       img.src = asset(item, file);
-      img.alt = `${item.title} · ${isDemo(item) ? "演示插画，非实测截图" : viewport === "mobile" ? "手机实测截图" : "桌面实测截图"}`;
+      img.alt = `${item.title} · ${isDemo(item) ? "演示插画，非实测截图" : previewViewport === "mobile" ? "手机实测截图" : "桌面实测截图"}`;
+      img.addEventListener("error", () => {
+        if (!img.isConnected) return;
+        container.innerHTML = '<div class="preview-placeholder">截图暂时无法载入，可切换到运行预览。</div>';
+      });
       container.append(img);
     } else
       container.innerHTML =
@@ -290,7 +306,7 @@ function mountPreview(container, item) {
     return;
   }
   const frame = document.createElement("iframe");
-  frame.title = `${item.title} · ${viewport === "mobile" ? "手机" : "桌面"}运行预览`;
+  frame.title = `${item.title} · ${previewViewport === "mobile" ? "手机" : "桌面"}运行预览`;
   frame.setAttribute("sandbox", "allow-scripts");
   frame.setAttribute("referrerpolicy", "no-referrer");
   frame.setAttribute(
@@ -321,8 +337,8 @@ function mountPreview(container, item) {
           '<div class="preview-placeholder">预览文件暂时无法载入，请重新加载。</div>';
     })
     .finally(() => previewRequests.delete(controller));
-  const width = viewport === "mobile" ? 390 : 1200,
-    height = viewport === "mobile" ? 844 : 800;
+  const width = previewViewport === "mobile" ? 390 : 1200,
+    height = previewViewport === "mobile" ? 844 : 800;
   frame.style.width = width + "px";
   frame.style.height = height + "px";
   const resize = () =>
@@ -331,6 +347,46 @@ function mountPreview(container, item) {
   observer.observe(container);
   observers.set(container, observer);
   resize();
+  return () => {
+    controller.abort();
+    previewRequests.delete(controller);
+    observer.disconnect();
+    observers.delete(container);
+  };
+}
+function openPreview(item, trigger) {
+  const dialog = document.createElement("dialog");
+  dialog.className = "dialog preview-dialog";
+  dialog.setAttribute("aria-labelledby", "preview-dialog-title");
+  dialog.innerHTML = `<div class="dialog-head"><h2 id="preview-dialog-title">${escape(identityOf(item))}</h2><button class="icon-button" aria-label="关闭放大预览" autofocus>×</button></div><div class="preview-dialog-controls"><label>固定测试视口 <select aria-label="放大预览视口"><option value="desktop">桌面 1200 × 800</option><option value="mobile">手机 390 × 844</option></select></label><label>预览方式 <select aria-label="放大预览方式"><option value="image">静态图</option><option value="live">运行预览</option></select></label><button class="button" aria-pressed="true" id="preview-actual-size">原尺寸</button></div><p class="preview-scale-note" id="preview-scale-note"></p><div class="preview-scroll" tabindex="0" role="region" aria-label="放大画布，可滚动查看" aria-describedby="preview-scale-note"><div class="preview-surface"></div></div>`;
+  document.body.append(dialog);
+  const surface = $(".preview-surface", dialog);
+  const view = $('select[aria-label="放大预览视口"]', dialog);
+  const format = $('select[aria-label="放大预览方式"]', dialog);
+  view.value = viewport;
+  format.value = mode;
+  let actual = true, dispose;
+  const render = () => {
+    dispose?.();
+    surface.style.width = actual ? (view.value === "mobile" ? "390px" : "1200px") : "100%";
+    $("#preview-scale-note", dialog).textContent = actual ? "原尺寸 100%：横向或纵向滚动查看完整画布。" : "适应宽度：固定测试视口等比缩放，不改变作品布局。";
+    $("#preview-actual-size", dialog).textContent = actual ? "适应宽度" : "原尺寸";
+    $("#preview-actual-size", dialog).setAttribute("aria-pressed", String(!actual));
+    dispose = mountPreview(surface, item, { previewViewport: view.value, previewMode: format.value });
+  };
+  view.addEventListener("change", render);
+  format.addEventListener("change", render);
+  $("#preview-actual-size", dialog).addEventListener("click", () => { actual = !actual; render(); });
+  $(".icon-button", dialog).addEventListener("click", () => dialog.close());
+  const position = { x: window.scrollX, y: window.scrollY };
+  dialog.addEventListener("close", () => {
+    dispose?.();
+    dialog.remove();
+    trigger.focus({ preventScroll: true });
+    window.scrollTo(position.x, position.y);
+  }, { once: true });
+  dialog.showModal();
+  render();
 }
 function bindViewControls(render) {
   $$("[data-viewport]").forEach((b) =>
@@ -376,9 +432,10 @@ function compare() {
     .slice(0, 4);
   if (!ids.length && !params.has("ids") && submissions.length >= 2)
     ids = submissions.slice(0, 2).map((s) => s.id);
-  ids = Array.from({ length: 4 }, (_, i) => ids[i] || "");
+  ids = Array.from({ length: Math.max(2, ids.length) }, (_, i) => ids[i] || "");
   function render() {
     clearPreviews();
+    $("#reload-previews").hidden = mode !== "live";
     const chosen = ids.filter(Boolean);
     selected = chosen;
     saveSelection();
@@ -390,9 +447,27 @@ function compare() {
     $("#compare-picker").innerHTML = ids
       .map(
         (id, i) =>
-          `<label>作品 ${String(i + 1).padStart(2, "0")}<select data-slot="${i}"><option value="">${i < 2 ? "选择作品" : "可选：添加作品"}</option>${groupCatalog(submissions).map(({ provider, models }) => `<optgroup label="${escape(provider)}">${models.flatMap(({ items }) => items).map((s) => `<option value="${s.id}" ${s.id === id ? "selected" : ""} ${ids.includes(s.id) && s.id !== id ? "disabled" : ""}>${escape(identityOf(s))} · ${escape(s.title)}</option>`).join("")}</optgroup>`).join("")}</select></label>`,
+          `<div class="compare-slot"><label>作品 ${String(i + 1).padStart(2, "0")}<select data-slot="${i}" aria-describedby="slot-identity-${i}"><option value="">选择作品</option>${groupCatalog(submissions).map(({ provider, models }) => `<optgroup label="${escape(provider)}">${models.flatMap(({ items }) => items).map((s) => `<option value="${s.id}" ${s.id === id ? "selected" : ""} ${ids.includes(s.id) && s.id !== id ? "disabled" : ""}>${escape(s.model)} / ${escape(effortOf(s))}</option>`).join("")}</optgroup>`).join("")}</select><span class="slot-identity" id="slot-identity-${i}">${id ? escape(identityOf(submissions.find((s) => s.id === id))) : "尚未选择"}</span></label>${i >= 2 ? `<button class="button" data-remove-slot="${i}" aria-label="移除作品 ${i + 1}">移除</button>` : ""}</div>`,
       )
       .join("");
+    if (ids.length < 4) {
+      const add = document.createElement("button");
+      add.className = "button add-compare";
+      add.id = "add-compare";
+      add.textContent = `＋ 添加第 ${ids.length + 1} 项`;
+      add.addEventListener("click", () => {
+        ids.push("");
+        render();
+        $(`[data-slot="${ids.length - 1}"]`).focus();
+      });
+      $("#compare-picker").append(add);
+    }
+    $$("[data-remove-slot]").forEach((button) => button.addEventListener("click", () => {
+      const slot = Number(button.dataset.removeSlot);
+      ids.splice(slot, 1);
+      render();
+      ($(`[data-slot="${slot}"]`) || $("#add-compare")).focus();
+    }));
     $$("[data-slot]").forEach((select) =>
       select.addEventListener("change", () => {
         const slot = select.dataset.slot;
@@ -404,7 +479,7 @@ function compare() {
     const items = chosen.map((id) => submissions.find((s) => s.id === id));
     $("#compare-content").innerHTML =
       items.length >= 2
-        ? `<div class="compare-grid" style="--columns:${items.length}">${items.map((s) => `<article class="compare-column"><h2><a href="${detailUrl(s)}">${escape(identityOf(s))}&nbsp;↗</a></h2><div class="preview-surface" data-preview="${s.id}"></div>${specs(s)}</article>`).join("")}</div>`
+        ? `<div class="compare-grid" style="--columns:${items.length}">${items.map((s) => `<article class="compare-column"><h2><a href="${detailUrl(s)}">${escape(identityOf(s))}&nbsp;↗</a></h2><div class="preview-block"><button class="button enlarge-preview" data-enlarge="${s.id}" aria-haspopup="dialog" aria-label="放大 ${escape(identityOf(s))}">放大查看</button><div class="preview-surface" data-preview="${s.id}"></div></div>${specs(s)}</article>`).join("")}</div>`
         : '<div class="empty"><h2>选两只鹈鹕，开始观察。</h2><p>请在上方选择至少两个不同作品。</p><a class="button" href="index.html#gallery">浏览作品</a></div>';
     $$("[data-preview]").forEach((el) =>
       mountPreview(
@@ -412,13 +487,14 @@ function compare() {
         items.find((s) => s.id === el.dataset.preview),
       ),
     );
+    $$("[data-enlarge]").forEach((button) => button.addEventListener("click", () => openPreview(items.find((s) => s.id === button.dataset.enlarge), button)));
   }
   bindViewControls(render);
   $("#share-compare").addEventListener("click", () => copy(location.href));
   render();
 }
 async function entry() {
-  mode = "live";
+  mode = "image";
   const item = submissions.find((s) => s.id === params.get("id"));
   if (!item) {
     $("#entry-content").innerHTML =
@@ -427,7 +503,7 @@ async function entry() {
   }
   document.title = `${item.title} · 鹈鹕骑车`;
   $("#entry-content").innerHTML =
-    `<div class="page-title"><div class="breadcrumbs"><a href="index.html#gallery">作品陈列室</a><span>/</span><span>${escape(item.title)}</span></div><h1>${escape(item.title)}</h1><p class="lede">${escape(item.description)}</p></div>${isDemo(item) ? '<p class="note">这是用于验证站点功能的演示作品，不代表任何模型的参测结果。静态封面为插画，不是实测截图。</p>' : ""}<div class="detail-layout"><div><div class="toolbar"><div class="tabs" aria-label="预览视口"><button class="tab" data-viewport="desktop" aria-pressed="true">桌面 1200 × 800</button><button class="tab" data-viewport="mobile" aria-pressed="false">手机 390 × 844</button></div><button class="button" id="reload-previews">重新加载</button></div><div class="preview-surface" id="entry-preview"></div><div class="detail-section"><h2>原始输出</h2><p class="hash">SHA-256 · ${escape(item.sourceSha256)}</p><div class="actions"><button class="button" id="show-source" aria-expanded="false">展开源码</button><button class="button" id="copy-source">复制源码 ⧉</button><a class="button" href="${asset(item, "source.html.txt")}" download>下载原始文本 ↓</a></div><pre class="code" id="source-code" hidden></pre><p class="hash" id="integrity-status" role="status">正在校验原始输出…</p></div><div class="detail-section"><h2>检查与评审</h2><p class="note">${item.staticCheck.passed ? "静态检查通过。此结果不等于浏览器运行、无障碍或性能验收通过。" : "静态检查未通过，预览已停用。原始输出仍完整保留。"}</p><ul>${item.staticCheck.issues.map((issue) => `<li>${escape(issue)}</li>`).join("")}</ul>${
+    `<div class="page-title"><div class="breadcrumbs"><a href="index.html#gallery">作品陈列室</a><span>/</span><span>${escape(item.title)}</span></div><h1>${escape(item.title)}</h1><p class="lede">${escape(item.description)}</p></div>${isDemo(item) ? '<p class="note">这是用于验证站点功能的演示作品，不代表任何模型的参测结果。静态封面为插画，不是实测截图。</p>' : ""}<div class="detail-layout"><div><div class="toolbar"><div class="tabs" aria-label="预览视口"><button class="tab" data-viewport="desktop" aria-pressed="true">桌面 1200 × 800</button><button class="tab" data-viewport="mobile" aria-pressed="false">手机 390 × 844</button></div><div class="tabs" aria-label="预览方式"><button class="tab" data-mode="image" aria-pressed="true">静态图</button><button class="tab" data-mode="live" aria-pressed="false">运行预览</button></div><button class="button" id="reload-previews">重新加载</button><button class="button" id="enlarge-entry" aria-haspopup="dialog">放大查看</button></div><p class="note preview-note">固定测试视口按可用宽度等比缩放；放大可按原尺寸查看细节。</p><div class="preview-surface" id="entry-preview"></div><div class="detail-section"><h2>原始输出</h2><p class="hash">SHA-256 · ${escape(item.sourceSha256)}</p><div class="actions"><button class="button" id="show-source" aria-expanded="false">展开源码</button><button class="button" id="copy-source">复制源码 ⧉</button><a class="button" href="${asset(item, "source.html.txt")}" download>下载原始文本 ↓</a></div><pre class="code" id="source-code" hidden></pre><p class="hash" id="integrity-status" role="status">正在校验原始输出…</p></div><div class="detail-section"><h2>检查与评审</h2><p class="note">${item.staticCheck.passed ? "静态检查通过。此结果不等于浏览器运行、无障碍或性能验收通过。" : "静态检查未通过，运行预览已停用。原始输出仍完整保留。"}</p><ul>${item.staticCheck.issues.map((issue) => `<li>${escape(issue)}</li>`).join("")}</ul>${
       item.review
         ? `<p>评审：${escape(item.review.reviewer)} · ${escape(item.review.date)}</p><table><tbody>${Object.keys(
             weights,
@@ -439,6 +515,7 @@ async function entry() {
             .join("")}</tbody></table>`
         : '<p class="lede">尚无评分或人工评审记录。</p>'
     }</div></div><section class="detail-aside" aria-label="运行档案"><h2>运行档案</h2>${specs(item)}<div class="actions"><button class="button" id="add-to-compare">加入并排对比 →</button><a class="text-link" href="${asset(item, "meta.json")}" download>下载元数据 ↓</a></div><h3 style="margin-top:32px">生成参数</h3><pre class="code">${escape(JSON.stringify(item.parameters, null, 2))}</pre><h3 style="margin-top:26px">观察环境</h3><p class="hash">${escape(item.environment ? JSON.stringify(item.environment, null, 2) : "未记录实测环境")}</p><h3 style="margin-top:26px">完整输入</h3><details><summary>查看本次输入</summary><pre class="code">${escape(item.input)}</pre></details></section></div>`;
+  $("#enlarge-entry").addEventListener("click", (event) => openPreview(item, event.currentTarget));
   $("#add-to-compare").addEventListener("click", () => {
     if (!selected.includes(item.id)) {
       if (selected.length >= 4) {
@@ -464,6 +541,7 @@ async function entry() {
   }
   const render = () => {
     clearPreviews();
+    $("#reload-previews").hidden = mode !== "live";
     mountPreview($("#entry-preview"), item);
   };
   bindViewControls(render);

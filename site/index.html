@@ -61,13 +61,14 @@
       <header class="catalog-header">
         <h1>作品陈列室</h1>
         <p class="catalog-header__description">同一道鹈鹕骑车提示词，观察不同模型的构图、动画、交互与代码。</p>
-        <div class="catalog-links"><button class="button" data-prompt aria-haspopup="dialog" aria-controls="prompt-dialog">查看固定提示词</button><a href="method.html">测试方法 ↗</a><a href="compare.html">并排对比 ↗</a></div>
+        <div class="catalog-links"><button class="button" data-prompt aria-haspopup="dialog" aria-controls="prompt-dialog">查看固定提示词</button></div>
       </header>
       <section class="section" id="gallery" aria-label="作品索引">
         <span class="sr-only" id="total-count"></span>
         <div class="filters" aria-label="筛选作品">
           <label class="search"><span class="sr-only">搜索作品</span><input id="search" type="search" placeholder="搜索作品、模型…" autocomplete="off" /></label>
-          <div class="filter-controls">
+          <button class="button filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="filter-controls">筛选条件</button>
+          <div class="filter-controls" id="filter-controls">
             <div class="tabs" aria-label="作品类型">
               <button class="tab" data-filter="all" aria-pressed="true">全部作品</button>
               <button class="tab" data-filter="benchmark" aria-pressed="false">正式测试</button>
@@ -78,6 +79,7 @@
               <select id="effort-filter" aria-label="推理强度"><option value="">推理强度 · 全部</option></select>
             </div>
           </div>
+          <div class="filter-summary" id="filter-summary" hidden><span id="active-filters" role="status"></span><button class="button" id="clear-filters">清除筛选</button></div>
           <div class="result-line">
             <span id="result-count" role="status">正在读取作品…</span>
             <span>选取 2–4 个作品对比</span>
