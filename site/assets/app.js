@@ -1,3 +1,4 @@
+import { galleryReturn, galleryPosition } from "./gallery-state.js";
 import { cascade, groupCatalog, effortOf, identityOf } from "./catalog.js";
 import { runThemeTransition } from "./theme-transition.js";
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -34,7 +35,17 @@ let submissions = [],
 const safeId = (id) => /^[a-z0-9][a-z0-9-]{0,79}$/.test(id);
 const asset = (item, file) =>
   `submissions/${encodeURIComponent(item.id)}/${file}`;
-const detailUrl = (item) => `entry.html?id=${encodeURIComponent(item.id)}`;
+const detailUrl = (item) => {
+  const url = new URL("entry.html", location.href);
+  url.searchParams.set("id", item.id);
+  if (document.body.dataset.page === "index") {
+    const back = new URL("index.html", location.href);
+    back.search = location.search;
+    back.hash = `work-${item.id}`;
+    url.searchParams.set("return", back.pathname + back.search + back.hash);
+  }
+  return escape(url.pathname + url.search);
+};
 const isDemo = (item) => item.kind === "demo";
 const totalScore = (item) =>
   item.review &&
@@ -105,6 +116,17 @@ $("#theme-toggle").addEventListener("click", async () => {
   }
 });
 $("#close-prompt").addEventListener("click", () => $("#prompt-dialog").close());
+$("#prompt-dialog").addEventListener("keydown", (event) => {
+  if (event.key !== "Tab") return;
+  const stops = $$('button, a[href], input, select, textarea, summary, [tabindex="0"]', event.currentTarget)
+    .filter((element) => !element.disabled && element.getClientRects().length);
+  const first = stops[0], last = stops.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault(); first.focus();
+  }
+});
 $("#prompt-dialog").addEventListener("click", (event) => {
   if (event.target !== event.currentTarget) return;
   const rect = event.currentTarget.getBoundingClientRect();
@@ -189,7 +211,7 @@ function home() {
       if (value) url.searchParams.set(key, value);
       else url.searchParams.delete(key);
     }
-    history.replaceState(null, "", url);
+    history.replaceState(history.state, "", url);
     const shown = submissions.filter(
       (s) =>
         (filter === "all" || s.kind === filter) &&
@@ -203,8 +225,14 @@ function home() {
     $("#result-count").textContent =
       `${shown.length} 个作品 · ${formal} 个正式测试`;
     $("#cards").innerHTML = shown.length
-      ? groupCatalog(shown).map(({ provider, models }) => `<section class="provider-section"><h2 class="provider-title">${escape(provider)}</h2>${models.map(({ model, items }) => `<section class="model-section"><h3 class="model-title">${escape(model)}</h3><div class="gallery">${items.map((s) => `<article class="card"><div class="effort-label"><span class="badge">${escape(effortOf(s))}</span></div><a class="card-cover" href="${detailUrl(s)}" aria-label="查看 ${escape(identityOf(s))}：${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}桌面截图" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(identityOf(s))} · ${escape(s.title)}</span></label></div></div></article>`).join("")}</div></section>`).join("")}</section>`).join("")
+      ? groupCatalog(shown).map(({ provider, models }) => `<section class="provider-section"><h2 class="provider-title">${escape(provider)}</h2>${models.map(({ model, items }) => `<section class="model-section"><h3 class="model-title">${escape(model)}</h3><div class="gallery">${items.map((s) => `<article class="card" id="work-${s.id}"><div class="effort-label"><span class="badge">${escape(effortOf(s))}</span></div><a class="card-cover" href="${detailUrl(s)}" aria-label="查看 ${escape(identityOf(s))}：${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}桌面截图" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(identityOf(s))} · ${escape(s.title)}</span></label></div></div></article>`).join("")}</div></section>`).join("")}</section>`).join("")
       : '<div class="empty"><h3>这里暂时没有作品。</h3><p>试试其他关键词或筛选条件。</p><button class="button" id="reset-filters">重置筛选</button></div>';
+    $$(".card-cover").forEach((link) => link.addEventListener("click", () => {
+      const back = galleryReturn(new URL(link.href).searchParams.get("return"), location.href);
+      const position = { url: back.href, y: window.scrollY, anchor: link.closest(".card").id };
+      history.replaceState({ ...history.state, gallery: position }, "");
+      try { sessionStorage.setItem("pelican-gallery-position", JSON.stringify(position)); } catch {}
+    }));
     $("#reset-filters")?.addEventListener("click", resetFilters);
     $$("[data-select]").forEach((input) =>
       input.addEventListener("change", () => {
@@ -266,6 +294,26 @@ function home() {
   });
   render();
   updateTray();
+  const restore = () => {
+    let saved = history.state?.gallery;
+    if (!saved && location.hash.startsWith("#work-")) {
+      try { saved = JSON.parse(sessionStorage.getItem("pelican-gallery-position")); } catch {}
+    }
+    const back = new URL(location.href);
+    // Browser Back retains the original gallery hash; explicit returns carry the work anchor.
+    if (saved && history.state?.gallery) back.hash = saved.anchor;
+    const position = galleryPosition(saved, galleryReturn(back.href, location.href).href);
+    const anchor = position?.anchor || location.hash.slice(1);
+    const card = document.getElementById(anchor);
+    if (!card || !anchor.startsWith("work-")) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      $(".card-cover", card)?.focus({ preventScroll: true });
+      if (position) window.scrollTo(0, position.y);
+      else card.scrollIntoView({ block: "start" });
+    }));
+  };
+  restore();
+  window.addEventListener("pageshow", (event) => { if (event.persisted) restore(); });
 }
 function specs(item) {
   const rows = [
@@ -513,15 +561,18 @@ function environmentSummary(environment) {
 }
 async function entry() {
   mode = "image";
+  const back = galleryReturn(params.get("return"), location.href);
+  const backHref = escape(back.pathname + back.search + back.hash);
+  $$('.header a[href="index.html"]').forEach((link) => { link.href = back.href; });
   const item = submissions.find((s) => s.id === params.get("id"));
   if (!item) {
     $("#entry-content").innerHTML =
-      '<div class="page-title"><div class="eyebrow">Entry not found</div><h1>这只鹈鹕还没有抵达。</h1><p class="lede">链接中的作品不存在或已更改。可以回到陈列室重新选择。</p><div class="actions"><a class="button primary" href="index.html#gallery">返回作品陈列室 →</a></div></div>';
+      `<div class="page-title"><div class="eyebrow">Entry not found</div><h1>这只鹈鹕还没有抵达。</h1><p class="lede">链接中的作品不存在或已更改。可以回到陈列室重新选择。</p><div class="actions"><a class="button primary" href="${backHref}">返回作品陈列室 →</a></div></div>`;
     return;
   }
   document.title = `${item.title} · 鹈鹕骑车`;
   $("#entry-content").innerHTML =
-    `<div class="page-title"><div class="breadcrumbs"><a href="index.html#gallery">作品陈列室</a><span>/</span><span>${escape(item.title)}</span></div><h1>${escape(item.title)}</h1><p class="lede">${escape(item.description)}</p></div>${isDemo(item) ? '<p class="note">这是用于验证站点功能的演示作品，不代表任何模型的参测结果。静态封面为插画，不是实测截图。</p>' : ""}<div class="detail-layout"><div><div class="toolbar"><div class="tabs" aria-label="预览视口"><button class="tab" data-viewport="desktop" aria-pressed="true">桌面 1200 × 800</button><button class="tab" data-viewport="mobile" aria-pressed="false">手机 390 × 844</button></div><div class="tabs" aria-label="预览方式"><button class="tab" data-mode="image" aria-pressed="true">静态图</button><button class="tab" data-mode="live" aria-pressed="false">运行预览</button></div><button class="button" id="reload-previews">重新加载</button><button class="button" id="enlarge-entry" aria-haspopup="dialog">放大查看</button></div><p class="note preview-note">固定测试视口按可用宽度等比缩放；放大可按原尺寸查看细节。</p><div class="preview-surface" id="entry-preview"></div><div class="detail-section"><h2>原始输出</h2><p class="hash">SHA-256 · ${escape(item.sourceSha256)}</p><div class="actions"><button class="button" id="show-source" aria-expanded="false">展开源码</button><button class="button" id="copy-source">复制源码 ⧉</button><a class="button" href="${asset(item, "source.html.txt")}" download>下载原始文本 ↓</a></div><pre class="code" id="source-code" hidden></pre><p class="hash" id="integrity-status" role="status">正在校验原始输出…</p></div><div class="detail-section"><h2>检查与评审</h2><p class="note">${item.staticCheck.passed ? "静态检查通过。此结果不等于浏览器运行、无障碍或性能验收通过。" : "静态检查未通过，运行预览已停用。原始输出仍完整保留。"}</p><ul>${item.staticCheck.issues.map((issue) => `<li>${escape(issue)}</li>`).join("")}</ul>${
+    `<div class="page-title"><div class="breadcrumbs"><a href="${backHref}">作品陈列室</a><span>/</span><span>${escape(item.title)}</span></div><h1>${escape(item.title)}</h1><p class="lede">${escape(item.description)}</p></div>${isDemo(item) ? '<p class="note">这是用于验证站点功能的演示作品，不代表任何模型的参测结果。静态封面为插画，不是实测截图。</p>' : ""}<div class="detail-layout"><div><div class="toolbar"><div class="tabs" aria-label="预览视口"><button class="tab" data-viewport="desktop" aria-pressed="true">桌面 1200 × 800</button><button class="tab" data-viewport="mobile" aria-pressed="false">手机 390 × 844</button></div><div class="tabs" aria-label="预览方式"><button class="tab" data-mode="image" aria-pressed="true">静态图</button><button class="tab" data-mode="live" aria-pressed="false">运行预览</button></div><button class="button" id="reload-previews">重新加载</button><button class="button" id="enlarge-entry" aria-haspopup="dialog">放大查看</button></div><p class="note preview-note">固定测试视口按可用宽度等比缩放；放大可按原尺寸查看细节。</p><div class="preview-surface" id="entry-preview"></div><div class="detail-section"><h2>原始输出</h2><p class="hash">SHA-256 · ${escape(item.sourceSha256)}</p><div class="actions"><button class="button" id="show-source" aria-expanded="false">展开源码</button><button class="button" id="copy-source">复制源码 ⧉</button><a class="button" href="${asset(item, "source.html.txt")}" download>下载原始文本 ↓</a></div><pre class="code" id="source-code" hidden></pre><p class="hash" id="integrity-status" role="status">正在校验原始输出…</p></div><div class="detail-section"><h2>检查与评审</h2><p class="note">${item.staticCheck.passed ? "静态检查通过。此结果不等于浏览器运行、无障碍或性能验收通过。" : "静态检查未通过，运行预览已停用。原始输出仍完整保留。"}</p><ul>${item.staticCheck.issues.map((issue) => `<li>${escape(issue)}</li>`).join("")}</ul>${
       item.review
         ? `<p>评审：${escape(item.review.reviewer)} · ${escape(item.review.date)}</p><table><tbody>${Object.keys(
             weights,
@@ -615,6 +666,7 @@ async function entry() {
     source === undefined ? notify("源码未载入，请刷新后重试") : copy(source),
   );
 }
+$("#copy-commands")?.addEventListener("click", () => copy($("#method-commands").textContent));
 const page = document.body.dataset.page;
 const promptTask = json("data/prompt.v1.json").then((value) => {
   if (typeof value.text !== "string" || typeof value.sha256 !== "string") throw new Error("Invalid prompt");

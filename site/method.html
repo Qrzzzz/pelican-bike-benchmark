@@ -107,7 +107,7 @@
                 >下载提示词 JSON ↓</a
               >
             </div>
-            <pre class="code" id="method-prompt">正在读取…</pre>
+            <pre class="code" id="method-prompt" tabindex="0" role="region" aria-label="固定提示词全文，可滚动阅读">正在读取…</pre>
             <p class="hash" id="prompt-hash"></p>
             <p>
               哈希以 JSON 中 text 字段的 UTF-8 字节计算，保留 LF
@@ -120,7 +120,7 @@
               五个维度分别按 0–10 分记录，总分为各项得分乘权重后相加，再乘
               10，满分 100。缺少任一维度或评审信息时不展示总分。
             </p>
-            <table>
+            <table class="rubric-table">
               <thead>
                 <tr>
                   <th scope="col">维度</th>
@@ -207,7 +207,8 @@
                 >打开 GitHub 仓库 ↗</a
               >
             </div>
-            <pre class="code">
+            <button class="button" id="copy-commands">复制导入命令</button>
+            <pre class="code" id="method-commands" tabindex="0" role="region" aria-label="导入命令，可横向滚动">
 npm ci
 npm run submission:init -- model-effort-yyyymmdd-run01
 # 填写 output/model-effort-yyyymmdd-run01.meta.json
