@@ -148,15 +148,6 @@ td { color: var(--muted); }
 .dialog { width: calc(100% - 32px); border: 1px solid var(--line); background: var(--bg); color: var(--ink); box-shadow: var(--site-shadow-float); }
 .dialog-head { display: flex; justify-content: space-between; gap: 20px; }
 body:has(dialog[open]) { overflow: hidden; }
-@supports (grid-template-rows: subgrid) {
-  .compare-grid { row-gap: 12px; }
-  .compare-column { display: grid; grid-template-rows: subgrid; grid-row: span 11; }
-  .compare-column > .badge { justify-self: start; align-self: start; }
-  .compare-column h2 { margin: 0; min-height: 0; }
-  .compare-column > .preview-surface { align-self: start; }
-  .compare-column > .mono { margin: 0; }
-  .compare-column .spec-list { display: grid; grid-template-rows: subgrid; grid-row: span 7; margin: 0; row-gap: 0; }
-}
 @media (max-width: 959px) {
   .compare-grid, .compare-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .method-layout { grid-template-columns: 160px minmax(0, 1fr); gap: 32px; }
@@ -240,3 +231,26 @@ body:has(dialog[open]) { overflow: hidden; }
 .preview-scale-note { margin: 0; padding: 4px 16px 12px; color: var(--muted); font-size: 13px; }
 .preview-scroll { min-height: 0; flex: 1; overflow: auto; padding: 0 16px 16px; overscroll-behavior: contain; }
 .preview-scroll .preview-surface { max-width: none; margin: 0; flex-shrink: 0; }
+
+/* Keep the observation sequence ahead of optional metadata. */
+.compare-locator { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block: 12px; background: var(--bg); }
+.compare-locator label { display: grid; gap: 4px; min-width: 0; flex: 1; }
+.compare-locator select { width: 100%; min-width: 0; }
+.compare-column h2 { scroll-margin-top: 130px; }
+.compare-column h2 .eyebrow { display: block; margin-bottom: 6px; }
+.compare-column h2 a { overflow-wrap: anywhere; }
+.compare-specs { margin-top: 32px; scroll-margin-top: 130px; }
+.compare-specs section { min-width: 0; }
+.compare-specs h3 { overflow-wrap: anywhere; }
+.compare-specs .text-link { display: inline-block; margin-top: 16px; }
+@supports (grid-template-rows: subgrid) {
+  .compare-column { display: grid; grid-template-rows: subgrid; grid-row: span 2; }
+}
+#selection-toggle { white-space: nowrap; }
+@media (max-width: 639px), (max-height: 500px) {
+  .compare-locator { position: sticky; top: 0; z-index: 4; font-size: 12px; gap: 8px; }
+  .comparison-tray { gap: 6px; padding: 8px; }
+  .comparison-tray .actions { gap: 4px; }
+  .comparison-tray .button { padding: 8px 6px; font-size: 12px; min-height: 44px; }
+  .selected-items { max-height: min(120px, 30dvh); overflow-y: auto; }
+}

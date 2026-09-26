@@ -128,7 +128,7 @@ function updateTray() {
   const tray = $("#tray");
   if (!tray) return;
   tray.hidden = !selected.length;
-  $("#selection-count").textContent = `已选 ${selected.length} / 4 个作品`;
+  $("#selection-count").textContent = `已选 ${selected.length} / 4`;
   $("#start-compare").disabled = selected.length < 2;
   let list = $("#selected-items");
   if (!list) {
@@ -137,6 +137,8 @@ function updateTray() {
     list.className = "selected-items";
     tray.append(list);
   }
+  list.hidden = $("#selection-toggle").getAttribute("aria-expanded") !== "true";
+  if (!selected.length) $("#selection-toggle").setAttribute("aria-expanded", "false");
   list.innerHTML = selected.map((id) => {
     const item = submissions.find((s) => s.id === id);
     return `<button class="selection-chip" data-remove="${id}" aria-label="移除 ${escape(item.title)}">${escape(item.title)} <span aria-hidden="true">×</span></button>`;
@@ -247,11 +249,17 @@ function home() {
       render();
     });
   }
+  $("#selection-toggle").addEventListener("click", () => {
+    const button = $("#selection-toggle");
+    button.setAttribute("aria-expanded", String(button.getAttribute("aria-expanded") !== "true"));
+    updateTray();
+  });
   $("#clear-selection").addEventListener("click", () => {
     selected = [];
     saveSelection();
     render();
     updateTray();
+    $("#search").focus();
   });
   $("#start-compare").addEventListener("click", () => {
     location.href = `compare.html?ids=${selected.join(",")}`;
@@ -479,8 +487,13 @@ function compare() {
     const items = chosen.map((id) => submissions.find((s) => s.id === id));
     $("#compare-content").innerHTML =
       items.length >= 2
-        ? `<div class="compare-grid" style="--columns:${items.length}">${items.map((s) => `<article class="compare-column"><h2><a href="${detailUrl(s)}">${escape(identityOf(s))}&nbsp;↗</a></h2><div class="preview-block"><button class="button enlarge-preview" data-enlarge="${s.id}" aria-haspopup="dialog" aria-label="放大 ${escape(identityOf(s))}">放大查看</button><div class="preview-surface" data-preview="${s.id}"></div></div>${specs(s)}</article>`).join("")}</div>`
+        ? `<nav class="compare-locator" aria-label="定位对比作品"><label>定位作品 <select id="locate-work"><option value="">选择要查看的画面</option>${items.map((s, i) => `<option value="compare-${s.id}">${i + 1} · ${escape(identityOf(s))}</option>`).join("")}</select></label><a href="#compare-specs">查看详细参数 ↓</a></nav><div class="compare-grid" style="--columns:${items.length}">${items.map((s, i) => `<article class="compare-column"><h2 id="compare-${s.id}" tabindex="-1"><span class="eyebrow">作品 ${i + 1}</span><a href="${detailUrl(s)}">${escape(identityOf(s))}&nbsp;↗</a></h2><div class="preview-block"><button class="button enlarge-preview" data-enlarge="${s.id}" aria-haspopup="dialog" aria-label="放大 ${escape(identityOf(s))}">放大查看</button><div class="preview-surface" data-preview="${s.id}"></div></div></article>`).join("")}</div><details class="compare-specs" id="compare-specs"><summary>详细参数 · ${items.length} 个作品</summary><div class="compare-grid" style="--columns:${items.length}">${items.map((s, i) => `<section><h3>${i + 1} · ${escape(identityOf(s))}</h3>${specs(s)}<a class="text-link" href="#compare-${s.id}">返回作品 ${i + 1} 画面 ↑</a></section>`).join("")}</div></details>`
         : '<div class="empty"><h2>选两只鹈鹕，开始观察。</h2><p>请在上方选择至少两个不同作品。</p><a class="button" href="index.html#gallery">浏览作品</a></div>';
+    $("#locate-work")?.addEventListener("change", (event) => {
+      const heading = document.getElementById(event.target.value);
+      if (heading) { heading.focus({ preventScroll: true }); heading.scrollIntoView({ block: "start" }); }
+      event.target.value = "";
+    });
     $$("[data-preview]").forEach((el) =>
       mountPreview(
         el,
@@ -492,6 +505,11 @@ function compare() {
   bindViewControls(render);
   $("#share-compare").addEventListener("click", () => copy(location.href));
   render();
+}
+function environmentSummary(environment) {
+  if (!environment || !Object.keys(environment).length) return '<p class="note">未记录实测环境</p>';
+  const fields = [["browser", "浏览器"], ["os", "操作系统"], ["testedAt", "实测日期"], ["desktop", "桌面视口"], ["mobile", "手机视口"], ["dpr", "像素比"], ["captureAt", "截图时机"], ["motion", "动态偏好"]];
+  return `<dl class="spec-list">${fields.map(([key, title]) => `<div><dt>${title}</dt><dd>${escape(environment[key] ?? "未记录")}</dd></div>`).join("")}</dl><details><summary>完整观察环境</summary><pre class="code" tabindex="0" aria-label="完整观察环境数据">${escape(JSON.stringify(environment, null, 2))}</pre></details>`;
 }
 async function entry() {
   mode = "image";
@@ -515,6 +533,23 @@ async function entry() {
             .join("")}</tbody></table>`
         : '<p class="lede">尚无评分或人工评审记录。</p>'
     }</div></div><section class="detail-aside" aria-label="运行档案"><h2>运行档案</h2>${specs(item)}<div class="actions"><button class="button" id="add-to-compare">加入并排对比 →</button><a class="text-link" href="${asset(item, "meta.json")}" download>下载元数据 ↓</a></div><h3 style="margin-top:32px">生成参数</h3><pre class="code">${escape(JSON.stringify(item.parameters, null, 2))}</pre><h3 style="margin-top:26px">观察环境</h3><p class="hash">${escape(item.environment ? JSON.stringify(item.environment, null, 2) : "未记录实测环境")}</p><h3 style="margin-top:26px">完整输入</h3><details><summary>查看本次输入</summary><pre class="code">${escape(item.input)}</pre></details></section></div>`;
+  const primary = $(".detail-layout > div");
+  const sourceSection = $("#source-code").closest(".detail-section");
+  const reviewSection = sourceSection.nextElementSibling;
+  const archive = $(".detail-aside");
+  const evidence = document.createElement("section");
+  evidence.className = "detail-section";
+  evidence.innerHTML = `<h2>完整证据</h2>`;
+  const parametersHeading = $("h3", archive);
+  while (parametersHeading.nextSibling) evidence.append(parametersHeading.nextSibling);
+  evidence.insertBefore(parametersHeading, evidence.children[1]);
+  // Keep core identity immediately after the preview, ahead of conclusions and source.
+  primary.after(archive);
+  archive.after(reviewSection);
+  reviewSection.after(sourceSection);
+  sourceSection.after(evidence);
+  const environmentHeading = $$("h3", evidence).find((h) => h.textContent === "观察环境");
+  environmentHeading.nextElementSibling.outerHTML = environmentSummary(item.environment);
   $("#enlarge-entry").addEventListener("click", (event) => openPreview(item, event.currentTarget));
   $("#add-to-compare").addEventListener("click", () => {
     if (!selected.includes(item.id)) {
@@ -531,13 +566,19 @@ async function entry() {
     const section = document.createElement("section");
     section.className = "detail-section";
     section.innerHTML = `<h2>浏览器实测记录</h2><p class="lede">${escape(item.environment?.browser || "浏览器未记录")} · ${escape(item.environment?.testedAt?.slice(0, 10) || "日期未记录")}。这些结果记录运行行为，不代替画面质量评分。</p><table><thead><tr><th scope="col">检查项</th><th scope="col">结果</th><th scope="col">记录</th></tr></thead><tbody>${item.runtimeChecks.map((check) => `<tr><th scope="row">${escape(check.name)}</th><td><span class="badge ${check.status === "fail" ? "failed" : ""}">${escape({ pass: "通过", fail: "未通过", "not-tested": "待复查" }[check.status] || "未记录")}</span></td><td><details><summary>查看</summary><p class="hash">${escape(check.detail)}</p></details></td></tr>`).join("")}</tbody></table>`;
-    $(".detail-layout > div").append(section);
+    reviewSection.before(section);
+  }
+  else {
+    const missing = document.createElement("p");
+    missing.className = "note";
+    missing.textContent = "尚无浏览器实测记录。";
+    reviewSection.prepend(missing);
   }
   if (item.provenance) {
     const section = document.createElement("section");
     section.className = "detail-section";
     section.innerHTML = `<h3>来源记录</h3><p class="hash">${escape(item.provenance.promptVerification || "输入来源未记录")}</p><p class="hash">${escape(item.provenance.note || "")}</p><details><summary>完整运行信息</summary><pre class="code">${escape(JSON.stringify(item.provenance, null, 2))}</pre></details>`;
-    $(".detail-aside").append(section);
+    evidence.append(section);
   }
   const render = () => {
     clearPreviews();
