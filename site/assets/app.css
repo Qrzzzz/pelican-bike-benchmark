@@ -254,3 +254,28 @@ body:has(dialog[open]) { overflow: hidden; }
   .comparison-tray .button { padding: 8px 6px; font-size: 12px; min-height: 44px; }
   .selected-items { max-height: min(120px, 30dvh); overflow-y: auto; }
 }
+
+/* Keep method text readable and long commands independently scrollable. */
+body[data-page="method"] { min-width: 0; }
+.prose table { table-layout: fixed; font-size: 16px; line-height: 1.82; }
+.prose th, .prose td { overflow-wrap: anywhere; }
+.prose th[scope="row"] { width: 30%; }
+.prose .rubric-table th:first-child { width: 27%; }
+.prose .rubric-table th:nth-child(2) { width: 18%; }
+.prose .code { min-width: 0; max-width: 100%; font-size: 14px; }
+#method-commands { white-space: pre; overflow-wrap: normal; overscroll-behavior: contain; }
+.prose .code:focus-visible { outline-offset: 2px; }
+.card { scroll-margin-top: 24px; }
+/* Short viewports reserve most of the prompt dialog for the text. */
+@media (max-height: 500px) {
+  #prompt-dialog { height: calc(100dvh - 24px); max-height: calc(100dvh - 24px); }
+  #prompt-dialog .dialog-head { padding: 8px 16px 4px; align-items: center; }
+  #prompt-dialog .dialog-head .eyebrow { font-size: 9px; line-height: 1.2; }
+  #prompt-dialog .dialog-head h2 { margin: 2px 0 0; font-size: 20px; line-height: 1.2; }
+  #prompt-dialog #dialog-description { padding: 0 16px 6px; font-size: 12px; }
+  #prompt-dialog .dialog-body { flex: 1; padding: 12px 16px; }
+  #prompt-dialog .dialog-footer { padding: 6px 16px; gap: 0 12px; grid-template-columns: minmax(0, 1fr) auto; max-height: 120px; overflow-y: auto; }
+  #prompt-dialog .dialog-footer .button { grid-row: auto; }
+  #prompt-dialog .dialog-footer summary { padding-block: 4px; }
+  #prompt-dialog #dialog-status:not(:empty) { padding-top: 2px; }
+}
