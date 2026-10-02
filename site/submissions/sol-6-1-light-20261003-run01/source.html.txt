@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4edda">
+<title>鹈鹕的海岸骑行</title>
+<style>
+:root{color-scheme:light;font-family:ui-rounded,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#253e42;background:#f4edda}*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:28px}main{width:min(1120px,100%)}header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 8px 22px}.eyebrow{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.22em;color:#657a72}h1{margin:0;font-size:clamp(24px,4vw,38px);font-weight:650;letter-spacing:-.04em}button{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:112px;min-height:48px;padding:12px 19px;border:1px solid #253e42;border-radius:28px;background:#253e42;color:#fff9e9;font:inherit;font-size:14px;cursor:pointer}button:hover{background:#38565a}button:focus-visible{outline:3px solid #b74b31;outline-offset:5px}button svg{width:16px;height:16px}.scene{overflow:hidden;border-radius:28px;border:1px solid #d3d9bd;background:#dce9dd;box-shadow:0 18px 45px #314a3610}.scene>svg{display:block;width:100%;height:auto}footer{display:flex;justify-content:space-between;gap:16px;margin:19px 9px 0;font-size:12px;color:#586e65;line-height:1.7}.stamp{letter-spacing:.12em}.art-line{stroke:#2b4548;stroke-linecap:round;stroke-linejoin:round}@media(max-width:600px){body{padding:22px 14px}header{margin:0 3px 18px;gap:12px}.eyebrow{font-size:9px;letter-spacing:.12em}button{min-width:94px;padding:10px 14px}.scene{border-radius:21px}.scene>svg{height:min(67svh,560px);min-height:360px}footer{font-size:11px;margin-inline:3px}.keyboard-hint{display:none}}
+</style>
+</head>
+<body>
+<main>
+<header><div><p class="eyebrow">COASTAL CLUB · 海岸漫游</p><h1>迎着风，慢慢骑。</h1></div><button id="toggle" type="button" aria-label="暂停动画" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path id="control-icon" fill="currentColor" d="M4 3h3v10H4zm5 0h3v10H9z"/></svg><span id="control-text">暂停</span></button></header>
+<div class="scene">
+<svg viewBox="0 0 1100 660" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="art-title art-description">
+<title id="art-title">骑自行车的鹈鹕</title><desc id="art-description">白色鹈鹕骑着红色自行车沿海岸前进，金黄色长喙下有宽大的喉囊。车轮和脚踏转动，云朵、道路标线与植物向后移动。</desc>
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#d8e9df"/><stop offset="1" stop-color="#eef0d7"/></linearGradient>
+<linearGradient id="pouch" x2=".2" y2="1"><stop stop-color="#f6cb69"/><stop offset="1" stop-color="#eaa653"/></linearGradient>
+<pattern id="road-stripes" width="190" height="12" patternUnits="userSpaceOnUse"><rect x="20" y="4" width="92" height="3" rx="1.5" fill="#f5e6c6"/></pattern>
+<pattern id="sea-lines" width="220" height="46" patternUnits="userSpaceOnUse"><path d="M20 12h58m60 20h40" stroke="#d5e5cc" stroke-width="2" stroke-linecap="round"/></pattern>
+<g id="cloud" fill="#f8f7e8"><path d="M0 31C-3 19 8 10 21 14C23-3 49-5 55 13C69 7 84 17 83 29C94 29 101 35 99 40H5C0 40-3 36 0 31Z"/></g>
+<g id="plant" fill="none" stroke="#728b6d" stroke-width="3" stroke-linecap="round"><path d="M0 30Q-1 4-12-10M0 30Q5 4 21-5M0 30Q-16 13-25 14"/><path d="M-12-10q-15-4-13-14q13 0 13 14M21-5q1-16 12-18q4 14-12 18M-25 14q-15 1-19-10q14-4 19 10" fill="#8ca07a" stroke-width="2"/></g>
+</defs>
+<rect width="1100" height="660" fill="url(#sky)"/><circle cx="861" cy="122" r="51" fill="#f5d883"/><circle cx="861" cy="122" r="66" fill="none" stroke="#e3dcb0"/>
+<g id="clouds" opacity=".85"><use href="#cloud" x="120" y="115"/><use href="#cloud" x="475" y="85"/><use href="#cloud" x="980" y="180"/><use href="#cloud" x="1220" y="115"/><use href="#cloud" x="1575" y="85"/><use href="#cloud" x="2080" y="180"/></g>
+<path d="M0 354Q120 298 236 340T474 328Q620 300 759 345T1100 310V450H0Z" fill="#b7ccb0"/><path d="M0 387Q214 358 378 385T755 375T1100 364V474H0Z" fill="#8db6ae"/><rect x="0" y="400" width="1320" height="72" fill="url(#sea-lines)" id="water" opacity=".65"/>
+<path d="M0 453Q258 427 522 454T1100 441V541H0Z" fill="#d1d5a6"/><path d="M0 491Q278 473 541 490T1100 485V660H0Z" fill="#c5bda1"/><path d="M0 510Q334 495 643 513T1100 504" fill="none" stroke="#e6d8b6" stroke-width="4"/><rect x="-200" y="573" width="1500" height="12" fill="url(#road-stripes)" id="road"/>
+<g id="plants"><use href="#plant" x="98" y="464"/><use href="#plant" x="966" y="472"/><use href="#plant" x="1198" y="464"/><use href="#plant" x="2066" y="472"/><path d="M310 487l7-13m-3 13l12-5M799 485l-5-12m6 12l8-10M1410 487l7-13m-3 13l12-5M1899 485l-5-12m6 12l8-10" stroke="#8a9771" stroke-width="2" stroke-linecap="round"/></g>
+<ellipse id="shadow" cx="559" cy="545" rx="206" ry="13" fill="#66684f" opacity=".17"/>
+<g id="rider">
+<path id="far-leg" d="M542 354L570 411L550 465" fill="none" stroke="#9c7849" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path id="far-foot" d="M539 465h27" fill="none" stroke="#b68743" stroke-width="9" stroke-linecap="round"/>
+<g class="art-line" fill="none"><circle cx="400" cy="456" r="86" stroke-width="12"/><circle cx="735" cy="456" r="86" stroke-width="12"/><circle cx="400" cy="456" r="78" stroke="#f6eed8" stroke-width="3"/><circle cx="735" cy="456" r="78" stroke="#f6eed8" stroke-width="3"/><g id="rear-spokes" stroke="#70877d" stroke-width="1.8"><path d="M400 378v156m-78-78h156m-133-55l110 110m-110 0l110-110M370 384l60 144m-102-102l144 60m-144 0l144-60m-102 102l60-144"/></g><g id="front-spokes" stroke="#70877d" stroke-width="1.8"><path d="M735 378v156m-78-78h156m-133-55l110 110m-110 0l110-110M705 384l60 144m-102-102l144 60m-144 0l144-60m-102 102l60-144"/></g></g>
+<path d="M400 449Q382 453 396 466L553 474Q577 473 575 459Q574 446 554 443Z" fill="none" stroke="#536660" stroke-width="3"/>
+<g class="art-line" fill="none"><path d="M400 456L485 341L559 456H400L657 339L559 456M485 341L657 339M657 339L735 456" stroke="#ad5040" stroke-width="10"/><path d="M485 341L472 316M657 339L645 295Q641 282 654 280L680 282Q692 284 689 295" stroke-width="7"/><path d="M735 456L669 310" stroke="#c3654e" stroke-width="7"/><path d="M452 315Q472 306 498 314" stroke-width="12"/><path d="M679 283l13 4" stroke-width="10"/><circle cx="559" cy="456" r="17" fill="#eee4c8" stroke-width="3"/><circle cx="400" cy="456" r="7" fill="#eee4c8" stroke-width="3"/><circle cx="735" cy="456" r="7" fill="#eee4c8" stroke-width="3"/></g>
+<g id="crank" class="art-line" fill="none" stroke-width="5"><path d="M532 456h54"/><circle cx="559" cy="456" r="4" fill="#2b4548"/></g><path id="near-pedal" d="M574 456h25" stroke="#2b4548" stroke-width="6" stroke-linecap="round"/>
+<path d="M449 311Q429 288 419 285Q405 293 420 314L456 340Z" fill="#526764" class="art-line" stroke-width="3"/>
+<path d="M457 311Q446 281 460 252Q479 222 520 224Q553 228 579 248Q591 259 601 253Q607 242 597 220Q581 181 601 156Q618 137 641 148Q664 159 661 182Q657 201 646 215Q635 230 648 254Q668 297 635 330Q606 358 551 359Q493 363 457 331Z" fill="#fff9e9" class="art-line" stroke-width="3.5"/>
+<path d="M609 199Q602 220 616 246Q635 280 622 302" fill="none" stroke="#dddcc6" stroke-width="10" stroke-linecap="round"/>
+<path d="M474 270Q500 244 537 263Q564 278 586 318Q546 334 509 318Q486 308 474 270Z" fill="#e5e7d2" class="art-line" stroke-width="3"/><path d="M487 276Q524 279 553 309M485 286Q512 304 535 309M495 302l20 10" fill="none" stroke="#b0bcaa" stroke-width="3" stroke-linecap="round"/>
+<path d="M605 234l36-8l7 15l-35 11Z" fill="#b95844" class="art-line" stroke-width="2"/><path d="M611 240Q578 232 558 218L556 233L539 230Q564 256 613 249Z" fill="#c8664e" class="art-line" stroke-width="2"/><path d="M565 234q17 9 34 9" fill="none" stroke="#e39771" stroke-width="2"/>
+<path d="M647 177L797 188Q778 231 716 235Q673 230 647 196Z" fill="url(#pouch)" class="art-line" stroke-width="3"/><path d="M651 172Q720 170 812 188Q819 191 810 196L650 193Z" fill="#efc466" class="art-line" stroke-width="3"/><path d="M663 191l132 1" fill="none" stroke="#b78141" stroke-width="2"/><path d="M666 205Q708 238 765 216" fill="none" stroke="#d48e44" stroke-width="2.5" stroke-linecap="round"/><circle cx="636" cy="170" r="9" fill="#f0dfa6"/><circle cx="638" cy="169" r="4.5" fill="#253e42"/><circle cx="639.5" cy="167.5" r="1.4" fill="#fff"/><path d="M624 157q7-4 13-1" fill="none" stroke="#526764" stroke-width="2.5" stroke-linecap="round"/>
+<path id="near-leg" d="M563 346L593 401L586 456" fill="none" stroke="#dca655" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path id="near-foot" d="M577 451q13-3 23 5h-23" fill="#e5b464" class="art-line" stroke-width="2"/><path d="M553 341q10 6 20 1" fill="none" stroke="#d4d8bf" stroke-width="4" stroke-linecap="round"/>
+</g>
+<g id="breeze" fill="none" stroke="#f8f5df" stroke-width="3" stroke-linecap="round"><path d="M318 244h43m-63 19h32M827 321h37"/></g><g fill="#526d61" font-family="system-ui, sans-serif" font-size="11" letter-spacing="3"><text x="38" y="620">海风 · 两轮 · 好心情</text><text x="1058" y="620" text-anchor="end">↗</text></g>
+</svg>
+</div>
+<footer><span class="stamp">沿着海岸，今天也往前一点。</span><span class="keyboard-hint">空格键 · 播放 / 暂停</span></footer>
+</main>
+<script>
+(() => {
+  "use strict";
+  const get = id => document.getElementById(id);
+  const button = get("toggle");
+  const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const parts = {rider:get("rider"),rear:get("rear-spokes"),front:get("front-spokes"),crank:get("crank"),nearLeg:get("near-leg"),farLeg:get("far-leg"),nearFoot:get("near-foot"),farFoot:get("far-foot"),pedal:get("near-pedal"),clouds:get("clouds"),water:get("water"),road:get("road"),plants:get("plants"),breeze:get("breeze"),shadow:get("shadow")};
+  let playing = !preference.matches, manuallyChosen = false, elapsed = 0, previous = null, frame = 0;
+  function draw(time) {
+    const angle = time * Math.PI * 2 / 1.65, degrees = angle * 180 / Math.PI;
+    const x = 559 + Math.cos(angle) * 27, y = 456 + Math.sin(angle) * 27;
+    const backX = 559 - Math.cos(angle) * 27, backY = 456 - Math.sin(angle) * 27, bob = Math.sin(angle * 2) * 2;
+    parts.rear.setAttribute("transform", `rotate(${degrees} 400 456)`);
+    parts.front.setAttribute("transform", `rotate(${degrees} 735 456)`);
+    parts.crank.setAttribute("transform", `rotate(${degrees} 559 456)`);
+    parts.nearLeg.setAttribute("d", `M563 346 Q587 372 ${594 + (x - 559) * .2} ${396 + (y - 456) * .35} L${x} ${y - 5}`);
+    parts.farLeg.setAttribute("d", `M542 354 Q548 378 ${554 + (backX - 559) * .25} ${406 + (backY - 456) * .3} L${backX} ${backY - 5}`);
+    parts.nearFoot.setAttribute("d", `M${x - 9} ${y - 5}q13-3 23 5h-23Z`);
+    parts.farFoot.setAttribute("d", `M${backX - 9} ${backY - 3}h25`);
+    parts.pedal.setAttribute("d", `M${x - 12} ${y + 2}h25`);
+    parts.rider.setAttribute("transform", `translate(0 ${bob})`);
+    parts.clouds.setAttribute("transform", `translate(${-((time * 8) % 1100)} 0)`);
+    parts.road.setAttribute("transform", `translate(${-((time * 105) % 190)} 0)`);
+    parts.water.setAttribute("x", -((time * 12) % 220));
+    parts.plants.setAttribute("transform", `translate(${-((time * 65) % 1100)} 0)`);
+    parts.breeze.setAttribute("transform", `translate(${-Math.sin(angle * .5) * 8} 0)`);
+    parts.breeze.setAttribute("opacity", .5 + Math.sin(angle * .5) * .2);
+    parts.shadow.setAttribute("rx", 206 - bob * 1.5);
+  }
+  function tick(timestamp) {
+    frame = 0;
+    if (!playing || document.hidden) { previous = null; return; }
+    if (previous !== null) elapsed += Math.min((timestamp - previous) / 1000, .05);
+    previous = timestamp; draw(elapsed); frame = requestAnimationFrame(tick);
+  }
+  function schedule() { if (playing && !document.hidden && !frame) frame = requestAnimationFrame(tick); }
+  function update() {
+    button.setAttribute("aria-pressed", String(playing));
+    button.setAttribute("aria-label", playing ? "暂停动画" : "播放动画");
+    get("control-text").textContent = playing ? "暂停" : "播放";
+    get("control-icon").setAttribute("d", playing ? "M4 3h3v10H4zm5 0h3v10H9z" : "M4 2l10 6-10 6z");
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0; previous = null; schedule();
+  }
+  function toggle() { manuallyChosen = true; playing = !playing; update(); }
+  button.addEventListener("click", toggle);
+  document.addEventListener("keydown", event => {
+    if (event.code !== "Space" || event.altKey || event.ctrlKey || event.metaKey) return;
+    const target = event.target;
+    if (target instanceof Element && target.closest("input, textarea, select, [contenteditable='true']")) return;
+    event.preventDefault(); if (!event.repeat) toggle();
+  });
+  document.addEventListener("visibilitychange", () => { if (frame) cancelAnimationFrame(frame); frame = 0; previous = null; schedule(); });
+  preference.addEventListener("change", event => { if (!manuallyChosen) { playing = !event.matches; update(); } });
+  draw(0); update();
+})();
+</script>
+</body>
+</html>
