@@ -1,0 +1,47 @@
+{
+  "id": "sol-6-1-max-20261003-run01",
+  "kind": "benchmark",
+  "title": "GPT-6.1 Sol · max",
+  "description": "暖纸色海岸场景中的鹈鹕骑行，腿部与脚踏同步运动。",
+  "modelProvider": "OpenAI",
+  "model": "GPT-6.1 Sol",
+  "version": "gpt-6.1-sol（用户标注）",
+  "generatedAt": "2026-10-03",
+  "promptVersion": "v1",
+  "input": "请创建一个完整、可直接在现代桌面与手机浏览器打开的单文件 `index.html`。\n\n页面是一幅原创、精致且有动感的插画式小场景：一只鹈鹕正在骑自行车前进。\n\n要求：\n\n1. 只能输出一个完整的 HTML 文件；不要输出解释、Markdown 代码围栏或任何额外文字。\n2. 不得使用外部图片、CDN、第三方库、外链字体、网络请求或 base64 位图。允许使用内嵌 CSS、SVG、Canvas 和原生 JavaScript。\n3. 在 1200×800 视口下，鹈鹕和自行车必须一眼可辨：\n   - 鹈鹕要有清晰的长喙、喉囊、眼睛、翅膀和腿部；\n   - 自行车要有两个轮子、车架、把手和脚踏；\n   - 需要有道路、天空或其他简洁环境，让画面具备前进感。\n4. 页面加载后应有平滑循环动画，至少表现车轮转动、脚踏运动，以及鹈鹕或背景的运动感。\n5. 提供一个可见、可键盘操作的播放/暂停按钮；按空格键也可切换动画，且不会触发页面滚动。\n6. 尊重 `prefers-reduced-motion`：用户偏好减少动态时，默认不自动播放，但仍可通过按钮手动播放。\n7. 页面须响应式适配手机窄屏，不出现横向滚动；文字、按钮和焦点状态应清晰可访问。\n8. 保持代码整洁、性能轻量，并确保浏览器控制台没有错误。",
+  "parameters": {
+    "temperature": "未记录",
+    "seed": "未记录",
+    "reasoningEffort": "max",
+    "tools": "Codex 本地任务环境；包含文件编辑与 Playwright 浏览器自测",
+    "durationSeconds": "未记录"
+  },
+  "tech": "HTML + CSS + SVG",
+  "environment": null,
+  "review": null,
+  "provenance": {
+    "submitter": "Qrzzzz",
+    "firstOutput": true,
+    "unmodified": true,
+    "promptUnchanged": true,
+    "executionEnvironment": "Codex 本地 Windows 任务环境",
+    "type": "codex-task",
+    "threadId": "01a0fd87-7368-7420-bf55-0d368f324987",
+    "promptVerification": "已检查来源任务输入，与固定 v1 提示词文本一致（换行规范化）",
+    "modelVerification": "GPT-6.1 Sol / max 由用户标注",
+    "note": "首次独立任务产物；包含模型在同一任务内的修改与自测，投稿导入保留文件原始字节。"
+  },
+  "runtimeChecks": null,
+  "sourceSha256": "6af26be820a76e96cf09dbe2c80b28e9e613f8e6198d93dba07be5bafc6d6631",
+  "staticCheck": {
+    "passed": false,
+    "issues": [
+      "仅允许自包含 SVG 图标，不允许外部 link 资源",
+      "仅允许指向本页片段的链接"
+    ],
+    "version": 2
+  },
+  "screenshots": {},
+  "screenshotSha256": {},
+  "cover": null
+}
