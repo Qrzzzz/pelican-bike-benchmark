@@ -1,6 +1,9 @@
 import { galleryReturn, galleryPosition } from "./gallery-state.js";
 import { cascade, groupCatalog, effortOf, identityOf } from "./catalog.js";
 import { runThemeTransition } from "./theme-transition.js";
+import { initDocument } from "./document.js";
+import { initNavigation } from "./navigation.js";
+initNavigation();
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escape = (value) =>
@@ -111,8 +114,10 @@ $("#theme-toggle").addEventListener("click", async () => {
     await runThemeTransition({ documentObject: document, windowObject: window,
       origin: $("#theme-toggle"), update: () => window.setPelicanTheme(next) });
   } finally {
-    switchingTheme = false;
-    $("#theme-toggle").removeAttribute("aria-busy");
+    setTimeout(() => {
+      switchingTheme = false;
+      $("#theme-toggle").removeAttribute("aria-busy");
+    }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 40 : 380);
   }
 });
 $("#close-prompt").addEventListener("click", () => $("#prompt-dialog").close());
@@ -708,4 +713,5 @@ try {
   if ($("#result-count")) $("#result-count").textContent = "读取失败";
   notify("未能读取站点数据，请刷新后重试");
 }
+if (page === "method" || page === "entry") initDocument($(page === "method" ? "#main" : "#entry-content"));
 await promptTask;

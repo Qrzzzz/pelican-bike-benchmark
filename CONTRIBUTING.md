@@ -80,9 +80,11 @@ git push origin HEAD
 - 静态检查失败的原始作品仍允许收录；失败原因公开、运行预览停用。没有截图或评分不冒充已有证据。Action 不执行投稿中的 JavaScript，也不自动生成浏览器截图或审美评分。
 - 维护者审阅原文、元数据和公开权限后合并。现有 Pages Action 在 main 更新后校验并发布。
 
-PR Action 使用 GitHub 托管 runner、只读仓库权限，不需要 secrets，不使用 `pull_request_target` 执行投稿；不自动合并、不向 PR 分支回写。外部贡献者首次运行可能需要维护者在 GitHub 批准工作流，这是 GitHub 的执行权限，与作品审核不同。
+PR Action 使用 GitHub 托管 runner、只读仓库权限，不需要 secrets，不使用 `pull_request_target` 执行投稿，也不向 PR 分支回写。外部贡献者首次运行可能需要维护者在 GitHub 批准工作流，这是 GitHub 的执行权限，与作品审核不同。
 
-仓库管理员可在 main 的 branch rules 中将上述两个 job 设为 required checks，并限制直接推送。工作流文件本身不会自动开启分支保护；本次未修改仓库的分支规则。包含工作流或校验器修改的代码 PR 必须由维护者额外审阅，CI 通过不等于这些代码可信。
+`main` 的合并条件为 `check` 和 `submission-contract` 两个必需检查全部成功，PR 分支包含最新 main，所有讨论已解决；保护规则同样适用于管理员，禁止强推和删除分支。通过 PR 更新 main，合并后自动部署 Pages。
+
+仓库开启 GitHub 原生 auto-merge。维护者核对内容和公开权限后，可为具体 PR 选择自动合并（例如 `gh pr merge --auto --squash <PR编号>`）；满足上述条件后 GitHub 完成合并。不会为所有投稿自动开启合并，也不通过带写权限的工作流运行投稿代码。当前维护模式不要求额外审批人数；检查通过不能代替维护者对来源声明和内容的核对。包含工作流或校验器修改的代码 PR 必须由维护者额外审阅，CI 通过不等于这些代码可信。
 
 ## 维护已有作品
 
