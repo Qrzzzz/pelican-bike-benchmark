@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>骑自行车的鹈鹕</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2386c6ec'/%3E%3Cpath d='M13 39c7-10 21-14 31-8 4 3 6 7 5 12-11 7-27 6-36-4z' fill='%23f8f4df'/%3E%3Cpath d='M34 26c10-8 20-8 28-3-8 7-18 9-30 5z' fill='%23f7b34c'/%3E%3Ccircle cx='35' cy='24' r='3' fill='%2316242b'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --sky-top: #86c6ec;
+      --sky-mid: #bde7f7;
+      --sky-low: #f7e8bd;
+      --ink: #1f2d37;
+      --road: #5e6970;
+      --rim: #263741;
+      --frame: #1a7a83;
+      --accent: #f08a42;
+      --button-bg: rgba(255, 255, 255, 0.86);
+      --button-bg-hover: rgba(255, 255, 255, 0.96);
+      --button-border: rgba(31, 45, 55, 0.22);
+      --focus: #0b66d8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100svh;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, var(--sky-top), var(--sky-mid) 46%, var(--sky-low) 68%, #8fbf7e 68%, #5c8a66 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      min-height: 100svh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .scene {
+      width: 100%;
+      height: 100svh;
+      min-height: 520px;
+      display: block;
+    }
+
+    .control {
+      position: fixed;
+      z-index: 10;
+      top: clamp(12px, 2vw, 24px);
+      left: clamp(12px, 2vw, 24px);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.58rem;
+      min-height: 44px;
+      max-width: calc(100vw - 24px);
+      padding: 0.72rem 0.95rem;
+      border: 1px solid var(--button-border);
+      border-radius: 8px;
+      background: var(--button-bg);
+      color: var(--ink);
+      box-shadow: 0 12px 30px rgba(34, 54, 66, 0.16);
+      font: 700 clamp(0.92rem, 1.8vw, 1rem) / 1.1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .control:hover {
+      background: var(--button-bg-hover);
+    }
+
+    .control:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .control-icon {
+      width: 1.05rem;
+      height: 1.05rem;
+      flex: 0 0 auto;
+    }
+
+    .control-label {
+      white-space: nowrap;
+    }
+
+    .sun-core {
+      fill: #ffe082;
+    }
+
+    .sun-glow {
+      fill: #ffe9a8;
+      opacity: 0.45;
+    }
+
+    .cloud {
+      fill: rgba(255, 255, 255, 0.74);
+    }
+
+    .far-hill {
+      fill: #90be84;
+    }
+
+    .near-hill {
+      fill: #679f6c;
+    }
+
+    .road {
+      fill: var(--road);
+    }
+
+    .road-edge {
+      fill: #76858d;
+    }
+
+    .lane {
+      fill: #f9e9a8;
+      opacity: 0.9;
+    }
+
+    .grass {
+      stroke: #487954;
+      stroke-width: 4;
+      stroke-linecap: round;
+      opacity: 0.58;
+    }
+
+    .speed-line {
+      stroke: rgba(255, 255, 255, 0.78);
+      stroke-width: 6;
+      stroke-linecap: round;
+      opacity: 0.7;
+    }
+
+    .bike-frame {
+      fill: none;
+      stroke: var(--frame);
+      stroke-width: 17;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    .bike-fork {
+      fill: none;
+      stroke: #1e5965;
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+
+    .wheel-rim {
+      fill: none;
+      stroke: var(--rim);
+      stroke-width: 15;
+    }
+
+    .wheel-tire {
+      fill: none;
+      stroke: #111b21;
+      stroke-width: 22;
+    }
+
+    .wheel-hub {
+      fill: #f3f7f4;
+      stroke: #17262d;
+      stroke-width: 6;
+    }
+
+    .spokes line {
+      stroke: rgba(255, 255, 255, 0.76);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    .crank {
+      stroke: #263741;
+      stroke-width: 9;
+      stroke-linecap: round;
+    }
+
+    .pedal {
+      fill: #263741;
+    }
+
+    .seat {
+      fill: #263741;
+    }
+
+    .handlebar {
+      fill: none;
+      stroke: #263741;
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .pelican-body {
+      fill: #f8f4df;
+      stroke: #263741;
+      stroke-width: 5;
+    }
+
+    .pelican-belly {
+      fill: #fff9eb;
+      opacity: 0.72;
+    }
+
+    .wing {
+      fill: #d8d0b9;
+      stroke: #263741;
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+
+    .wing-feather {
+      fill: none;
+      stroke: #958f7f;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    .neck {
+      fill: #f6f0d8;
+      stroke: #263741;
+      stroke-width: 5;
+    }
+
+    .head {
+      fill: #fbf6e6;
+      stroke: #263741;
+      stroke-width: 5;
+    }
+
+    .cap-feathers {
+      fill: none;
+      stroke: #263741;
+      stroke-width: 5;
+      stroke-linecap: round;
+    }
+
+    .beak-top {
+      fill: #f7b34c;
+      stroke: #263741;
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+
+    .throat-pouch {
+      fill: #f5cf8a;
+      stroke: #263741;
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+
+    .pouch-shade {
+      fill: #e5ad63;
+      opacity: 0.58;
+    }
+
+    .eye-white {
+      fill: #fff;
+      stroke: #263741;
+      stroke-width: 3;
+    }
+
+    .eye-pupil {
+      fill: #16242b;
+    }
+
+    .leg {
+      stroke: #e6a647;
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .foot {
+      fill: #e6a647;
+      stroke: #263741;
+      stroke-width: 4;
+      stroke-linejoin: round;
+    }
+
+    .shadow {
+      fill: rgba(14, 26, 31, 0.22);
+    }
+
+    .paint-line {
+      fill: none;
+      stroke: rgba(38, 55, 65, 0.2);
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    @media (max-width: 700px) {
+      .scene {
+        min-height: 560px;
+      }
+
+      .control {
+        top: 10px;
+        left: 10px;
+        padding: 0.66rem 0.82rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="一只鹈鹕正在骑自行车前进的动画插画">
+    <button class="control" type="button" aria-pressed="true" aria-label="暂停动画">
+      <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path class="pause-shape" d="M7 5h3.4v14H7zM13.6 5H17v14h-3.4z" fill="currentColor"></path>
+      </svg>
+      <span class="control-label">暂停</span>
+    </button>
+
+    <svg class="scene" viewBox="0 0 1200 800" role="img" aria-labelledby="scene-title scene-desc" preserveAspectRatio="xMidYMid meet">
+      <title id="scene-title">骑自行车的鹈鹕</title>
+      <desc id="scene-desc">插画式动画场景，一只长喙鹈鹕骑着自行车沿道路前进，车轮和脚踏循环转动，背景表现移动感。</desc>
+
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#86c6ec"></stop>
+          <stop offset="50%" stop-color="#c9ecf6"></stop>
+          <stop offset="73%" stop-color="#f8eabf"></stop>
+          <stop offset="100%" stop-color="#d9d99b"></stop>
+        </linearGradient>
+        <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#737f87"></stop>
+          <stop offset="100%" stop-color="#4e5961"></stop>
+        </linearGradient>
+        <radialGradient id="bodyGlow" cx="45%" cy="34%" r="62%">
+          <stop offset="0%" stop-color="#fffdf1"></stop>
+          <stop offset="70%" stop-color="#f5efd9"></stop>
+          <stop offset="100%" stop-color="#e7dec5"></stop>
+        </radialGradient>
+        <filter id="softShadow" x="-20%" y="-40%" width="140%" height="180%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="9"></feGaussianBlur>
+          <feOffset dx="0" dy="8" result="offset"></feOffset>
+          <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0.07 0 0 0 0 0.11 0 0 0 0 0.13 0 0 0 0.22 0"></feColorMatrix>
+          <feBlend in="SourceGraphic" mode="normal"></feBlend>
+        </filter>
+        <path id="littleGrass" d="M0 0c5-15 11-26 19-34M18-2c5-12 14-20 26-24M-15-1c-2-12-1-22 5-31"></path>
+      </defs>
+
+      <rect width="1200" height="800" fill="url(#sky)"></rect>
+
+      <g class="parallax-slow">
+        <circle class="sun-glow" cx="1030" cy="122" r="98"></circle>
+        <circle class="sun-core" cx="1030" cy="122" r="57"></circle>
+        <g class="cloud" transform="translate(70 118)">
+          <ellipse cx="0" cy="34" rx="54" ry="27"></ellipse>
+          <ellipse cx="52" cy="24" rx="42" ry="34"></ellipse>
+          <ellipse cx="103" cy="36" rx="56" ry="28"></ellipse>
+          <rect x="-3" y="33" width="116" height="28" rx="14"></rect>
+        </g>
+        <g class="cloud" opacity=".82" transform="translate(505 86) scale(.72)">
+          <ellipse cx="0" cy="34" rx="54" ry="27"></ellipse>
+          <ellipse cx="52" cy="24" rx="42" ry="34"></ellipse>
+          <ellipse cx="103" cy="36" rx="56" ry="28"></ellipse>
+          <rect x="-3" y="33" width="116" height="28" rx="14"></rect>
+        </g>
+      </g>
+
+      <g class="hills">
+        <path class="far-hill" d="M0 462c100-69 177-84 287-39 99 40 163 25 265-40 125-79 229-75 346 4 91 61 185 57 302 0v413H0z"></path>
+        <path class="near-hill" d="M0 512c100-34 201-40 312-4 95 30 177 28 268-11 119-51 218-33 332 31 93 52 187 54 288 12v260H0z"></path>
+      </g>
+
+      <g class="moving-grass">
+        <use href="#littleGrass" class="grass" transform="translate(100 614)"></use>
+        <use href="#littleGrass" class="grass" transform="translate(222 592) scale(.78)"></use>
+        <use href="#littleGrass" class="grass" transform="translate(980 610) scale(.9)"></use>
+        <use href="#littleGrass" class="grass" transform="translate(1110 584) scale(.72)"></use>
+      </g>
+
+      <path class="road-edge" d="M0 616c151 25 272 30 429 18 176-14 324-10 496 18 104 17 193 20 275 9v139H0z"></path>
+      <path class="road" fill="url(#roadGrad)" d="M0 644c162 18 310 20 469 4 178-18 333-10 499 18 83 14 160 15 232 7v127H0z"></path>
+
+      <g class="road-lines">
+        <rect class="lane" x="8" y="705" width="102" height="10" rx="5"></rect>
+        <rect class="lane" x="226" y="707" width="122" height="10" rx="5"></rect>
+        <rect class="lane" x="482" y="709" width="134" height="10" rx="5"></rect>
+        <rect class="lane" x="760" y="711" width="122" height="10" rx="5"></rect>
+        <rect class="lane" x="1020" y="713" width="130" height="10" rx="5"></rect>
+      </g>
+
+      <g class="speed-lines">
+        <line class="speed-line" x1="94" y1="420" x2="213" y2="420"></line>
+        <line class="speed-line" x1="171" y1="484" x2="309" y2="484"></line>
+        <line class="speed-line" x1="836" y1="382" x2="967" y2="382"></line>
+        <line class="speed-line" x1="890" y1="458" x2="1033" y2="458"></line>
+      </g>
+
+      <ellipse class="shadow" cx="612" cy="706" rx="314" ry="38"></ellipse>
+
+      <g class="rider-bike" filter="url(#softShadow)">
+        <g class="bike" aria-hidden="true">
+          <g class="wheel rear-wheel" transform="translate(426 650)">
+            <circle class="wheel-tire" r="105"></circle>
+            <circle class="wheel-rim" r="91"></circle>
+            <g class="spokes">
+              <line x1="0" y1="0" x2="0" y2="-88"></line>
+              <line x1="0" y1="0" x2="62" y2="-62"></line>
+              <line x1="0" y1="0" x2="88" y2="0"></line>
+              <line x1="0" y1="0" x2="62" y2="62"></line>
+              <line x1="0" y1="0" x2="0" y2="88"></line>
+              <line x1="0" y1="0" x2="-62" y2="62"></line>
+              <line x1="0" y1="0" x2="-88" y2="0"></line>
+              <line x1="0" y1="0" x2="-62" y2="-62"></line>
+            </g>
+            <circle class="wheel-hub" r="14"></circle>
+          </g>
+
+          <g class="wheel front-wheel" transform="translate(805 650)">
+            <circle class="wheel-tire" r="105"></circle>
+            <circle class="wheel-rim" r="91"></circle>
+            <g class="spokes">
+              <line x1="0" y1="0" x2="0" y2="-88"></line>
+              <line x1="0" y1="0" x2="62" y2="-62"></line>
+              <line x1="0" y1="0" x2="88" y2="0"></line>
+              <line x1="0" y1="0" x2="62" y2="62"></line>
+              <line x1="0" y1="0" x2="0" y2="88"></line>
+              <line x1="0" y1="0" x2="-62" y2="62"></line>
+              <line x1="0" y1="0" x2="-88" y2="0"></line>
+              <line x1="0" y1="0" x2="-62" y2="-62"></line>
+            </g>
+            <circle class="wheel-hub" r="14"></circle>
+          </g>
+
+          <path class="bike-frame" d="M426 650L558 513L650 650L426 650M558 513L716 506L650 650M716 506L805 650M558 513L538 451"></path>
+          <path class="bike-fork" d="M748 468L805 650"></path>
+          <path class="handlebar" d="M742 463c40-16 69-13 94 10m-94-10 28-48m66 58c16 5 31 2 44-9"></path>
+          <path class="seat" d="M501 437c49-14 79-10 110 8 8 5 7 18-2 21-42 14-83 10-121-7-11-5-9-19 13-22z"></path>
+          <line class="bike-fork" x1="538" y1="451" x2="594" y2="451"></line>
+
+          <g class="crank-set" transform="translate(650 650)">
+            <circle fill="#f3f7f4" stroke="#263741" stroke-width="7" r="24"></circle>
+            <line class="crank crank-a" x1="0" y1="0" x2="0" y2="-64"></line>
+            <line class="crank crank-b" x1="0" y1="0" x2="0" y2="64"></line>
+            <rect class="pedal pedal-a" x="-32" y="-78" width="64" height="13" rx="6"></rect>
+            <rect class="pedal pedal-b" x="-32" y="65" width="64" height="13" rx="6"></rect>
+          </g>
+        </g>
+
+        <g class="pelican">
+          <g class="body-group">
+            <path class="pelican-body" fill="url(#bodyGlow)" d="M484 446c-16-61 16-118 83-140 66-22 145-8 196 39 48 44 62 104 36 151-34 61-117 77-196 66-65-9-103-49-119-116z"></path>
+            <path class="pelican-belly" d="M526 450c21 50 76 76 155 70 54-4 91-25 106-58 9 60-47 102-136 105-82 3-126-35-125-117z"></path>
+            <g class="wing-group">
+              <path class="wing" d="M599 380c65 7 120 40 146 90-38 30-91 43-154 36-53-7-88-26-104-58 29-47 66-70 112-68z"></path>
+              <path class="wing-feather" d="M558 424c39 0 82 19 129 57"></path>
+              <path class="wing-feather" d="M530 459c46-3 91 10 135 40"></path>
+              <path class="wing-feather" d="M620 392c33 19 57 47 72 83"></path>
+            </g>
+            <path class="paint-line" d="M521 414c25-43 69-69 134-77"></path>
+          </g>
+
+          <path class="neck" d="M741 390c29-57 76-101 133-129 41-20 71-13 82 12 10 24-8 50-47 65-48 19-79 48-96 91-7 18-28 26-48 18-21-9-32-32-24-57z"></path>
+          <g class="head-group">
+            <path class="head" d="M859 250c34-33 85-35 121-4 28 25 31 65 6 97-33 41-98 34-126-8-18-27-18-62-1-85z"></path>
+            <path class="cap-feathers" d="M877 242c-5-23-1-39 12-52m22 43c3-24 12-38 29-47m17 57c18-18 35-24 55-19"></path>
+            <path class="beak-top" d="M943 298c74-29 143-31 208-6 21 8 21 32 1 42-69 34-143 32-221-7-15-8-15-23 12-29z"></path>
+            <path class="throat-pouch" d="M930 326c73 37 145 41 221 10-16 57-62 87-136 86-70-1-116-31-138-89 17-14 34-16 53-7z"></path>
+            <path class="pouch-shade" d="M963 355c51 22 101 24 153 6-20 25-53 38-98 37-35 0-61-13-55-43z"></path>
+            <circle class="eye-white" cx="931" cy="278" r="16"></circle>
+            <circle class="eye-pupil" cx="936" cy="281" r="7"></circle>
+            <path class="paint-line" d="M956 312c51-11 101-11 150 2"></path>
+          </g>
+
+          <g class="legs">
+            <g class="leg-back">
+              <path class="leg" d="M579 532c31 34 52 64 64 112"></path>
+              <path class="foot" d="M603 676c35-8 68-7 98 4-20 22-56 29-101 19-15-4-14-18 3-23z"></path>
+            </g>
+            <g class="leg-front">
+              <path class="leg" d="M703 528c-20 37-38 72-54 123"></path>
+              <path class="foot" d="M608 648c31-18 64-26 99-23-13 28-45 44-95 46-15 1-18-14-4-23z"></path>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const button = document.querySelector(".control");
+      const label = button.querySelector(".control-label");
+      const icon = button.querySelector(".control-icon");
+      const riderBike = document.querySelector(".rider-bike");
+      const pelican = document.querySelector(".pelican");
+      const bodyGroup = document.querySelector(".body-group");
+      const headGroup = document.querySelector(".head-group");
+      const wingGroup = document.querySelector(".wing-group");
+      const rearWheel = document.querySelector(".rear-wheel .spokes");
+      const frontWheel = document.querySelector(".front-wheel .spokes");
+      const crankSet = document.querySelector(".crank-set");
+      const legFront = document.querySelector(".leg-front");
+      const legBack = document.querySelector(".leg-back");
+      const roadLines = document.querySelector(".road-lines");
+      const speedLines = document.querySelector(".speed-lines");
+      const grass = document.querySelector(".moving-grass");
+      const parallax = document.querySelector(".parallax-slow");
+
+      const state = {
+        playing: !reduceMotion.matches,
+        start: 0,
+        elapsed: 0,
+        frame: 0
+      };
+
+      function setTransform(element, value) {
+        element.setAttribute("transform", value);
+      }
+
+      function setButton() {
+        button.setAttribute("aria-pressed", String(state.playing));
+        button.setAttribute("aria-label", state.playing ? "暂停动画" : "播放动画");
+        label.textContent = state.playing ? "暂停" : "播放";
+        icon.innerHTML = state.playing
+          ? '<path d="M7 5h3.4v14H7zM13.6 5H17v14h-3.4z" fill="currentColor"></path>'
+          : '<path d="M7.5 4.6v14.8L18.8 12 7.5 4.6z" fill="currentColor"></path>';
+      }
+
+      function render(ms) {
+        const t = ms / 1000;
+        const wheelAngle = -t * 430;
+        const crankAngle = t * 360;
+        const bob = Math.sin(t * Math.PI * 2) * 7;
+        const sway = Math.sin(t * Math.PI * 2 + 0.7) * 2.4;
+        const wing = Math.sin(t * Math.PI * 2 + 0.4) * 5;
+        const head = Math.sin(t * Math.PI * 2 + 1.1) * 3.5;
+        const ground = -(t * 180 % 260);
+        const grassX = -(t * 96 % 160);
+        const slow = -(t * 14 % 90);
+        const dash = -(t * 260 % 280);
+
+        setTransform(rearWheel, `rotate(${wheelAngle})`);
+        setTransform(frontWheel, `rotate(${wheelAngle})`);
+        setTransform(crankSet, `translate(650 650) rotate(${crankAngle})`);
+        setTransform(riderBike, `translate(0 ${bob}) rotate(${sway} 620 535)`);
+        setTransform(pelican, `translate(0 ${Math.sin(t * Math.PI * 2 + 0.3) * 3})`);
+        setTransform(bodyGroup, `rotate(${sway * 0.7} 638 446)`);
+        setTransform(headGroup, `rotate(${head} 900 305)`);
+        setTransform(wingGroup, `rotate(${wing} 596 443)`);
+        setTransform(legFront, `rotate(${Math.sin(t * Math.PI * 2 + Math.PI) * 9} 650 650)`);
+        setTransform(legBack, `rotate(${Math.sin(t * Math.PI * 2) * 9} 650 650)`);
+        setTransform(roadLines, `translate(${ground} 0)`);
+        setTransform(grass, `translate(${grassX} 0)`);
+        setTransform(parallax, `translate(${slow} 0)`);
+        setTransform(speedLines, `translate(${dash} 0)`);
+      }
+
+      function step(now) {
+        if (!state.playing) {
+          state.frame = 0;
+          return;
+        }
+
+        if (!state.start) {
+          state.start = now - state.elapsed;
+        }
+
+        state.elapsed = now - state.start;
+        render(state.elapsed);
+        state.frame = window.requestAnimationFrame(step);
+      }
+
+      function play() {
+        if (state.playing) {
+          return;
+        }
+        state.playing = true;
+        state.start = 0;
+        setButton();
+        state.frame = window.requestAnimationFrame(step);
+      }
+
+      function pause() {
+        if (!state.playing) {
+          return;
+        }
+        state.playing = false;
+        window.cancelAnimationFrame(state.frame);
+        setButton();
+      }
+
+      function toggle() {
+        if (state.playing) {
+          pause();
+        } else {
+          play();
+        }
+      }
+
+      button.addEventListener("click", toggle);
+
+      window.addEventListener("keydown", (event) => {
+        const tag = event.target && event.target.tagName;
+        const typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || event.target?.isContentEditable;
+        if (event.code === "Space" && !typing) {
+          event.preventDefault();
+          toggle();
+        }
+      });
+
+      reduceMotion.addEventListener("change", (event) => {
+        if (event.matches) {
+          pause();
+        } else if (!state.playing && state.elapsed === 0) {
+          play();
+        }
+      });
+
+      setButton();
+      render(0);
+
+      if (state.playing) {
+        state.frame = window.requestAnimationFrame(step);
+      }
+    })();
+  </script>
+</body>
+</html>
