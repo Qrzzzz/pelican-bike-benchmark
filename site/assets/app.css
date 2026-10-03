@@ -125,11 +125,6 @@ body[data-page="entry"] main { max-width: 754px; }
 .detail-aside h3 { margin-top: 40px !important; }
 .code { display: block; max-height: 470px; padding: 22px; border: 1px solid var(--line); border-radius: 5px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--site-code-bg); color: var(--site-code-text); font: 13px/1.8 var(--mono); scrollbar-width: thin; tab-size: 2; }
 .hash { overflow-wrap: anywhere; color: var(--muted); font: 12px/1.8 var(--mono); }
-body[data-page="method"] main { max-width: 1152px; }
-body[data-page="method"] .page-title { margin-left: 272px; }
-.method-layout { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: 48px; }
-.toc { position: sticky; top: 32px; align-self: start; display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
-.toc a { display: flex; align-items: center; min-height: 44px; }
 .prose { max-width: var(--reading); font: 16px/1.82 var(--sans); }
 .prose section { margin-bottom: 64px; scroll-margin-top: 32px; }
 .prose p, .prose li { color: var(--ink); }
@@ -150,8 +145,6 @@ td { color: var(--muted); }
 body:has(dialog[open]) { overflow: hidden; }
 @media (max-width: 959px) {
   .compare-grid, .compare-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .method-layout { grid-template-columns: 160px minmax(0, 1fr); gap: 32px; }
-  body[data-page="method"] .page-title { margin-left: 192px; }
 }
 @media (max-width: 639px) {
   .filters { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "search toggle" "results results"; }
@@ -176,9 +169,6 @@ body:has(dialog[open]) { overflow: hidden; }
   .card-bottom { align-items: start; flex-direction: column; }
   .page-title { padding-top: 36px; }
   .page-title h1 { font-size: clamp(36px, 10.5vw, 48px); line-height: 1.24; }
-  .method-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  body[data-page="method"] .page-title { margin-left: 0; }
-  .toc { position: static; display: flex; flex-wrap: wrap; gap: 4px 20px; }
   .compare-grid { grid-template-columns: minmax(0, 1fr); }
   .toolbar .push { margin-left: 0; }
   .compare-picker { grid-template-columns: minmax(0, 1fr); gap: 8px; }

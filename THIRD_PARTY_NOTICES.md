@@ -27,3 +27,8 @@ SOFTWARE.
 The header also adapts `NavActions.vue` (sun/moon switch and GitHub SVG), the `Q\` home mark from `Layout.vue` / `styles/site.css`, and reuses `themeTransitionRuntime.mjs` as `site/assets/theme-transition.js` from the same reference commit. Links and accessible labels are localized for this site; the MIT notice above applies.
 
 Current design adaptation (2026-09-21): native HTML layouts use the reference project's current tokens.css, site.css, catalog.css and content.css. The locally hosted font subsets retain the reference fonts' original SIL Open Font License texts in site/assets/fonts/{source-han-serif,source-han-sans,newsreader,maple-mono}/OFL.txt. Font unicode-range declarations are preserved; only ranges used by the current site's text are included, with system fallbacks for other characters.
+
+Document layout adaptation (2026-10-03): document.css adapts the current reference project's content.css, site.css and reading-rail.css typography and right-side outline styles. document.js implements native anchor navigation and active headings for method and entry pages. The decorative Reading Rail is omitted. The MIT notice above applies.
+
+Header adaptation (2026-10-03): navigation.js and navigation.css adapt the current reference project's topNavigationMarker.ts, InlineSearch.vue, navigationAccessibility.ts, site.css and VitePress default-theme hamburger geometry. Search content and links are local to this benchmark. The MIT notice above applies.
+The current header and document reference is Qrzzzz/Qrzzzz.github.io commit 30280c87fafae65ebe45b938a87c2b5fb9a04915; theme-transition.js is synchronized with that revision's themeTransitionRuntime.mjs.

@@ -11,7 +11,7 @@ export async function runThemeTransition({
   windowObject,
   origin,
   update,
-  duration = 320
+  duration = 260
 }) {
   let didUpdate = false;
   const applyUpdate = async () => {
@@ -31,14 +31,11 @@ export async function runThemeTransition({
     typeof documentObject.startViewTransition !== "function" ||
     typeof root.animate !== "function"
   ) {
-    root.classList.add("theme-fade-out");
-    await new Promise((resolve) => windowObject.setTimeout(resolve, duration * 0.45));
-    await applyUpdate();
-    root.classList.remove("theme-fade-out");
-    root.classList.add("theme-fade-in");
-    windowObject.setTimeout(() => {
-      root.classList.remove("theme-fade-in");
-    }, duration * 0.55);
+    root.classList.add("theme-is-switching");
+    try { await applyUpdate(); }
+    finally {
+      windowObject.setTimeout(() => root.classList.remove("theme-is-switching"), duration);
+    }
     return true;
   }
 
@@ -49,21 +46,11 @@ export async function runThemeTransition({
       { opacity: [1, 0] },
       {
         duration,
-        easing: "cubic-bezier(0.4, 0, 1, 1)",
+        easing: "cubic-bezier(.2, .7, .25, 1)",
         fill: "both",
         pseudoElement: "::view-transition-old(root)"
       }
     );
-    root.animate(
-      { opacity: [0, 1] },
-      {
-        duration,
-        easing: "cubic-bezier(0, 0, 0.2, 1)",
-        fill: "both",
-        pseudoElement: "::view-transition-new(root)"
-      }
-    );
-    await transition.finished;
     return true;
   } catch {
     await applyUpdate();
