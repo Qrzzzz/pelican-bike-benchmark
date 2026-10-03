@@ -32,3 +32,5 @@ Document layout adaptation (2026-10-03): document.css adapts the current referen
 
 Header adaptation (2026-10-03): navigation.js and navigation.css adapt the current reference project's topNavigationMarker.ts, InlineSearch.vue, navigationAccessibility.ts, site.css and VitePress default-theme hamburger geometry. Search content and links are local to this benchmark. The MIT notice above applies.
 The current header and document reference is Qrzzzz/Qrzzzz.github.io commit 30280c87fafae65ebe45b938a87c2b5fb9a04915; theme-transition.js is synchronized with that revision's themeTransitionRuntime.mjs.
+
+Search expansion adaptation (2026-10-03): navigation.js, navigation.css and search-runtime.js adapt the icon-anchored surface animation, viewport measurements and keyboard behavior of InlineSearch.vue, inlineSearchRuntime.mjs and styles/site.css at Qrzzzz/Qrzzzz.github.io commit 14db78bb3f2266f688b84e7881aa596d450f1d21. Search data remains local to this benchmark. The MIT notice above applies.

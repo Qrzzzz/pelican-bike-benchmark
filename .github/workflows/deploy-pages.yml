@@ -36,10 +36,13 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
 
+      - name: Build static gallery and thumbnails
+        run: npm run build
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: site
+          path: dist
 
   deploy:
     needs: build

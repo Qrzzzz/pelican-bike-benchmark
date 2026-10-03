@@ -58,7 +58,7 @@ export function createPreviewServer({ root = resolve("site") } = {}) {
   });
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const server = createPreviewServer();
+  const server = createPreviewServer({ root: resolve("dist") });
   server.listen(Number(process.env.PORT || 4173), "127.0.0.1", () =>
     console.log(`Preview: http://127.0.0.1:${server.address().port}/pelican-bike-benchmark/`));
 }

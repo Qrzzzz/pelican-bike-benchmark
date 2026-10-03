@@ -3,6 +3,8 @@ import { cascade, groupCatalog, effortOf, identityOf } from "./catalog.js";
 import { runThemeTransition } from "./theme-transition.js";
 import { initDocument } from "./document.js";
 import { initNavigation } from "./navigation.js";
+import { renderGallery } from "./gallery-render.js";
+import { createPreviewCache } from "./preview-cache.js";
 initNavigation();
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -64,6 +66,10 @@ async function json(url) {
   const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
   if (!response.ok) throw new Error("读取失败");
   return response.json();
+}
+function initialData(id, fallback) {
+  const embedded = document.getElementById(id);
+  return embedded ? Promise.resolve(JSON.parse(embedded.textContent)) : json(fallback);
 }
 function notify(message) {
   if ($("#prompt-dialog").open) {
@@ -229,9 +235,14 @@ function home() {
     );
     $("#result-count").textContent =
       `${shown.length} 个作品 · ${formal} 个正式测试`;
-    $("#cards").innerHTML = shown.length
-      ? groupCatalog(shown).map(({ provider, models }) => `<section class="provider-section"><h2 class="provider-title">${escape(provider)}</h2>${models.map(({ model, items }) => `<section class="model-section"><h3 class="model-title">${escape(model)}</h3><div class="gallery">${items.map((s) => `<article class="card" id="work-${s.id}"><div class="effort-label"><span class="badge">${escape(effortOf(s))}</span></div><a class="card-cover" href="${detailUrl(s)}" aria-label="查看 ${escape(identityOf(s))}：${escape(s.title)}">${s.cover ? `<img src="${asset(s, s.cover)}" alt="${escape(s.title)}桌面截图" loading="lazy" width="600" height="400">` : '<div class="empty">截图待补充</div>'}</a><div class="card-body"><p>${escape(s.description)}</p><div class="card-bottom"><span>${s.staticCheck.passed ? "静态检查通过" : "静态检查未通过"}</span><label class="check"><input type="checkbox" data-select="${s.id}" ${selected.includes(s.id) ? "checked" : ""}>加入对比<span class="sr-only">：${escape(identityOf(s))} · ${escape(s.title)}</span></label></div></div></article>`).join("")}</div></section>`).join("")}</section>`).join("")
-      : '<div class="empty"><h3>这里暂时没有作品。</h3><p>试试其他关键词或筛选条件。</p><button class="button" id="reset-filters">重置筛选</button></div>';
+    const cards = $("#cards");
+    if (!(cards.hasAttribute("data-prerendered") && !conditions.length)) {
+      cards.innerHTML = shown.length
+        ? renderGallery(shown, { selected, returnUrl: new URL("index.html", location.href).pathname + location.search })
+        : '<div class="empty"><h3>这里暂时没有作品。</h3><p>试试其他关键词或筛选条件。</p><button class="button" id="reset-filters">重置筛选</button></div>';
+    }
+    cards.removeAttribute("data-prerendered");
+    $$("[data-select]", cards).forEach((input) => { input.checked = selected.includes(input.dataset.select); });
     $$(".card-cover").forEach((link) => link.addEventListener("click", () => {
       const back = galleryReturn(new URL(link.href).searchParams.get("return"), location.href);
       const position = { url: back.href, y: window.scrollY, anchor: link.closest(".card").id };
@@ -336,6 +347,14 @@ function specs(item) {
 }
 const observers = new Map();
 const previewRequests = new Set();
+const previewCache = createPreviewCache(async (url) => {
+  const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  if (!response.ok) throw new Error("Preview unavailable");
+  const source = new DOMParser().parseFromString(await response.text(), "text/html")
+    .querySelector("iframe")?.getAttribute("srcdoc");
+  if (!source) throw new Error("Invalid preview");
+  return source;
+});
 function clearPreviews() {
   previewRequests.forEach((controller) => controller.abort());
   previewRequests.clear();
@@ -349,6 +368,7 @@ function mountPreview(container, item, { previewViewport = viewport, previewMode
     const file = isDemo(item) ? item.cover : item.screenshots?.[previewViewport];
     if (file) {
       const img = document.createElement("img");
+      img.decoding = "async";
       img.src = asset(item, file);
       img.alt = `${item.title} · ${isDemo(item) ? "演示插画，非实测截图" : previewViewport === "mobile" ? "手机实测截图" : "桌面实测截图"}`;
       img.addEventListener("error", () => {
@@ -378,18 +398,9 @@ function mountPreview(container, item, { previewViewport = viewport, previewMode
   // Reuse the validated wrapper's srcdoc in a single sandbox, avoiding nested scaled frames.
   const controller = new AbortController();
   previewRequests.add(controller);
-  fetch(asset(item, "preview.html"), { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]) })
-    .then((response) => {
-      if (!response.ok) throw new Error();
-      return response.text();
-    })
-    .then((html) => {
-      const source = new DOMParser()
-        .parseFromString(html, "text/html")
-        .querySelector("iframe")
-        ?.getAttribute("srcdoc");
-      if (!source) throw new Error();
-      if (frame.isConnected) frame.srcdoc = source;
+  previewCache.get(asset(item, "preview.html"))
+    .then((source) => {
+      if (frame.isConnected && !controller.signal.aborted) frame.srcdoc = source;
     })
     .catch(() => {
       if (controller.signal.aborted) return;
@@ -427,17 +438,20 @@ function openPreview(item, trigger) {
   view.value = viewport;
   format.value = mode;
   let actual = true, dispose;
-  const render = () => {
-    dispose?.();
+  const setSize = () => {
     surface.style.width = actual ? (view.value === "mobile" ? "390px" : "1200px") : "100%";
     $("#preview-scale-note", dialog).textContent = actual ? "原尺寸 100%：横向或纵向滚动查看完整画布。" : "适应宽度：固定测试视口等比缩放，不改变作品布局。";
     $("#preview-actual-size", dialog).textContent = actual ? "适应宽度" : "原尺寸";
     $("#preview-actual-size", dialog).setAttribute("aria-pressed", String(!actual));
+  };
+  const render = () => {
+    dispose?.();
+    setSize();
     dispose = mountPreview(surface, item, { previewViewport: view.value, previewMode: format.value });
   };
   view.addEventListener("change", render);
   format.addEventListener("change", render);
-  $("#preview-actual-size", dialog).addEventListener("click", () => { actual = !actual; render(); });
+  $("#preview-actual-size", dialog).addEventListener("click", () => { actual = !actual; setSize(); });
   $(".icon-button", dialog).addEventListener("click", () => dialog.close());
   const position = { x: window.scrollX, y: window.scrollY };
   dialog.addEventListener("close", () => {
@@ -458,6 +472,7 @@ function bindViewControls(render) {
   );
   $$("[data-viewport]").forEach((b) =>
     b.addEventListener("click", () => {
+      if (viewport === b.dataset.viewport) return;
       viewport = b.dataset.viewport;
       $$("[data-viewport]").forEach((x) =>
         x.setAttribute("aria-pressed", String(x === b)),
@@ -467,6 +482,7 @@ function bindViewControls(render) {
   );
   $$("[data-mode]").forEach((b) =>
     b.addEventListener("click", () => {
+      if (mode === b.dataset.mode) return;
       mode = b.dataset.mode;
       $$("[data-mode]").forEach((x) =>
         x.setAttribute("aria-pressed", String(x === b)),
@@ -475,6 +491,7 @@ function bindViewControls(render) {
     }),
   );
   $("#reload-previews")?.addEventListener("click", () => {
+    previewCache.clear();
     mode = "live";
     $$("[data-mode]").forEach((x) =>
       x.setAttribute("aria-pressed", String(x.dataset.mode === mode)),
@@ -673,7 +690,7 @@ async function entry() {
 }
 $("#copy-commands")?.addEventListener("click", () => copy($("#method-commands").textContent));
 const page = document.body.dataset.page;
-const promptTask = json("data/prompt.v1.json").then((value) => {
+const promptTask = initialData("initial-prompt", "data/prompt.v1.json").then((value) => {
   if (typeof value.text !== "string" || typeof value.sha256 !== "string") throw new Error("Invalid prompt");
   prompt = value;
   $("#dialog-prompt").textContent = prompt.text;
@@ -687,7 +704,7 @@ const promptTask = json("data/prompt.v1.json").then((value) => {
   notify("提示词暂时无法载入，作品浏览不受影响");
 });
 try {
-  submissions = page === "method" ? [] : await json("data/submissions.json");
+  submissions = page === "method" ? [] : await initialData("initial-gallery", "data/submissions.json");
   if (!Array.isArray(submissions)) throw new Error("Invalid index");
   submissions = submissions
     .filter((s) => safeId(s.id))

@@ -1,4 +1,5 @@
 // Native adaptation of personal-docs topNavigationMarker and InlineSearch.
+import { searchGeometry, isSearchShortcut, moveSearchSelection, searchTargetIndex } from "./search-runtime.js";
 export function initNavigation() {
   const header = document.querySelector(".header");
   const inner = header.querySelector(".header-inner");
@@ -12,7 +13,7 @@ export function initNavigation() {
   const search = document.createElement("div");
   search.className = "InlineSiteSearch";
   const icon = '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>';
-  search.innerHTML = `<button type="button" class="inline-search-trigger" aria-label="搜索本站" aria-expanded="false" aria-controls="inline-search-form" title="搜索本站（Ctrl K）">${icon}</button><form id="inline-search-form" class="inline-search-form" role="search" hidden>${icon}<input id="inline-site-search-input" type="search" role="combobox" aria-label="搜索本站" aria-autocomplete="list" aria-controls="inline-search-results" aria-expanded="false" autocomplete="off" maxlength="64" placeholder="搜索作品与测试方法…"><button type="button" class="inline-search-action" aria-label="清除搜索" hidden>×</button><button type="button" class="inline-search-action inline-search-close" aria-label="关闭搜索">Esc</button></form><div class="inline-search-panel" hidden><p class="inline-search-state" role="status"></p><ul id="inline-search-results" role="listbox" aria-label="搜索结果"></ul></div>`;
+  search.innerHTML = `<button type="button" class="inline-search-trigger" aria-label="搜索本站" aria-haspopup="listbox" aria-expanded="false" aria-controls="inline-search-form" title="搜索本站（Ctrl K 或 /）">${icon}</button><div class="inline-search-surface" inert><form id="inline-search-form" class="inline-search-form" role="search">${icon}<input id="inline-site-search-input" type="search" role="combobox" aria-label="搜索本站" aria-autocomplete="list" aria-controls="inline-search-results" aria-expanded="false" autocomplete="off" autocapitalize="off" autocorrect="off" enterkeyhint="go" spellcheck="false" maxlength="64" placeholder="搜索作品与测试方法…"><button type="button" class="inline-search-action" aria-label="清除搜索" hidden>×</button><button type="button" class="inline-search-action inline-search-close" aria-label="关闭搜索">Esc</button></form><div class="inline-search-panel" hidden><p class="inline-search-state" role="status"></p><ul id="inline-search-results" role="listbox" aria-label="搜索结果"></ul></div></div>`;
   content.prepend(search);
   const trigger = document.createElement("button");
   trigger.type = "button";
@@ -90,10 +91,12 @@ export function initNavigation() {
   sync();
 
   const searchTrigger = search.querySelector(".inline-search-trigger");
+  const surface = search.querySelector(".inline-search-surface");
   const form = search.querySelector("form"), input = search.querySelector("input");
   const panel = search.querySelector(".inline-search-panel"), list = search.querySelector("ul"), status = search.querySelector(".inline-search-state");
   const clear = search.querySelector('[aria-label="清除搜索"]');
-  let index, loading, results = [], selected = -1;
+  let index, loading, results = [], selected = -1, searchGeneration = 0;
+  let searchInert = new Map();
   function select(i) {
     selected = i;
     [...list.children].forEach((li, j) => { li.setAttribute("aria-selected", String(i === j)); });
@@ -103,9 +106,14 @@ export function initNavigation() {
   async function loadIndex() {
     if (index) return index;
     if (!loading) loading = (async () => {
-      const response = await fetch("data/submissions.json", {signal:AbortSignal.timeout(15000)});
-      if (!response.ok) throw new Error("Search unavailable");
-      const entries = await response.json();
+      const embedded = document.getElementById("initial-gallery");
+      let entries;
+      if (embedded) entries = JSON.parse(embedded.textContent);
+      else {
+        const response = await fetch("data/submissions.json", {signal:AbortSignal.timeout(15000)});
+        if (!response.ok) throw new Error("Search unavailable");
+        entries = await response.json();
+      }
       const documents = [
         ["测试方法", "method.html", "固定提示词 评分维度 观察环境 添加作品 边界 限制"],
         ["作品陈列室", "index.html", "模型 厂家 推理强度 作品"],
@@ -117,16 +125,18 @@ export function initNavigation() {
     return loading;
   }
   async function renderResults() {
+    const generation = ++searchGeneration;
     const query = input.value.trim().toLocaleLowerCase();
     clear.hidden = !query;
     panel.hidden = !query;
     input.setAttribute("aria-expanded", String(Boolean(query)));
+    results = [];
     list.replaceChildren(); select(-1);
     if (!query) return;
     status.hidden = false; status.textContent = "正在读取搜索索引…";
     try {
       const records = await loadIndex();
-      if (query !== input.value.trim().toLocaleLowerCase()) return;
+      if (generation !== searchGeneration || !search.classList.contains("is-expanded")) return;
       results = records.filter(e => query.split(/\s+/).every(part => `${e.title} ${e.text}`.toLocaleLowerCase().includes(part))).slice(0, 12);
       status.textContent = results.length ? `${results.length} 个结果` : `没有找到“${input.value.trim()}”`;
       results.forEach((result, i) => {
@@ -137,42 +147,62 @@ export function initNavigation() {
         a.append(context, title); li.append(a); list.append(li);
         a.addEventListener("pointerenter", () => select(i)); a.addEventListener("focus", () => select(i));
       });
-    } catch { status.textContent = "搜索暂时不可用，请重新输入以重试。"; }
+    } catch {
+      if (generation === searchGeneration && search.classList.contains("is-expanded")) status.textContent = "搜索暂时不可用，请重新输入以重试。";
+    }
   }
   function closeSearch(focus = true) {
-    search.classList.remove("is-expanded"); form.hidden = true; panel.hidden = true; searchTrigger.hidden = false;
+    searchGeneration++;
+    search.classList.remove("is-expanded"); surface.inert = true; panel.hidden = true;
+    input.value = ""; results = []; list.replaceChildren(); select(-1);
+    clear.hidden = true; input.setAttribute("aria-expanded", "false");
+    searchTrigger.inert = false; searchTrigger.tabIndex = 0;
     searchTrigger.setAttribute("aria-expanded", "false");
-    [menu,tools,trigger,inner.querySelector('.home-link')].forEach(el => { el.inert = false; });
+    searchInert.forEach((value, element) => { element.inert = value; });
+    searchInert.clear();
     if (focus) searchTrigger.focus();
   }
   function openSearch() {
+    if (search.classList.contains("is-expanded")) { input.focus(); return; }
     if (!screen.hidden) closeMenu(false);
-    search.classList.add("is-expanded"); form.hidden = false; searchTrigger.hidden = true;
+    measureSearch();
+    search.classList.add("is-expanded"); surface.inert = false;
+    searchTrigger.inert = true; searchTrigger.tabIndex = -1;
     searchTrigger.setAttribute("aria-expanded", "true");
-    [menu,tools,trigger].forEach(el => { el.inert = true; });
-    inner.querySelector('.home-link').inert = matchMedia('(max-width:680px)').matches;
+    syncSearchInert();
     input.focus(); renderResults();
   }
   searchTrigger.addEventListener("click", openSearch);
   search.querySelector('[aria-label="关闭搜索"]').addEventListener("click", () => closeSearch());
   clear.addEventListener("click", () => { input.value = ""; renderResults(); input.focus(); });
   input.addEventListener("input", renderResults);
-  form.addEventListener("submit", event => { event.preventDefault(); if (selected >= 0 && results[selected]) location.href = results[selected].url; });
+  form.addEventListener("submit", event => { event.preventDefault(); const result = results[searchTargetIndex(selected, results.length)]; if (result) { closeSearch(false); location.href = result.url; } });
   input.addEventListener("keydown", event => {
     if (["ArrowDown", "ArrowUp"].includes(event.key) && results.length && !panel.hidden) {
-      event.preventDefault(); select((selected + (event.key === "ArrowDown" ? 1 : -1) + results.length) % results.length);
+      event.preventDefault(); select(moveSearchSelection(selected, results.length, event.key === "ArrowDown" ? 1 : -1));
     }
   });
   document.addEventListener("keydown", event => {
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); openSearch(); }
+    const editing = event.target?.isContentEditable || event.target?.matches?.("input, select, textarea");
+    if (isSearchShortcut(event, editing)) { event.preventDefault(); event.stopImmediatePropagation(); openSearch(); }
     else if (event.key === "Escape" && search.classList.contains("is-expanded")) { event.preventDefault(); closeSearch(); }
-  });
+  }, true);
   document.addEventListener("pointerdown", event => { if (search.classList.contains("is-expanded") && !search.contains(event.target)) closeSearch(false); });
-  const resizeSearch = () => {
+  function measureSearch() {
     const view = window.visualViewport;
-    search.style.setProperty("--search-viewport-top", `${(view?.offsetTop || 0) + 10}px`);
-    search.style.setProperty("--search-panel-height", `${Math.max(80, (view?.height || innerHeight) - 76)}px`);
-  };
+    const geometry = searchGeometry(search.getBoundingClientRect(), content.getBoundingClientRect().right,
+      { left: view?.offsetLeft || 0, top: view?.offsetTop || 0, width: view?.width || innerWidth, height: view?.height || innerHeight }, matchMedia("(max-width:767.98px)").matches);
+    for (const key of ["width", "x", "y"]) search.style.setProperty(`--search-${key}`, `${geometry[key]}px`);
+    search.style.setProperty("--search-panel-height", `${geometry.height}px`);
+  }
+  function syncSearchInert() {
+    for (const element of [menu, tools, trigger, inner.querySelector(".home-link")]) {
+      if (!searchInert.has(element)) searchInert.set(element, element.inert);
+      element.inert = element.classList.contains("home-link") ? matchMedia("(max-width:680px)").matches || searchInert.get(element) : true;
+    }
+  }
+  const resizeSearch = () => { if (search.classList.contains("is-expanded")) { measureSearch(); syncSearchInert(); } };
+  window.addEventListener("resize", resizeSearch);
   window.visualViewport?.addEventListener("resize", resizeSearch);
   window.visualViewport?.addEventListener("scroll", resizeSearch);
   resizeSearch();
