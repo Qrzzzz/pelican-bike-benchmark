@@ -8,10 +8,14 @@
     "import": "node scripts/import.mjs",
     "prepare:capture": "node scripts/prepare-capture.mjs",
     "submission:init": "node scripts/init-submission.mjs",
-    "check:pr": "node scripts/check-pr.mjs"
+    "check:pr": "node scripts/check-pr.mjs",
+    "build": "node scripts/build.mjs",
+    "predev": "npm run build"
   },
   "devDependencies": {
-    "parse5": "^8.0.0"
+    "esbuild": "^0.28.2",
+    "parse5": "^8.0.0",
+    "sharp": "^0.35.5"
   },
   "engines": {
     "node": ">=22"

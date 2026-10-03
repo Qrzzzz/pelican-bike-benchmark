@@ -257,6 +257,8 @@ npm run check
 npm run dev
 ```
 
+`npm run dev` 会先执行 `npm run build`，再预览 `dist/`。构建从作品索引生成主页卡片及精简筛选数据，将公共脚本打包，并派生 600px WebP 缩略图；原始截图、源码和校验元数据保持原样。修改站点或导入作品后，重新运行构建即可更新预览。`dist/` 是生成产物，无需提交。
+
 然后访问：
 
 ```text
@@ -265,7 +267,7 @@ http://127.0.0.1:4173/pelican-bike-benchmark/
 
 本地服务器也支持根路径，便于检查 GitHub Pages 子路径兼容性。
 
-页面会通过 `fetch` 读取作品和提示词 JSON，因此不要直接双击 HTML 文件进行完整功能测试。
+主页卡片和提示词随构建产物提供，详情与对比页仍会读取完整作品 JSON，因此请通过本地服务器进行完整功能测试。
 
 ## 🗃️ 项目结构
 
@@ -352,7 +354,7 @@ npm run check
 
 投稿 PR 还会运行单独的 `Submission contract`，限制普通投稿只能修改新增作品及对应索引，避免通过作品 PR 覆盖已有原始输出或夹带站点代码修改。
 
-合并到 `main` 后，GitHub Actions 会再次验证并发布 `site/` 到 GitHub Pages。
+合并到 `main` 后，GitHub Actions 会再次验证、构建，并发布 `dist/` 到 GitHub Pages。
 
 线上地址：
 
