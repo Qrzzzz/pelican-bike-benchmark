@@ -11,7 +11,7 @@ export async function buildSite({ source = resolve("site"), output = resolve("di
   await mkdir(output, { recursive: true });
   await cp(source, output, { recursive: true });
   const entries = JSON.parse(await readFile(join(source, "data/submissions.json"), "utf8"));
-  const prompt = JSON.parse(await readFile(join(source, "data/prompt.v1.json"), "utf8"));
+  const prompt = JSON.parse(await readFile(join(source, "data/prompt.v2.json"), "utf8"));
   const gallery = [];
   for (const entry of entries) {
     const { id, kind, title, description, modelProvider, model, version, parameters, cover, staticCheck } = entry;

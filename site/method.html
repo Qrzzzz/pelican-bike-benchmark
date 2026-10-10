@@ -71,7 +71,7 @@
           <section id="protocol">
             <h2>01 · 先固定输入，再观察输出。</h2>
             <p>
-              每个模型使用下方完全一致的 v1
+              新投稿的每个模型使用下方完全一致的 v2
               提示词，在新的对话中独立生成。模型版本、生成参数、日期、完整输入与原始输出一并记录。网站展示的是单次运行，不把单个结果等同于模型能力的整体排名。
             </p>
             <ol>
@@ -91,11 +91,11 @@
             </p>
           </section>
           <section id="prompt">
-            <h2>02 · 固定提示词 v1</h2>
+            <h2>02 · 固定提示词 v2</h2>
             <div class="actions">
               <button class="button primary" data-copy-prompt>
                 复制完整提示词 ⧉</button
-              ><a class="button" href="data/prompt.v1.json" download
+              ><a class="button" href="data/prompt.v2.json" download
                 >下载提示词 JSON ↓</a
               >
             </div>
@@ -103,7 +103,7 @@
             <p class="hash" id="prompt-hash"></p>
             <p>
               哈希以 JSON 中 text 字段的 UTF-8 字节计算，保留 LF
-              换行，不追加末尾换行。更改内容需新建提示词版本，不能静默替换 v1。
+              换行，不追加末尾换行。更改内容需新建提示词版本，不能静默替换既有版本。历史 v1 投稿保留原始输入；新投稿使用 v2。
             </p>
           </section>
           <section id="rubric">
@@ -249,8 +249,8 @@ npm run dev</pre>
       </div>
     </footer>
     <dialog class="dialog" id="prompt-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description">
-<div class="dialog-head"><div><div class="eyebrow">THE SHARED PROMPT · V1</div><h2 id="dialog-title">从同一句话开始。</h2></div><button class="icon-button" id="close-prompt" aria-label="关闭提示词" autofocus>×</button></div>
-<p id="dialog-description">以下是每个作品使用的完整提示词，可直接复制。</p>
+<div class="dialog-head"><div><div class="eyebrow">THE SHARED PROMPT · V2</div><h2 id="dialog-title">从同一句话开始。</h2></div><button class="icon-button" id="close-prompt" aria-label="关闭提示词" autofocus>×</button></div>
+<p id="dialog-description">以下是新投稿使用的完整提示词，可直接复制。历史作品的输入见各作品详情。</p>
 <div class="dialog-body" tabindex="0" role="region" aria-label="完整提示词"><pre id="dialog-prompt"></pre></div>
 <div class="dialog-footer"><details><summary>提示词校验信息</summary><p class="hash" id="dialog-hash"></p></details><button class="button primary" data-copy-prompt>复制完整提示词 <span aria-hidden="true">⧉</span></button><p id="dialog-status" role="status" aria-live="polite"></p></div>
 </dialog>

@@ -18,7 +18,7 @@
 ![Pages](https://github.com/Qrzzzz/pelican-bike-benchmark/actions/workflows/deploy-pages.yml/badge.svg)
 ![Node](https://img.shields.io/badge/Node.js-%3E%3D22-339933)
 ![Stack](https://img.shields.io/badge/Stack-Native%20HTML%20%2F%20CSS%20%2F%20JavaScript-0F766E)
-![Prompt](https://img.shields.io/badge/Prompt-v1-2563EB)
+![Prompt](https://img.shields.io/badge/Prompt-v2-2563EB)
 
 </div>
 
@@ -170,7 +170,7 @@ Pelican Bike Benchmark 是一个面向生成式 AI 前端能力的可复现实�
 
 ## 📐 测试协议
 
-当前正式批次使用固定的 `v1` 提示词。
+新投稿使用固定的 `v2` 提示词；历史 `v1` 投稿保留当时的完整输入，不追溯修改。
 
 提示词要求模型只输出一个完整 HTML 文件，不允许：
 
@@ -194,7 +194,7 @@ Pelican Bike Benchmark 是一个面向生成式 AI 前端能力的可复现实�
 固定输入原文件位于：
 
 ```text
-site/data/prompt.v1.json
+site/data/prompt.v2.json
 ```
 
 SHA-256 基于其中 `text` 字段的 UTF-8 原始字节计算，使用 LF 且无末尾换行。
@@ -280,7 +280,8 @@ pelican-bike-benchmark/
 │  ├─ method.html                 # 测试方法
 │  ├─ assets/                     # 站点样式、脚本与字体
 │  ├─ data/
-│  │  ├─ prompt.v1.json           # 固定提示词
+│  │  ├─ prompt.v1.json           # 历史提示词
+│  │  ├─ prompt.v2.json           # 当前固定提示词
 │  │  └─ submissions.json         # 作品索引
 │  └─ submissions/
 │     └─ <id>/

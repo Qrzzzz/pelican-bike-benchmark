@@ -5,15 +5,17 @@ import { parse } from "parse5";
 import { sha256, validateMeta, checkSource, makePreview } from "./lib.mjs";
 const root = "site";
 const prompt = JSON.parse(
-  await readFile(join(root, "data/prompt.v1.json"), "utf8"),
+  await readFile(join(root, "data/prompt.v2.json"), "utf8"),
 );
 assert.equal(prompt.sha256, sha256(prompt.text), "提示词哈希不一致");
+const historicalPrompt = JSON.parse(await readFile(join(root, "data/prompt.v1.json"), "utf8"));
+assert.equal(historicalPrompt.sha256, sha256(historicalPrompt.text), "历史提示词哈希不一致");
 const entries = JSON.parse(
   await readFile(join(root, "data/submissions.json"), "utf8"),
 );
 const ids = new Set();
 for (const entry of entries) {
-  validateMeta(entry, prompt);
+  validateMeta(entry, entry.promptVersion === historicalPrompt.version ? historicalPrompt : prompt);
   assert(!ids.has(entry.id), "重复的作品 id");
   ids.add(entry.id);
   const dir = join(root, "submissions", entry.id),
