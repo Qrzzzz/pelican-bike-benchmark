@@ -22,7 +22,7 @@ async function importUnlocked({
   root = resolve("site"),
 }) {
   const prompt = JSON.parse(
-    await readFile(join(root, "data/prompt.v1.json"), "utf8"),
+    await readFile(join(root, "data/prompt.v2.json"), "utf8"),
   );
   const meta = JSON.parse(await readFile(metaPath, "utf8"));
   validateMeta(meta, prompt);

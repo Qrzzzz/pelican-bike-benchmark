@@ -690,7 +690,7 @@ async function entry() {
 }
 $("#copy-commands")?.addEventListener("click", () => copy($("#method-commands").textContent));
 const page = document.body.dataset.page;
-const promptTask = initialData("initial-prompt", "data/prompt.v1.json").then((value) => {
+const promptTask = initialData("initial-prompt", "data/prompt.v2.json").then((value) => {
   if (typeof value.text !== "string" || typeof value.sha256 !== "string") throw new Error("Invalid prompt");
   prompt = value;
   $("#dialog-prompt").textContent = prompt.text;

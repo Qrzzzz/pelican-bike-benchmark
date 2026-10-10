@@ -144,7 +144,7 @@ export function validateMeta(meta, prompt) {
   )
     throw new Error("generatedAt 必须是有效的 YYYY-MM-DD 日期");
   if (meta.promptVersion !== prompt.version || meta.input !== prompt.text)
-    throw new Error("完整输入必须与固定提示词 v1 完全相同");
+    throw new Error(`完整输入必须与固定提示词 ${prompt.version} 完全相同`);
   if (
     !meta.parameters ||
     typeof meta.parameters !== "object" ||

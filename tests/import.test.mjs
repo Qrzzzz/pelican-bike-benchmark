@@ -5,14 +5,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { checkSource, makePreview, sha256 } from "../scripts/lib.mjs";
 import { importEntry } from "../scripts/import.mjs";
-const prompt = JSON.parse(await readFile("site/data/prompt.v1.json", "utf8"));
+const prompt = JSON.parse(await readFile("site/data/prompt.v2.json", "utf8"));
 const source =
   '<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><style>body{color:teal}</style></head><body><h1>Pelican</h1><script>document.body.dataset.ready="true";</script></body></html>';
 async function fixture(overrides = {}) {
   const root = await mkdtemp(join(tmpdir(), "pelican-import-test-"));
   await mkdir(join(root, "data"));
   await mkdir(join(root, "submissions"));
-  await writeFile(join(root, "data/prompt.v1.json"), JSON.stringify(prompt));
+  await writeFile(join(root, "data/prompt.v2.json"), JSON.stringify(prompt));
   await writeFile(join(root, "data/submissions.json"), "[]");
   const meta = {
     id: "test-run",
@@ -24,7 +24,7 @@ async function fixture(overrides = {}) {
     version: "test-version",
     generatedAt: "2026-09-12",
     input: prompt.text,
-    promptVersion: "v1",
+    promptVersion: prompt.version,
     parameters: { temperature: "未记录" },
     ...overrides,
   };
@@ -228,4 +228,10 @@ test("允许本地 SVG 动画，拒绝动画修改资源引用", () => {
       ),
     ).passed,
   );
+});
+
+test("新投稿拒绝历史 v1 提示词", async () => {
+  const historical = JSON.parse(await readFile("site/data/prompt.v1.json", "utf8"));
+  const fixtureData = await fixture({ promptVersion: historical.version, input: historical.text });
+  await assert.rejects(importEntry(fixtureData), /完整输入必须与固定提示词 v2 完全相同/);
 });

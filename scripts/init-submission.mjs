@@ -3,7 +3,7 @@ import { safeId } from "./lib.mjs";
 const id = process.argv[2];
 if (!safeId(id)) throw new Error("用法：npm run submission:init -- model-effort-yyyymmdd-run01");
 const meta = JSON.parse(await readFile("site/data/submission.template.json", "utf8"));
-const prompt = JSON.parse(await readFile("site/data/prompt.v1.json", "utf8"));
+const prompt = JSON.parse(await readFile("site/data/prompt.v2.json", "utf8"));
 meta.id = id;
 meta.input = prompt.text;
 meta.promptVersion = prompt.version;
