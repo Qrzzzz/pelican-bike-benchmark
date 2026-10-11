@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grok-build-0-1-unknown</title>
+<style>
+:root {
+  --bg: #eceff1;
+  --card: #ffffff;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  color: #37474f;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 12px;
+}
+.scene {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+.header {
+  padding: 10px 16px 4px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: #607d8b;
+  user-select: none;
+}
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 78vh;
+  touch-action: none;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px 16px;
+  background: var(--card);
+}
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid #b0bec5;
+  border-radius: 999px;
+  background: #fff;
+  color: #37474f;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+button:hover {
+  background: #f5f7fa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+button:active {
+  transform: scale(0.985);
+}
+button:focus-visible {
+  outline: 2px solid #4fc3f7;
+  outline-offset: 2px;
+}
+.hint {
+  font-size: 11px;
+  color: #90a4ae;
+  user-select: none;
+}
+@media (max-width: 640px) {
+  .header { font-size: 11px; padding: 8px 12px 2px; }
+  button { padding: 10px 18px; font-size: 14px; }
+  .hint { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="header">鹈鹕骑行 · 向前</div>
+  <svg id="scene" viewBox="0 0 1200 800" width="1200" height="800" aria-label="一只鹈鹕骑自行车前进的插画场景">
+    <defs>
+      <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#b3e5fc"/>
+        <stop offset="100%" stop-color="#4fc3f7"/>
+      </linearGradient>
+      <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#455a64"/>
+        <stop offset="100%" stop-color="#37474f"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Sky -->
+    <rect x="0" y="0" width="1200" height="430" fill="url(#skyGrad)"/>
+
+    <!-- Sun -->
+    <circle cx="1020" cy="140" r="48" fill="#ffe082"/>
+
+    <!-- Clouds -->
+    <g id="cloud1">
+      <ellipse cx="220" cy="118" rx="68" ry="26" fill="#e1f5fe" opacity="0.85"/>
+      <ellipse cx="270" cy="112" rx="46" ry="21" fill="#e1f5fe" opacity="0.85"/>
+      <ellipse cx="170" cy="125" rx="32" ry="16" fill="#e1f5fe" opacity="0.85"/>
+    </g>
+    <g id="cloud2">
+      <ellipse cx="780" cy="82" rx="82" ry="24" fill="#e1f5fe" opacity="0.75"/>
+      <ellipse cx="850" cy="78" rx="42" ry="19" fill="#e1f5fe" opacity="0.75"/>
+      <ellipse cx="720" cy="90" rx="35" ry="15" fill="#e1f5fe" opacity="0.75"/>
+    </g>
+
+    <!-- Distant hills -->
+    <path d="M0,310 Q180,265 310,295 Q480,240 620,280 Q780,255 920,295 Q1100,265 1200,300 L1200,430 L0,430 Z" fill="#81c784" opacity="0.55"/>
+    <path d="M0,340 Q150,305 290,330 Q460,295 620,325 Q850,300 1200,335 L1200,430 L0,430 Z" fill="#66bb6a" opacity="0.4"/>
+
+    <!-- Grass verge -->
+    <rect x="0" y="400" width="1200" height="38" fill="#43a047"/>
+
+    <!-- Road -->
+    <rect x="0" y="425" width="1200" height="375" fill="url(#roadGrad)"/>
+    <rect x="0" y="425" width="1200" height="6" fill="#546e7a"/>
+
+    <!-- Road center dashes -->
+    <g id="road-dashes">
+      <rect x="60" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="220" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="380" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="540" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="700" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="860" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="1020" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+      <rect x="1180" y="598" width="58" height="6" rx="1" fill="#eceff1"/>
+    </g>
+
+    <!-- Side grass tufts / bushes (parallax) -->
+    <g id="bush1">
+      <circle cx="95" cy="605" r="11" fill="#2e7d32"/>
+      <circle cx="112" cy="600" r="14" fill="#388e3c"/>
+      <circle cx="125" cy="609" r="9" fill="#43a047"/>
+    </g>
+    <g id="bush2">
+      <circle cx="410" cy="610" r="10" fill="#2e7d32"/>
+      <circle cx="426" cy="603" r="13" fill="#388e3c"/>
+      <circle cx="442" cy="611" r="8" fill="#43a047"/>
+    </g>
+    <g id="bush3">
+      <circle cx="990" cy="607" r="12" fill="#2e7d32"/>
+      <circle cx="1008" cy="600" r="15" fill="#388e3c"/>
+      <circle cx="1023" cy="610" r="9" fill="#43a047"/>
+    </g>
+
+    <!-- Bicycle frame -->
+    <g id="bike-frame">
+      <!-- Rear to BB -->
+      <line x1="360" y1="562" x2="510" y2="568" stroke="#1565c0" stroke-width="11" stroke-linecap="round"/>
+      <!-- BB to front -->
+      <line x1="510" y1="568" x2="720" y2="562" stroke="#1565c0" stroke-width="11" stroke-linecap="round"/>
+      <!-- Seat tube -->
+      <line x1="510" y1="568" x2="475" y2="455" stroke="#1565c0" stroke-width="8" stroke-linecap="round"/>
+      <!-- Top tube -->
+      <line x1="475" y1="455" x2="625" y2="448" stroke="#1565c0" stroke-width="7" stroke-linecap="round"/>
+      <!-- Head tube / fork upper -->
+      <line x1="625" y1="448" x2="650" y2="505" stroke="#1565c0" stroke-width="8" stroke-linecap="round"/>
+      <!-- Fork -->
+      <line x1="650" y1="505" x2="720" y2="562" stroke="#1565c0" stroke-width="7" stroke-linecap="round"/>
+      <!-- Down tube hint -->
+      <line x1="510" y1="568" x2="640" y2="505" stroke="#0d47a1" stroke-width="6" stroke-linecap="round"/>
+      <!-- Saddle -->
+      <path d="M460,452 Q475,443 515,447 Q520,455 465,458 Z" fill="#263238"/>
+      <!-- Handlebar stem -->
+      <line x1="625" y1="448" x2="625" y2="432" stroke="#1565c0" stroke-width="6" stroke-linecap="round"/>
+      <!-- Handlebar -->
+      <line x1="595" y1="430" x2="680" y2="424" stroke="#37474f" stroke-width="9" stroke-linecap="round"/>
+      <!-- Grips -->
+      <line x1="595" y1="430" x2="580" y2="428" stroke="#455a64" stroke-width="5" stroke-linecap="round"/>
+      <line x1="680" y1="424" x2="695" y2="422" stroke="#455a64" stroke-width="5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Rear wheel -->
+    <g id="rear-wheel" transform="translate(360 562)">
+      <circle cx="0" cy="0" r="58" fill="#212121"/>
+      <circle cx="0" cy="0" r="48" fill="#455a64" stroke="#37474f" stroke-width="3"/>
+      <g id="rear-spokes">
+        <line x1="0" y1="0" x2="46" y2="0" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="23" y2="-39.8" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-23" y2="-39.8" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-46" y2="0" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-23" y2="39.8" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="23" y2="39.8" stroke="#78909c" stroke-width="3"/>
+      </g>
+      <circle cx="0" cy="0" r="7" fill="#90a4ae"/>
+      <circle cx="0" cy="0" r="58" fill="none" stroke="#111" stroke-width="4"/>
+    </g>
+
+    <!-- Front wheel -->
+    <g id="front-wheel" transform="translate(720 562)">
+      <circle cx="0" cy="0" r="58" fill="#212121"/>
+      <circle cx="0" cy="0" r="48" fill="#455a64" stroke="#37474f" stroke-width="3"/>
+      <g id="front-spokes">
+        <line x1="0" y1="0" x2="46" y2="0" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="23" y2="-39.8" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-23" y2="-39.8" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-46" y2="0" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="-23" y2="39.8" stroke="#78909c" stroke-width="3"/>
+        <line x1="0" y1="0" x2="23" y2="39.8" stroke="#78909c" stroke-width="3"/>
+      </g>
+      <circle cx="0" cy="0" r="7" fill="#90a4ae"/>
+      <circle cx="0" cy="0" r="58" fill="none" stroke="#111" stroke-width="4"/>
+    </g>
+
+    <!-- Crank and pedal -->
+    <g id="crank">
+      <line id="crank-arm" x1="510" y1="568" x2="535" y2="545" stroke="#455a64" stroke-width="5" stroke-linecap="round"/>
+      <rect id="pedal" x="520" y="542" width="30" height="6" rx="1.5" fill="#607d8b"/>
+    </g>
+
+    <!-- Pelican -->
+    <g id="pelican">
+      <!-- Body group (bobbed) -->
+      <g id="body-group">
+        <!-- Body -->
+        <ellipse id="body" cx="505" cy="385" rx="78" ry="52" fill="#fafafa" stroke="#e0e0e0" stroke-width="3"/>
+        <!-- Tail -->
+        <path id="tail" d="M428,395 Q395,415 405,455 Q428,432 445,400" fill="#eeeeee" stroke="#e0e0e0" stroke-width="2"/>
+        <!-- Wing (polygon, animated) -->
+        <polygon id="wing" points="535,372 592,358 625,388 598,418 535,395" fill="#e8e8e8" stroke="#cfcfcf" stroke-width="2"/>
+      </g>
+
+      <!-- Neck -->
+      <path id="neck" d="M555,355 Q580,342 600,345" fill="none" stroke="#f0f0f0" stroke-width="23" stroke-linecap="round"/>
+
+      <!-- Head group (bobbed) -->
+      <g id="head-group">
+        <!-- Head -->
+        <circle id="head" cx="615" cy="338" r="20" fill="#fafafa" stroke="#e0e0e0" stroke-width="2"/>
+        <!-- Eye -->
+        <circle id="eye" cx="625" cy="333" r="6" fill="#222222"/>
+        <circle cx="627" cy="332" r="2" fill="#ffffff"/>
+        <!-- Upper beak -->
+        <path id="beak-upper" d="M632,336 L728,340" fill="none" stroke="#ffb300" stroke-width="9" stroke-linecap="round"/>
+        <!-- Lower beak -->
+        <path id="beak-lower" d="M632,341 L722,347" fill="none" stroke="#ffb300" stroke-width="7" stroke-linecap="round"/>
+        <!-- Pouch -->
+        <path id="pouch" d="M645,348 Q682,372 718,352" fill="none" stroke="#ff8f00" stroke-width="15" stroke-linecap="round" opacity="0.92"/>
+      </g>
+
+      <!-- Legs -->
+      <line id="leg-upper" x1="485" y1="430" x2="510" y2="510" stroke="#ffb300" stroke-width="8" stroke-linecap="round"/>
+      <line id="leg-lower" x1="510" y1="510" x2="525" y2="545" stroke="#ffb300" stroke-width="6.5" stroke-linecap="round"/>
+      <!-- Foot -->
+      <ellipse id="foot" cx="525" cy="548" rx="9" ry="3.5" fill="#ffb300"/>
+    </g>
+  </svg>
+
+  <div class="controls">
+    <button id="toggle-btn" aria-label="切换动画播放暂停" aria-pressed="true">
+      <span id="btn-icon">⏸</span>
+      <span id="btn-text">暂停</span>
+    </button>
+    <span class="hint">空格键切换</span>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const svg = document.getElementById('scene');
+  const btn = document.getElementById('toggle-btn');
+  const btnIcon = document.getElementById('btn-icon');
+  const btnText = document.getElementById('btn-text');
+
+  // Elements
+  const rearSpokes = document.getElementById('rear-spokes');
+  const frontSpokes = document.getElementById('front-spokes');
+  const crankArm = document.getElementById('crank-arm');
+  const pedal = document.getElementById('pedal');
+  const body = document.getElementById('body');
+  const tail = document.getElementById('tail');
+  const wing = document.getElementById('wing');
+  const neck = document.getElementById('neck');
+  const head = document.getElementById('head');
+  const eye = document.getElementById('eye');
+  const beakUpper = document.getElementById('beak-upper');
+  const beakLower = document.getElementById('beak-lower');
+  const pouch = document.getElementById('pouch');
+  const legUpper = document.getElementById('leg-upper');
+  const legLower = document.getElementById('leg-lower');
+  const foot = document.getElementById('foot');
+
+  const roadDashes = Array.from(document.querySelectorAll('#road-dashes rect'));
+  const bush1 = document.getElementById('bush1');
+  const bush2 = document.getElementById('bush2');
+  const bush3 = document.getElementById('bush3');
+  const cloud1 = document.getElementById('cloud1');
+  const cloud2 = document.getElementById('cloud2');
+
+  // Base positions
+  const BBX = 510, BBY = 568;
+  const CRANK_R = 30;
+  const REAR_X = 360, REAR_Y = 562;
+  const FRONT_X = 720, FRONT_Y = 562;
+  const HIP_X = 485, HIP_BASE_Y = 430;
+  const BODY_BASE_Y = 385;
+  const HEAD_BASE_Y = 338;
+  const PIVOT_X = 540, PIVOT_BASE_Y = 395;
+
+  // Road dash bases
+  const dashBases = roadDashes.map(r => parseFloat(r.getAttribute('x')));
+  const PERIOD = 200;
+  const WRAP = 1400;
+
+  // Bush bases
+  let bushBases = [
+    {g: bush1, base: 95, factor: 0.32},
+    {g: bush2, base: 410, factor: 0.32},
+    {g: bush3, base: 990, factor: 0.32}
+  ];
+  const bushWrap = 1250;
+
+  // Cloud bases
+  let cloudData = [
+    {g: cloud1, base: 220, factor: 0.06},
+    {g: cloud2, base: 780, factor: 0.06}
+  ];
+  const cloudWrap = 1350;
+
+  // State
+  let playing = true;
+  let angle = 12; // deg
+  let lastTime = performance.now();
+
+  function rotatePoint(px, py, cx, cy, deg) {
+    const rad = deg * Math.PI / 180;
+    const dx = px - cx;
+    const dy = py - cy;
+    // clockwise to match SVG rotate
+    return [
+      cx + dx * Math.cos(rad) + dy * Math.sin(rad),
+      cy - dx * Math.sin(rad) + dy * Math.cos(rad)
+    ];
+  }
+
+  function updateScene() {
+    const rad = angle * Math.PI / 180;
+    const speedFactor = 0.96;
+
+    // Wheel spokes rotation (clockwise)
+    const rot = `rotate(${angle} 0 0)`;
+    rearSpokes.setAttribute('transform', rot);
+    frontSpokes.setAttribute('transform', rot);
+
+    // Pedal / crank position
+    const pedalX = BBX + CRANK_R * Math.sin(rad);
+    const pedalY = BBY + CRANK_R * Math.cos(rad) * 0.92;
+
+    crankArm.setAttribute('x2', pedalX);
+    crankArm.setAttribute('y2', pedalY);
+    pedal.setAttribute('x', pedalX - 15);
+    pedal.setAttribute('y', pedalY - 3);
+
+    // Bob & flap
+    const bob = Math.sin(rad * 1.15) * 3.6;
+    const headBob = Math.sin(rad * 2.4) * 1.8;
+    const flap = Math.sin(rad * 3.6) * 16;
+
+    // Body bob
+    body.setAttribute('cy', BODY_BASE_Y + bob);
+
+    // Tail bob
+    const tY = bob * 0.85;
+    tail.setAttribute('d', `M428,${395 + tY} Q395,${415 + tY} 405,${455 + tY} Q428,${432 + tY} 445,${400 + tY}`);
+
+    // Wing: shift + rotate points
+    const wBob = bob * 0.55;
+    const wPivotY = PIVOT_BASE_Y + wBob;
+    let wPts = [
+      [535, 372 + wBob],
+      [592, 358 + wBob],
+      [625, 388 + wBob],
+      [598, 418 + wBob],
+      [535, 395 + wBob]
+    ];
+    const rotated = wPts.map(p => rotatePoint(p[0], p[1], PIVOT_X, wPivotY, flap));
+    wing.setAttribute('points', rotated.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
+
+    // Neck
+    const neckStartY = 355 + bob;
+    const neckEndY = 338 + headBob;
+    neck.setAttribute('d', `M555,${neckStartY.toFixed(1)} Q580,${((neckStartY + neckEndY) / 2 - 4).toFixed(1)} 600,${neckEndY.toFixed(1)}`);
+
+    // Head & face
+    head.setAttribute('cy', HEAD_BASE_Y + headBob);
+    eye.setAttribute('cy', 333 + headBob);
+
+    const hb = headBob;
+    beakUpper.setAttribute('d', `M632,${(336 + hb).toFixed(1)} L728,${(340 + hb).toFixed(1)}`);
+    beakLower.setAttribute('d', `M632,${(341 + hb).toFixed(1)} L722,${(347 + hb).toFixed(1)}`);
+
+    // Pouch swing
+    const pouchSwing = Math.sin(rad * 1.7) * 4.5;
+    const pY = 348 + hb;
+    pouch.setAttribute('d', `M645,${pY.toFixed(1)} Q${(682 + pouchSwing * 0.3).toFixed(1)},${(372 + pouchSwing).toFixed(1)} 718,${(352 + hb * 0.6).toFixed(1)}`);
+
+    // Legs (simple IK approximation)
+    const hipY = HIP_BASE_Y + bob;
+    const footX = pedalX + 2;
+    const footY = pedalY + 4;
+
+    // 2-segment leg approx
+    const L1 = 52, L2 = 48;
+    const dx = footX - HIP_X;
+    const dy = footY - hipY;
+    const dist = Math.hypot(dx, dy) || 0.001;
+    let kx, ky;
+
+    if (dist >= L1 + L2) {
+      const r = L1 / (L1 + L2);
+      kx = HIP_X + dx * r;
+      ky = hipY + dy * r;
+    } else {
+      const cosA = (L1 * L1 + dist * dist - L2 * L2) / (2 * L1 * dist);
+      const a = Math.acos(Math.max(-1, Math.min(1, cosA)));
+      const baseA = Math.atan2(dy, dx);
+      const kneeA = baseA - a;
+      kx = HIP_X + L1 * Math.cos(kneeA);
+      ky = hipY + L1 * Math.sin(kneeA);
+    }
+
+    legUpper.setAttribute('x1', HIP_X);
+    legUpper.setAttribute('y1', hipY);
+    legUpper.setAttribute('x2', kx);
+    legUpper.setAttribute('y2', ky);
+
+    legLower.setAttribute('x1', kx);
+    legLower.setAttribute('y1', ky);
+    legLower.setAttribute('x2', footX);
+    legLower.setAttribute('y2', footY);
+
+    foot.setAttribute('cx', footX);
+    foot.setAttribute('cy', footY);
+
+    // Road dashes
+    const roadOffset = angle * speedFactor;
+    for (let i = 0; i < roadDashes.length; i++) {
+      let x = dashBases[i] - roadOffset;
+      x = ((x % WRAP) + WRAP) % WRAP;
+      roadDashes[i].setAttribute('x', x);
+    }
+
+    // Bushes (parallax)
+    for (let i = 0; i < bushBases.length; i++) {
+      const b = bushBases[i];
+      let bx = b.base - (roadOffset * b.factor);
+      bx = ((bx % bushWrap) + bushWrap) % bushWrap;
+      const circles = b.g.querySelectorAll('circle');
+      const dx = bx - b.base;
+      circles.forEach(c => {
+        const baseCx = parseFloat(c.getAttribute('data-base') || c.getAttribute('cx'));
+        if (!c.hasAttribute('data-base')) c.setAttribute('data-base', baseCx);
+        c.setAttribute('cx', baseCx + dx);
+      });
+    }
+
+    // Clouds (slow)
+    for (let i = 0; i < cloudData.length; i++) {
+      const c = cloudData[i];
+      let cx = c.base - (roadOffset * c.factor);
+      cx = ((cx % cloudWrap) + cloudWrap) % cloudWrap;
+      const dx = cx - c.base;
+      const ells = c.g.querySelectorAll('ellipse');
+      ells.forEach(e => {
+        const baseCx = parseFloat(e.getAttribute('data-base') || e.getAttribute('cx'));
+        if (!e.hasAttribute('data-base')) e.setAttribute('data-base', baseCx);
+        e.setAttribute('cx', baseCx + dx);
+      });
+    }
+  }
+
+  function togglePlay() {
+    playing = !playing;
+    if (playing) {
+      lastTime = performance.now();
+      btnIcon.textContent = '⏸';
+      btnText.textContent = '暂停';
+      btn.setAttribute('aria-pressed', 'true');
+    } else {
+      btnIcon.textContent = '▶';
+      btnText.textContent = '播放';
+      btn.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  btn.addEventListener('click', togglePlay);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Space') {
+      e.preventDefault();
+      togglePlay();
+    }
+  });
+
+  // Reduced motion
+  const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduceMQ.matches) {
+    playing = false;
+    btnIcon.textContent = '▶';
+    btnText.textContent = '播放';
+    btn.setAttribute('aria-pressed', 'false');
+  }
+
+  reduceMQ.addEventListener('change', function() {
+    if (reduceMQ.matches && playing) {
+      playing = false;
+      btnIcon.textContent = '▶';
+      btnText.textContent = '播放';
+      btn.setAttribute('aria-pressed', 'false');
+    }
+  });
+
+  // Main loop
+  function loop(now) {
+    if (playing) {
+      const dt = now - lastTime;
+      lastTime = now;
+      angle = (angle + dt * 0.185) % 360;
+      updateScene();
+    } else {
+      lastTime = now;
+    }
+    requestAnimationFrame(loop);
+  }
+
+  // Boot
+  updateScene();
+  lastTime = performance.now();
+  requestAnimationFrame(loop);
+
+  // Initial button state
+  if (playing) {
+    btnIcon.textContent = '⏸';
+    btnText.textContent = '暂停';
+    btn.setAttribute('aria-pressed', 'true');
+  } else {
+    btnIcon.textContent = '▶';
+    btnText.textContent = '播放';
+    btn.setAttribute('aria-pressed', 'false');
+  }
+
+  // Keyboard focus hint for button
+  btn.setAttribute('tabindex', '0');
+})();
+</script>
+</body>
+</html>

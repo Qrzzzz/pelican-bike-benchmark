@@ -1,0 +1,578 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>grok-build-0-1-unknown · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="grok-build-0-1-unknown" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;grok-build-0-1-unknown&lt;/title&gt;
+&lt;style&gt;
+:root {
+  --bg: #eceff1;
+  --card: #ffffff;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  font-family: system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, sans-serif;
+  overflow-x: hidden;
+  color: #37474f;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 12px;
+}
+.scene {
+  width: 100%;
+  max-width: 1200px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+.header {
+  padding: 10px 16px 4px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: #607d8b;
+  user-select: none;
+}
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 78vh;
+  touch-action: none;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px 16px;
+  background: var(--card);
+}
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid #b0bec5;
+  border-radius: 999px;
+  background: #fff;
+  color: #37474f;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+button:hover {
+  background: #f5f7fa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+button:active {
+  transform: scale(0.985);
+}
+button:focus-visible {
+  outline: 2px solid #4fc3f7;
+  outline-offset: 2px;
+}
+.hint {
+  font-size: 11px;
+  color: #90a4ae;
+  user-select: none;
+}
+@media (max-width: 640px) {
+  .header { font-size: 11px; padding: 8px 12px 2px; }
+  button { padding: 10px 18px; font-size: 14px; }
+  .hint { display: none; }
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;scene&quot;&gt;
+  &lt;div class=&quot;header&quot;&gt;鹈鹕骑行 · 向前&lt;/div&gt;
+  &lt;svg id=&quot;scene&quot; viewBox=&quot;0 0 1200 800&quot; width=&quot;1200&quot; height=&quot;800&quot; aria-label=&quot;一只鹈鹕骑自行车前进的插画场景&quot;&gt;
+    &lt;defs&gt;
+      &lt;linearGradient id=&quot;skyGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0%&quot; stop-color=&quot;#b3e5fc&quot;/&gt;
+        &lt;stop offset=&quot;100%&quot; stop-color=&quot;#4fc3f7&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;roadGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0%&quot; stop-color=&quot;#455a64&quot;/&gt;
+        &lt;stop offset=&quot;100%&quot; stop-color=&quot;#37474f&quot;/&gt;
+      &lt;/linearGradient&gt;
+    &lt;/defs&gt;
+
+    &lt;!-- Sky --&gt;
+    &lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;1200&quot; height=&quot;430&quot; fill=&quot;url(#skyGrad)&quot;/&gt;
+
+    &lt;!-- Sun --&gt;
+    &lt;circle cx=&quot;1020&quot; cy=&quot;140&quot; r=&quot;48&quot; fill=&quot;#ffe082&quot;/&gt;
+
+    &lt;!-- Clouds --&gt;
+    &lt;g id=&quot;cloud1&quot;&gt;
+      &lt;ellipse cx=&quot;220&quot; cy=&quot;118&quot; rx=&quot;68&quot; ry=&quot;26&quot; fill=&quot;#e1f5fe&quot; opacity=&quot;0.85&quot;/&gt;
+      &lt;ellipse cx=&quot;270&quot; cy=&quot;112&quot; rx=&quot;46&quot; ry=&quot;21&quot; fill=&quot;#e1f5fe&quot; opacity=&quot;0.85&quot;/&gt;
+      &lt;ellipse cx=&quot;170&quot; cy=&quot;125&quot; rx=&quot;32&quot; ry=&quot;16&quot; fill=&quot;#e1f5fe&quot; opacity=&quot;0.85&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g id=&quot;cloud2&quot;&gt;
+      &lt;ellipse cx=&quot;780&quot; cy=&quot;82&quot; rx=&quot;82&quot; ry=&quot;24&quot; fill=&quot;#e1f5fe&quot; opacity=&quot;0.75&quot;/&gt;
+      &lt;ellipse cx=&quot;850&quot; cy=&quot;78&quot; rx=&quot;42&quot; ry=&quot;19&quot; fill=&quot;#e1f5fe&quot; opacity=&quot;0.75&quot;/&gt;
+      &lt;ellipse cx=&quot;720&quot; cy=&quot;90&quot; rx=&quot;35&quot; ry=&quot;15&quot; fill=&quot;#e1f5fe&quot; opacity=&quot;0.75&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Distant hills --&gt;
+    &lt;path d=&quot;M0,310 Q180,265 310,295 Q480,240 620,280 Q780,255 920,295 Q1100,265 1200,300 L1200,430 L0,430 Z&quot; fill=&quot;#81c784&quot; opacity=&quot;0.55&quot;/&gt;
+    &lt;path d=&quot;M0,340 Q150,305 290,330 Q460,295 620,325 Q850,300 1200,335 L1200,430 L0,430 Z&quot; fill=&quot;#66bb6a&quot; opacity=&quot;0.4&quot;/&gt;
+
+    &lt;!-- Grass verge --&gt;
+    &lt;rect x=&quot;0&quot; y=&quot;400&quot; width=&quot;1200&quot; height=&quot;38&quot; fill=&quot;#43a047&quot;/&gt;
+
+    &lt;!-- Road --&gt;
+    &lt;rect x=&quot;0&quot; y=&quot;425&quot; width=&quot;1200&quot; height=&quot;375&quot; fill=&quot;url(#roadGrad)&quot;/&gt;
+    &lt;rect x=&quot;0&quot; y=&quot;425&quot; width=&quot;1200&quot; height=&quot;6&quot; fill=&quot;#546e7a&quot;/&gt;
+
+    &lt;!-- Road center dashes --&gt;
+    &lt;g id=&quot;road-dashes&quot;&gt;
+      &lt;rect x=&quot;60&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;220&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;380&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;540&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;700&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;860&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;1020&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+      &lt;rect x=&quot;1180&quot; y=&quot;598&quot; width=&quot;58&quot; height=&quot;6&quot; rx=&quot;1&quot; fill=&quot;#eceff1&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Side grass tufts / bushes (parallax) --&gt;
+    &lt;g id=&quot;bush1&quot;&gt;
+      &lt;circle cx=&quot;95&quot; cy=&quot;605&quot; r=&quot;11&quot; fill=&quot;#2e7d32&quot;/&gt;
+      &lt;circle cx=&quot;112&quot; cy=&quot;600&quot; r=&quot;14&quot; fill=&quot;#388e3c&quot;/&gt;
+      &lt;circle cx=&quot;125&quot; cy=&quot;609&quot; r=&quot;9&quot; fill=&quot;#43a047&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g id=&quot;bush2&quot;&gt;
+      &lt;circle cx=&quot;410&quot; cy=&quot;610&quot; r=&quot;10&quot; fill=&quot;#2e7d32&quot;/&gt;
+      &lt;circle cx=&quot;426&quot; cy=&quot;603&quot; r=&quot;13&quot; fill=&quot;#388e3c&quot;/&gt;
+      &lt;circle cx=&quot;442&quot; cy=&quot;611&quot; r=&quot;8&quot; fill=&quot;#43a047&quot;/&gt;
+    &lt;/g&gt;
+    &lt;g id=&quot;bush3&quot;&gt;
+      &lt;circle cx=&quot;990&quot; cy=&quot;607&quot; r=&quot;12&quot; fill=&quot;#2e7d32&quot;/&gt;
+      &lt;circle cx=&quot;1008&quot; cy=&quot;600&quot; r=&quot;15&quot; fill=&quot;#388e3c&quot;/&gt;
+      &lt;circle cx=&quot;1023&quot; cy=&quot;610&quot; r=&quot;9&quot; fill=&quot;#43a047&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Bicycle frame --&gt;
+    &lt;g id=&quot;bike-frame&quot;&gt;
+      &lt;!-- Rear to BB --&gt;
+      &lt;line x1=&quot;360&quot; y1=&quot;562&quot; x2=&quot;510&quot; y2=&quot;568&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- BB to front --&gt;
+      &lt;line x1=&quot;510&quot; y1=&quot;568&quot; x2=&quot;720&quot; y2=&quot;562&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;11&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Seat tube --&gt;
+      &lt;line x1=&quot;510&quot; y1=&quot;568&quot; x2=&quot;475&quot; y2=&quot;455&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;8&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Top tube --&gt;
+      &lt;line x1=&quot;475&quot; y1=&quot;455&quot; x2=&quot;625&quot; y2=&quot;448&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Head tube / fork upper --&gt;
+      &lt;line x1=&quot;625&quot; y1=&quot;448&quot; x2=&quot;650&quot; y2=&quot;505&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;8&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Fork --&gt;
+      &lt;line x1=&quot;650&quot; y1=&quot;505&quot; x2=&quot;720&quot; y2=&quot;562&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Down tube hint --&gt;
+      &lt;line x1=&quot;510&quot; y1=&quot;568&quot; x2=&quot;640&quot; y2=&quot;505&quot; stroke=&quot;#0d47a1&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Saddle --&gt;
+      &lt;path d=&quot;M460,452 Q475,443 515,447 Q520,455 465,458 Z&quot; fill=&quot;#263238&quot;/&gt;
+      &lt;!-- Handlebar stem --&gt;
+      &lt;line x1=&quot;625&quot; y1=&quot;448&quot; x2=&quot;625&quot; y2=&quot;432&quot; stroke=&quot;#1565c0&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Handlebar --&gt;
+      &lt;line x1=&quot;595&quot; y1=&quot;430&quot; x2=&quot;680&quot; y2=&quot;424&quot; stroke=&quot;#37474f&quot; stroke-width=&quot;9&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Grips --&gt;
+      &lt;line x1=&quot;595&quot; y1=&quot;430&quot; x2=&quot;580&quot; y2=&quot;428&quot; stroke=&quot;#455a64&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;line x1=&quot;680&quot; y1=&quot;424&quot; x2=&quot;695&quot; y2=&quot;422&quot; stroke=&quot;#455a64&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Rear wheel --&gt;
+    &lt;g id=&quot;rear-wheel&quot; transform=&quot;translate(360 562)&quot;&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;58&quot; fill=&quot;#212121&quot;/&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;48&quot; fill=&quot;#455a64&quot; stroke=&quot;#37474f&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;g id=&quot;rear-spokes&quot;&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;46&quot; y2=&quot;0&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;23&quot; y2=&quot;-39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;-23&quot; y2=&quot;-39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;-46&quot; y2=&quot;0&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;-23&quot; y2=&quot;39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;23&quot; y2=&quot;39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;/g&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;7&quot; fill=&quot;#90a4ae&quot;/&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;58&quot; fill=&quot;none&quot; stroke=&quot;#111&quot; stroke-width=&quot;4&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Front wheel --&gt;
+    &lt;g id=&quot;front-wheel&quot; transform=&quot;translate(720 562)&quot;&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;58&quot; fill=&quot;#212121&quot;/&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;48&quot; fill=&quot;#455a64&quot; stroke=&quot;#37474f&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;g id=&quot;front-spokes&quot;&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;46&quot; y2=&quot;0&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;23&quot; y2=&quot;-39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;-23&quot; y2=&quot;-39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;-46&quot; y2=&quot;0&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;-23&quot; y2=&quot;39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;23&quot; y2=&quot;39.8&quot; stroke=&quot;#78909c&quot; stroke-width=&quot;3&quot;/&gt;
+      &lt;/g&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;7&quot; fill=&quot;#90a4ae&quot;/&gt;
+      &lt;circle cx=&quot;0&quot; cy=&quot;0&quot; r=&quot;58&quot; fill=&quot;none&quot; stroke=&quot;#111&quot; stroke-width=&quot;4&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Crank and pedal --&gt;
+    &lt;g id=&quot;crank&quot;&gt;
+      &lt;line id=&quot;crank-arm&quot; x1=&quot;510&quot; y1=&quot;568&quot; x2=&quot;535&quot; y2=&quot;545&quot; stroke=&quot;#455a64&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;rect id=&quot;pedal&quot; x=&quot;520&quot; y=&quot;542&quot; width=&quot;30&quot; height=&quot;6&quot; rx=&quot;1.5&quot; fill=&quot;#607d8b&quot;/&gt;
+    &lt;/g&gt;
+
+    &lt;!-- Pelican --&gt;
+    &lt;g id=&quot;pelican&quot;&gt;
+      &lt;!-- Body group (bobbed) --&gt;
+      &lt;g id=&quot;body-group&quot;&gt;
+        &lt;!-- Body --&gt;
+        &lt;ellipse id=&quot;body&quot; cx=&quot;505&quot; cy=&quot;385&quot; rx=&quot;78&quot; ry=&quot;52&quot; fill=&quot;#fafafa&quot; stroke=&quot;#e0e0e0&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;!-- Tail --&gt;
+        &lt;path id=&quot;tail&quot; d=&quot;M428,395 Q395,415 405,455 Q428,432 445,400&quot; fill=&quot;#eeeeee&quot; stroke=&quot;#e0e0e0&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;!-- Wing (polygon, animated) --&gt;
+        &lt;polygon id=&quot;wing&quot; points=&quot;535,372 592,358 625,388 598,418 535,395&quot; fill=&quot;#e8e8e8&quot; stroke=&quot;#cfcfcf&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Neck --&gt;
+      &lt;path id=&quot;neck&quot; d=&quot;M555,355 Q580,342 600,345&quot; fill=&quot;none&quot; stroke=&quot;#f0f0f0&quot; stroke-width=&quot;23&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+      &lt;!-- Head group (bobbed) --&gt;
+      &lt;g id=&quot;head-group&quot;&gt;
+        &lt;!-- Head --&gt;
+        &lt;circle id=&quot;head&quot; cx=&quot;615&quot; cy=&quot;338&quot; r=&quot;20&quot; fill=&quot;#fafafa&quot; stroke=&quot;#e0e0e0&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;!-- Eye --&gt;
+        &lt;circle id=&quot;eye&quot; cx=&quot;625&quot; cy=&quot;333&quot; r=&quot;6&quot; fill=&quot;#222222&quot;/&gt;
+        &lt;circle cx=&quot;627&quot; cy=&quot;332&quot; r=&quot;2&quot; fill=&quot;#ffffff&quot;/&gt;
+        &lt;!-- Upper beak --&gt;
+        &lt;path id=&quot;beak-upper&quot; d=&quot;M632,336 L728,340&quot; fill=&quot;none&quot; stroke=&quot;#ffb300&quot; stroke-width=&quot;9&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;!-- Lower beak --&gt;
+        &lt;path id=&quot;beak-lower&quot; d=&quot;M632,341 L722,347&quot; fill=&quot;none&quot; stroke=&quot;#ffb300&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+        &lt;!-- Pouch --&gt;
+        &lt;path id=&quot;pouch&quot; d=&quot;M645,348 Q682,372 718,352&quot; fill=&quot;none&quot; stroke=&quot;#ff8f00&quot; stroke-width=&quot;15&quot; stroke-linecap=&quot;round&quot; opacity=&quot;0.92&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Legs --&gt;
+      &lt;line id=&quot;leg-upper&quot; x1=&quot;485&quot; y1=&quot;430&quot; x2=&quot;510&quot; y2=&quot;510&quot; stroke=&quot;#ffb300&quot; stroke-width=&quot;8&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;line id=&quot;leg-lower&quot; x1=&quot;510&quot; y1=&quot;510&quot; x2=&quot;525&quot; y2=&quot;545&quot; stroke=&quot;#ffb300&quot; stroke-width=&quot;6.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+      &lt;!-- Foot --&gt;
+      &lt;ellipse id=&quot;foot&quot; cx=&quot;525&quot; cy=&quot;548&quot; rx=&quot;9&quot; ry=&quot;3.5&quot; fill=&quot;#ffb300&quot;/&gt;
+    &lt;/g&gt;
+  &lt;/svg&gt;
+
+  &lt;div class=&quot;controls&quot;&gt;
+    &lt;button id=&quot;toggle-btn&quot; aria-label=&quot;切换动画播放暂停&quot; aria-pressed=&quot;true&quot;&gt;
+      &lt;span id=&quot;btn-icon&quot;&gt;⏸&lt;/span&gt;
+      &lt;span id=&quot;btn-text&quot;&gt;暂停&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;span class=&quot;hint&quot;&gt;空格键切换&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function() {
+  &#39;use strict&#39;;
+
+  const svg = document.getElementById(&#39;scene&#39;);
+  const btn = document.getElementById(&#39;toggle-btn&#39;);
+  const btnIcon = document.getElementById(&#39;btn-icon&#39;);
+  const btnText = document.getElementById(&#39;btn-text&#39;);
+
+  // Elements
+  const rearSpokes = document.getElementById(&#39;rear-spokes&#39;);
+  const frontSpokes = document.getElementById(&#39;front-spokes&#39;);
+  const crankArm = document.getElementById(&#39;crank-arm&#39;);
+  const pedal = document.getElementById(&#39;pedal&#39;);
+  const body = document.getElementById(&#39;body&#39;);
+  const tail = document.getElementById(&#39;tail&#39;);
+  const wing = document.getElementById(&#39;wing&#39;);
+  const neck = document.getElementById(&#39;neck&#39;);
+  const head = document.getElementById(&#39;head&#39;);
+  const eye = document.getElementById(&#39;eye&#39;);
+  const beakUpper = document.getElementById(&#39;beak-upper&#39;);
+  const beakLower = document.getElementById(&#39;beak-lower&#39;);
+  const pouch = document.getElementById(&#39;pouch&#39;);
+  const legUpper = document.getElementById(&#39;leg-upper&#39;);
+  const legLower = document.getElementById(&#39;leg-lower&#39;);
+  const foot = document.getElementById(&#39;foot&#39;);
+
+  const roadDashes = Array.from(document.querySelectorAll(&#39;#road-dashes rect&#39;));
+  const bush1 = document.getElementById(&#39;bush1&#39;);
+  const bush2 = document.getElementById(&#39;bush2&#39;);
+  const bush3 = document.getElementById(&#39;bush3&#39;);
+  const cloud1 = document.getElementById(&#39;cloud1&#39;);
+  const cloud2 = document.getElementById(&#39;cloud2&#39;);
+
+  // Base positions
+  const BBX = 510, BBY = 568;
+  const CRANK_R = 30;
+  const REAR_X = 360, REAR_Y = 562;
+  const FRONT_X = 720, FRONT_Y = 562;
+  const HIP_X = 485, HIP_BASE_Y = 430;
+  const BODY_BASE_Y = 385;
+  const HEAD_BASE_Y = 338;
+  const PIVOT_X = 540, PIVOT_BASE_Y = 395;
+
+  // Road dash bases
+  const dashBases = roadDashes.map(r =&gt; parseFloat(r.getAttribute(&#39;x&#39;)));
+  const PERIOD = 200;
+  const WRAP = 1400;
+
+  // Bush bases
+  let bushBases = [
+    {g: bush1, base: 95, factor: 0.32},
+    {g: bush2, base: 410, factor: 0.32},
+    {g: bush3, base: 990, factor: 0.32}
+  ];
+  const bushWrap = 1250;
+
+  // Cloud bases
+  let cloudData = [
+    {g: cloud1, base: 220, factor: 0.06},
+    {g: cloud2, base: 780, factor: 0.06}
+  ];
+  const cloudWrap = 1350;
+
+  // State
+  let playing = true;
+  let angle = 12; // deg
+  let lastTime = performance.now();
+
+  function rotatePoint(px, py, cx, cy, deg) {
+    const rad = deg * Math.PI / 180;
+    const dx = px - cx;
+    const dy = py - cy;
+    // clockwise to match SVG rotate
+    return [
+      cx + dx * Math.cos(rad) + dy * Math.sin(rad),
+      cy - dx * Math.sin(rad) + dy * Math.cos(rad)
+    ];
+  }
+
+  function updateScene() {
+    const rad = angle * Math.PI / 180;
+    const speedFactor = 0.96;
+
+    // Wheel spokes rotation (clockwise)
+    const rot = `rotate(${angle} 0 0)`;
+    rearSpokes.setAttribute(&#39;transform&#39;, rot);
+    frontSpokes.setAttribute(&#39;transform&#39;, rot);
+
+    // Pedal / crank position
+    const pedalX = BBX + CRANK_R * Math.sin(rad);
+    const pedalY = BBY + CRANK_R * Math.cos(rad) * 0.92;
+
+    crankArm.setAttribute(&#39;x2&#39;, pedalX);
+    crankArm.setAttribute(&#39;y2&#39;, pedalY);
+    pedal.setAttribute(&#39;x&#39;, pedalX - 15);
+    pedal.setAttribute(&#39;y&#39;, pedalY - 3);
+
+    // Bob &amp; flap
+    const bob = Math.sin(rad * 1.15) * 3.6;
+    const headBob = Math.sin(rad * 2.4) * 1.8;
+    const flap = Math.sin(rad * 3.6) * 16;
+
+    // Body bob
+    body.setAttribute(&#39;cy&#39;, BODY_BASE_Y + bob);
+
+    // Tail bob
+    const tY = bob * 0.85;
+    tail.setAttribute(&#39;d&#39;, `M428,${395 + tY} Q395,${415 + tY} 405,${455 + tY} Q428,${432 + tY} 445,${400 + tY}`);
+
+    // Wing: shift + rotate points
+    const wBob = bob * 0.55;
+    const wPivotY = PIVOT_BASE_Y + wBob;
+    let wPts = [
+      [535, 372 + wBob],
+      [592, 358 + wBob],
+      [625, 388 + wBob],
+      [598, 418 + wBob],
+      [535, 395 + wBob]
+    ];
+    const rotated = wPts.map(p =&gt; rotatePoint(p[0], p[1], PIVOT_X, wPivotY, flap));
+    wing.setAttribute(&#39;points&#39;, rotated.map(p =&gt; p[0].toFixed(1) + &#39;,&#39; + p[1].toFixed(1)).join(&#39; &#39;));
+
+    // Neck
+    const neckStartY = 355 + bob;
+    const neckEndY = 338 + headBob;
+    neck.setAttribute(&#39;d&#39;, `M555,${neckStartY.toFixed(1)} Q580,${((neckStartY + neckEndY) / 2 - 4).toFixed(1)} 600,${neckEndY.toFixed(1)}`);
+
+    // Head &amp; face
+    head.setAttribute(&#39;cy&#39;, HEAD_BASE_Y + headBob);
+    eye.setAttribute(&#39;cy&#39;, 333 + headBob);
+
+    const hb = headBob;
+    beakUpper.setAttribute(&#39;d&#39;, `M632,${(336 + hb).toFixed(1)} L728,${(340 + hb).toFixed(1)}`);
+    beakLower.setAttribute(&#39;d&#39;, `M632,${(341 + hb).toFixed(1)} L722,${(347 + hb).toFixed(1)}`);
+
+    // Pouch swing
+    const pouchSwing = Math.sin(rad * 1.7) * 4.5;
+    const pY = 348 + hb;
+    pouch.setAttribute(&#39;d&#39;, `M645,${pY.toFixed(1)} Q${(682 + pouchSwing * 0.3).toFixed(1)},${(372 + pouchSwing).toFixed(1)} 718,${(352 + hb * 0.6).toFixed(1)}`);
+
+    // Legs (simple IK approximation)
+    const hipY = HIP_BASE_Y + bob;
+    const footX = pedalX + 2;
+    const footY = pedalY + 4;
+
+    // 2-segment leg approx
+    const L1 = 52, L2 = 48;
+    const dx = footX - HIP_X;
+    const dy = footY - hipY;
+    const dist = Math.hypot(dx, dy) || 0.001;
+    let kx, ky;
+
+    if (dist &gt;= L1 + L2) {
+      const r = L1 / (L1 + L2);
+      kx = HIP_X + dx * r;
+      ky = hipY + dy * r;
+    } else {
+      const cosA = (L1 * L1 + dist * dist - L2 * L2) / (2 * L1 * dist);
+      const a = Math.acos(Math.max(-1, Math.min(1, cosA)));
+      const baseA = Math.atan2(dy, dx);
+      const kneeA = baseA - a;
+      kx = HIP_X + L1 * Math.cos(kneeA);
+      ky = hipY + L1 * Math.sin(kneeA);
+    }
+
+    legUpper.setAttribute(&#39;x1&#39;, HIP_X);
+    legUpper.setAttribute(&#39;y1&#39;, hipY);
+    legUpper.setAttribute(&#39;x2&#39;, kx);
+    legUpper.setAttribute(&#39;y2&#39;, ky);
+
+    legLower.setAttribute(&#39;x1&#39;, kx);
+    legLower.setAttribute(&#39;y1&#39;, ky);
+    legLower.setAttribute(&#39;x2&#39;, footX);
+    legLower.setAttribute(&#39;y2&#39;, footY);
+
+    foot.setAttribute(&#39;cx&#39;, footX);
+    foot.setAttribute(&#39;cy&#39;, footY);
+
+    // Road dashes
+    const roadOffset = angle * speedFactor;
+    for (let i = 0; i &lt; roadDashes.length; i++) {
+      let x = dashBases[i] - roadOffset;
+      x = ((x % WRAP) + WRAP) % WRAP;
+      roadDashes[i].setAttribute(&#39;x&#39;, x);
+    }
+
+    // Bushes (parallax)
+    for (let i = 0; i &lt; bushBases.length; i++) {
+      const b = bushBases[i];
+      let bx = b.base - (roadOffset * b.factor);
+      bx = ((bx % bushWrap) + bushWrap) % bushWrap;
+      const circles = b.g.querySelectorAll(&#39;circle&#39;);
+      const dx = bx - b.base;
+      circles.forEach(c =&gt; {
+        const baseCx = parseFloat(c.getAttribute(&#39;data-base&#39;) || c.getAttribute(&#39;cx&#39;));
+        if (!c.hasAttribute(&#39;data-base&#39;)) c.setAttribute(&#39;data-base&#39;, baseCx);
+        c.setAttribute(&#39;cx&#39;, baseCx + dx);
+      });
+    }
+
+    // Clouds (slow)
+    for (let i = 0; i &lt; cloudData.length; i++) {
+      const c = cloudData[i];
+      let cx = c.base - (roadOffset * c.factor);
+      cx = ((cx % cloudWrap) + cloudWrap) % cloudWrap;
+      const dx = cx - c.base;
+      const ells = c.g.querySelectorAll(&#39;ellipse&#39;);
+      ells.forEach(e =&gt; {
+        const baseCx = parseFloat(e.getAttribute(&#39;data-base&#39;) || e.getAttribute(&#39;cx&#39;));
+        if (!e.hasAttribute(&#39;data-base&#39;)) e.setAttribute(&#39;data-base&#39;, baseCx);
+        e.setAttribute(&#39;cx&#39;, baseCx + dx);
+      });
+    }
+  }
+
+  function togglePlay() {
+    playing = !playing;
+    if (playing) {
+      lastTime = performance.now();
+      btnIcon.textContent = &#39;⏸&#39;;
+      btnText.textContent = &#39;暂停&#39;;
+      btn.setAttribute(&#39;aria-pressed&#39;, &#39;true&#39;);
+    } else {
+      btnIcon.textContent = &#39;▶&#39;;
+      btnText.textContent = &#39;播放&#39;;
+      btn.setAttribute(&#39;aria-pressed&#39;, &#39;false&#39;);
+    }
+  }
+
+  btn.addEventListener(&#39;click&#39;, togglePlay);
+
+  document.addEventListener(&#39;keydown&#39;, function(e) {
+    if (e.key === &#39; &#39; || e.key === &#39;Spacebar&#39; || e.key === &#39;Space&#39;) {
+      e.preventDefault();
+      togglePlay();
+    }
+  });
+
+  // Reduced motion
+  const reduceMQ = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+  if (reduceMQ.matches) {
+    playing = false;
+    btnIcon.textContent = &#39;▶&#39;;
+    btnText.textContent = &#39;播放&#39;;
+    btn.setAttribute(&#39;aria-pressed&#39;, &#39;false&#39;);
+  }
+
+  reduceMQ.addEventListener(&#39;change&#39;, function() {
+    if (reduceMQ.matches &amp;&amp; playing) {
+      playing = false;
+      btnIcon.textContent = &#39;▶&#39;;
+      btnText.textContent = &#39;播放&#39;;
+      btn.setAttribute(&#39;aria-pressed&#39;, &#39;false&#39;);
+    }
+  });
+
+  // Main loop
+  function loop(now) {
+    if (playing) {
+      const dt = now - lastTime;
+      lastTime = now;
+      angle = (angle + dt * 0.185) % 360;
+      updateScene();
+    } else {
+      lastTime = now;
+    }
+    requestAnimationFrame(loop);
+  }
+
+  // Boot
+  updateScene();
+  lastTime = performance.now();
+  requestAnimationFrame(loop);
+
+  // Initial button state
+  if (playing) {
+    btnIcon.textContent = &#39;⏸&#39;;
+    btnText.textContent = &#39;暂停&#39;;
+    btn.setAttribute(&#39;aria-pressed&#39;, &#39;true&#39;);
+  } else {
+    btnIcon.textContent = &#39;▶&#39;;
+    btnText.textContent = &#39;播放&#39;;
+    btn.setAttribute(&#39;aria-pressed&#39;, &#39;false&#39;);
+  }
+
+  // Keyboard focus hint for button
+  btn.setAttribute(&#39;tabindex&#39;, &#39;0&#39;);
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>

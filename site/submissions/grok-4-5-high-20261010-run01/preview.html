@@ -1,0 +1,531 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>grok-4.5-high · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="grok-4.5-high" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;鹈鹕骑自行车&lt;/title&gt;
+&lt;style&gt;
+  :root {
+    --sky-top: #7ec8e8;
+    --sky-mid: #b8e0f0;
+    --sky-bot: #e8f4f8;
+    --sun: #ffe08a;
+    --road: #5a6570;
+    --road-line: #f0e6c8;
+    --grass: #6aab5a;
+    --grass-dark: #4f8f42;
+    --btn-bg: #1e3a4c;
+    --btn-fg: #f5fafc;
+    --btn-focus: #ffb347;
+    --shadow: rgba(30, 50, 70, 0.25);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif;
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 45%, var(--sky-bot) 100%);
+    color: #1a2a33;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    text-align: center;
+    margin: 0.25rem 0 0.5rem;
+    color: #163040;
+  }
+
+  .stage-wrap {
+    width: min(100%, 1200px);
+    aspect-ratio: 1200 / 800;
+    max-height: calc(100dvh - 5.5rem);
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px var(--shadow), 0 2px 8px rgba(0,0,0,0.08);
+    background: linear-gradient(180deg, #6eb8dc 0%, #a8d8ec 38%, #d4ebf2 62%, #8bc46a 62%, #6aab5a 100%);
+  }
+
+  .scene {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  #toggleBtn {
+    appearance: none;
+    border: 2px solid transparent;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.55rem 1.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    min-width: 7.5rem;
+    min-height: 2.75rem;
+    box-shadow: 0 4px 14px rgba(30, 58, 76, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  #toggleBtn:hover {
+    background: #2a5168;
+    transform: translateY(-1px);
+  }
+
+  #toggleBtn:active {
+    transform: translateY(1px);
+  }
+
+  #toggleBtn:focus-visible {
+    outline: 3px solid var(--btn-focus);
+    outline-offset: 3px;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: #3a5566;
+    opacity: 0.9;
+  }
+
+  /* Animation classes */
+  .is-playing .wheel {
+    animation: spin 1.1s linear infinite;
+  }
+
+  .is-playing .pedal-crank {
+    animation: spin 1.1s linear infinite;
+  }
+
+  .is-playing .rider-group {
+    animation: bob 0.55s ease-in-out infinite alternate;
+  }
+
+  .is-playing .wing {
+    animation: flap 0.7s ease-in-out infinite alternate;
+  }
+
+  .is-playing .leg-push {
+    animation: legPush 1.1s ease-in-out infinite;
+  }
+
+  .is-playing .cloud {
+    animation: drift 28s linear infinite;
+  }
+
+  .is-playing .cloud-slow {
+    animation: drift 42s linear infinite;
+  }
+
+  .is-playing .road-dash {
+    animation: roadMove 1.2s linear infinite;
+  }
+
+  .is-playing .hill {
+    animation: hillDrift 36s linear infinite;
+  }
+
+  .is-playing .sun-glow {
+    animation: pulse 3.5s ease-in-out infinite alternate;
+  }
+
+  .is-playing .beak-bob {
+    animation: beakNod 1.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes bob {
+    from { transform: translateY(0); }
+    to { transform: translateY(-6px); }
+  }
+
+  @keyframes flap {
+    from { transform: rotate(-6deg); }
+    to { transform: rotate(10deg); }
+  }
+
+  @keyframes legPush {
+    0%, 100% { transform: rotate(-18deg); }
+    50% { transform: rotate(22deg); }
+  }
+
+  @keyframes drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-1200px); }
+  }
+
+  @keyframes roadMove {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -48; }
+  }
+
+  @keyframes hillDrift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-600px); }
+  }
+
+  @keyframes pulse {
+    from { opacity: 0.55; }
+    to { opacity: 0.9; }
+  }
+
+  @keyframes beakNod {
+    from { transform: rotate(-2deg); }
+    to { transform: rotate(3deg); }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 0.5rem; }
+    .stage-wrap {
+      border-radius: 12px;
+      max-height: calc(100dvh - 6.5rem);
+    }
+    .hint { font-size: 0.75rem; text-align: center; }
+  }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;鹈鹕骑自行车&lt;/h1&gt;
+  &lt;div class=&quot;stage-wrap&quot; id=&quot;stage&quot; role=&quot;img&quot; aria-label=&quot;一只鹈鹕正骑着自行车沿着乡间小路前进的插画场景&quot;&gt;
+    &lt;svg class=&quot;scene&quot; viewBox=&quot;0 0 1200 800&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; aria-hidden=&quot;true&quot;&gt;
+      &lt;defs&gt;
+        &lt;linearGradient id=&quot;skyGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#5eb0d8&quot;/&gt;
+          &lt;stop offset=&quot;40%&quot; stop-color=&quot;#9fd0e8&quot;/&gt;
+          &lt;stop offset=&quot;70%&quot; stop-color=&quot;#d2ebf4&quot;/&gt;
+          &lt;stop offset=&quot;70%&quot; stop-color=&quot;#8bc46a&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#5e9e4e&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;sunGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#fff6c8&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#ffc84a&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;bodyGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#f7f4ee&quot;/&gt;
+          &lt;stop offset=&quot;55%&quot; stop-color=&quot;#e8e2d4&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#cfc6b4&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;wingGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#3a4550&quot;/&gt;
+          &lt;stop offset=&quot;40%&quot; stop-color=&quot;#5a6672&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#2a323a&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;pouchGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#f0a878&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#d87848&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;beakGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;0&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#e89040&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#c86828&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;linearGradient id=&quot;frameGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;1&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#e85a3a&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#b83820&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;filter id=&quot;softShadow&quot; x=&quot;-20%&quot; y=&quot;-20%&quot; width=&quot;140%&quot; height=&quot;140%&quot;&gt;
+          &lt;feDropShadow dx=&quot;2&quot; dy=&quot;4&quot; stdDeviation=&quot;3&quot; flood-color=&quot;#1a3040&quot; flood-opacity=&quot;0.22&quot;/&gt;
+        &lt;/filter&gt;
+      &lt;/defs&gt;
+
+      &lt;!-- Sky fill via rect for crisp edges --&gt;
+      &lt;rect width=&quot;1200&quot; height=&quot;800&quot; fill=&quot;url(#skyGrad)&quot;/&gt;
+
+      &lt;!-- Sun --&gt;
+      &lt;g transform=&quot;translate(980,120)&quot;&gt;
+        &lt;circle class=&quot;sun-glow&quot; r=&quot;78&quot; fill=&quot;#ffe9a0&quot; opacity=&quot;0.55&quot;/&gt;
+        &lt;circle r=&quot;48&quot; fill=&quot;url(#sunGrad)&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Distant hills (duplicated for seamless scroll) --&gt;
+      &lt;g class=&quot;hill&quot; style=&quot;transform-origin: 0 0&quot;&gt;
+        &lt;path d=&quot;M0,480 C80,440 160,460 240,430 C320,400 380,450 460,425 C540,400 600,440 680,415 C760,390 820,430 900,410 C980,390 1040,430 1120,405 C1160,392 1180,410 1200,400 L1200,560 L0,560 Z&quot; fill=&quot;#7ab86a&quot; opacity=&quot;0.85&quot;/&gt;
+        &lt;path d=&quot;M1200,480 C1280,440 1360,460 1440,430 C1520,400 1580,450 1660,425 C1740,400 1800,440 1880,415 C1960,390 2020,430 2100,410 C2180,390 2240,430 2320,405 C2360,392 2380,410 2400,400 L2400,560 L1200,560 Z&quot; fill=&quot;#7ab86a&quot; opacity=&quot;0.85&quot;/&gt;
+        &lt;path d=&quot;M0,510 C100,485 180,505 280,480 C380,455 450,500 560,475 C670,450 740,490 850,470 C960,450 1040,485 1200,460 L1200,560 L0,560 Z&quot; fill=&quot;#68a858&quot;/&gt;
+        &lt;path d=&quot;M1200,510 C1300,485 1380,505 1480,480 C1580,455 1650,500 1760,475 C1870,450 1940,490 2050,470 C2160,450 2240,485 2400,460 L2400,560 L1200,560 Z&quot; fill=&quot;#68a858&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Clouds (two sets for loop) --&gt;
+      &lt;g class=&quot;cloud&quot; opacity=&quot;0.92&quot;&gt;
+        &lt;g fill=&quot;#ffffff&quot;&gt;
+          &lt;ellipse cx=&quot;160&quot; cy=&quot;110&quot; rx=&quot;58&quot; ry=&quot;28&quot;/&gt;
+          &lt;ellipse cx=&quot;210&quot; cy=&quot;100&quot; rx=&quot;42&quot; ry=&quot;24&quot;/&gt;
+          &lt;ellipse cx=&quot;120&quot; cy=&quot;105&quot; rx=&quot;36&quot; ry=&quot;20&quot;/&gt;
+          &lt;ellipse cx=&quot;500&quot; cy=&quot;160&quot; rx=&quot;70&quot; ry=&quot;30&quot;/&gt;
+          &lt;ellipse cx=&quot;560&quot; cy=&quot;148&quot; rx=&quot;48&quot; ry=&quot;26&quot;/&gt;
+          &lt;ellipse cx=&quot;450&quot; cy=&quot;155&quot; rx=&quot;40&quot; ry=&quot;22&quot;/&gt;
+          &lt;ellipse cx=&quot;820&quot; cy=&quot;90&quot; rx=&quot;55&quot; ry=&quot;26&quot;/&gt;
+          &lt;ellipse cx=&quot;870&quot; cy=&quot;82&quot; rx=&quot;38&quot; ry=&quot;20&quot;/&gt;
+          &lt;ellipse cx=&quot;780&quot; cy=&quot;88&quot; rx=&quot;32&quot; ry=&quot;18&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g fill=&quot;#ffffff&quot; transform=&quot;translate(1200,0)&quot;&gt;
+          &lt;ellipse cx=&quot;160&quot; cy=&quot;110&quot; rx=&quot;58&quot; ry=&quot;28&quot;/&gt;
+          &lt;ellipse cx=&quot;210&quot; cy=&quot;100&quot; rx=&quot;42&quot; ry=&quot;24&quot;/&gt;
+          &lt;ellipse cx=&quot;120&quot; cy=&quot;105&quot; rx=&quot;36&quot; ry=&quot;20&quot;/&gt;
+          &lt;ellipse cx=&quot;500&quot; cy=&quot;160&quot; rx=&quot;70&quot; ry=&quot;30&quot;/&gt;
+          &lt;ellipse cx=&quot;560&quot; cy=&quot;148&quot; rx=&quot;48&quot; ry=&quot;26&quot;/&gt;
+          &lt;ellipse cx=&quot;450&quot; cy=&quot;155&quot; rx=&quot;40&quot; ry=&quot;22&quot;/&gt;
+          &lt;ellipse cx=&quot;820&quot; cy=&quot;90&quot; rx=&quot;55&quot; ry=&quot;26&quot;/&gt;
+          &lt;ellipse cx=&quot;870&quot; cy=&quot;82&quot; rx=&quot;38&quot; ry=&quot;20&quot;/&gt;
+          &lt;ellipse cx=&quot;780&quot; cy=&quot;88&quot; rx=&quot;32&quot; ry=&quot;18&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+      &lt;g class=&quot;cloud-slow&quot; opacity=&quot;0.7&quot;&gt;
+        &lt;g fill=&quot;#f4fbff&quot;&gt;
+          &lt;ellipse cx=&quot;340&quot; cy=&quot;70&quot; rx=&quot;40&quot; ry=&quot;18&quot;/&gt;
+          &lt;ellipse cx=&quot;375&quot; cy=&quot;64&quot; rx=&quot;28&quot; ry=&quot;14&quot;/&gt;
+          &lt;ellipse cx=&quot;1050&quot; cy=&quot;140&quot; rx=&quot;50&quot; ry=&quot;22&quot;/&gt;
+          &lt;ellipse cx=&quot;1095&quot; cy=&quot;132&quot; rx=&quot;34&quot; ry=&quot;16&quot;/&gt;
+        &lt;/g&gt;
+        &lt;g fill=&quot;#f4fbff&quot; transform=&quot;translate(1200,0)&quot;&gt;
+          &lt;ellipse cx=&quot;340&quot; cy=&quot;70&quot; rx=&quot;40&quot; ry=&quot;18&quot;/&gt;
+          &lt;ellipse cx=&quot;375&quot; cy=&quot;64&quot; rx=&quot;28&quot; ry=&quot;14&quot;/&gt;
+          &lt;ellipse cx=&quot;1050&quot; cy=&quot;140&quot; rx=&quot;50&quot; ry=&quot;22&quot;/&gt;
+          &lt;ellipse cx=&quot;1095&quot; cy=&quot;132&quot; rx=&quot;34&quot; ry=&quot;16&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Grass foreground strip --&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;560&quot; width=&quot;1200&quot; height=&quot;100&quot; fill=&quot;#5e9e4e&quot;/&gt;
+      &lt;path d=&quot;M0,560 Q30,545 60,560 T120,560 T180,560 T240,560 T300,560 T360,560 T420,560 T480,560 T540,560 T600,560 T660,560 T720,560 T780,560 T840,560 T900,560 T960,560 T1020,560 T1080,560 T1140,560 T1200,560 L1200,580 L0,580 Z&quot; fill=&quot;#6fb85c&quot;/&gt;
+
+      &lt;!-- Road --&gt;
+      &lt;path d=&quot;M0,640 L1200,640 L1200,760 L0,760 Z&quot; fill=&quot;#5a6570&quot;/&gt;
+      &lt;path d=&quot;M0,640 Q600,625 1200,640 L1200,655 Q600,640 0,655 Z&quot; fill=&quot;#6a7580&quot;/&gt;
+      &lt;line class=&quot;road-dash&quot; x1=&quot;0&quot; y1=&quot;700&quot; x2=&quot;1200&quot; y2=&quot;700&quot; stroke=&quot;#f0e6c8&quot; stroke-width=&quot;8&quot; stroke-dasharray=&quot;36 12&quot; stroke-linecap=&quot;butt&quot;/&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;760&quot; width=&quot;1200&quot; height=&quot;40&quot; fill=&quot;#4a8a3e&quot;/&gt;
+
+      &lt;!-- Bicycle + Pelican group --&gt;
+      &lt;g filter=&quot;url(#softShadow)&quot; transform=&quot;translate(420, 390)&quot;&gt;
+        &lt;!-- Shadow under bike --&gt;
+        &lt;ellipse cx=&quot;180&quot; cy=&quot;355&quot; rx=&quot;160&quot; ry=&quot;14&quot; fill=&quot;#2a4030&quot; opacity=&quot;0.28&quot;/&gt;
+
+        &lt;!-- Bicycle --&gt;
+        &lt;g id=&quot;bike&quot;&gt;
+          &lt;!-- Rear wheel --&gt;
+          &lt;g class=&quot;wheel&quot; style=&quot;transform-origin: 70px 300px&quot;&gt;
+            &lt;circle cx=&quot;70&quot; cy=&quot;300&quot; r=&quot;58&quot; fill=&quot;none&quot; stroke=&quot;#2a3038&quot; stroke-width=&quot;7&quot;/&gt;
+            &lt;circle cx=&quot;70&quot; cy=&quot;300&quot; r=&quot;50&quot; fill=&quot;none&quot; stroke=&quot;#4a5560&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;circle cx=&quot;70&quot; cy=&quot;300&quot; r=&quot;10&quot; fill=&quot;#3a4450&quot;/&gt;
+            &lt;g stroke=&quot;#3a4550&quot; stroke-width=&quot;2.5&quot;&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;70&quot; y2=&quot;242&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;70&quot; y2=&quot;358&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;12&quot; y2=&quot;300&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;128&quot; y2=&quot;300&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;29&quot; y2=&quot;259&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;111&quot; y2=&quot;341&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;29&quot; y2=&quot;341&quot;/&gt;
+              &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;111&quot; y2=&quot;259&quot;/&gt;
+            &lt;/g&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Front wheel --&gt;
+          &lt;g class=&quot;wheel&quot; style=&quot;transform-origin: 290px 300px&quot;&gt;
+            &lt;circle cx=&quot;290&quot; cy=&quot;300&quot; r=&quot;58&quot; fill=&quot;none&quot; stroke=&quot;#2a3038&quot; stroke-width=&quot;7&quot;/&gt;
+            &lt;circle cx=&quot;290&quot; cy=&quot;300&quot; r=&quot;50&quot; fill=&quot;none&quot; stroke=&quot;#4a5560&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;circle cx=&quot;290&quot; cy=&quot;300&quot; r=&quot;10&quot; fill=&quot;#3a4450&quot;/&gt;
+            &lt;g stroke=&quot;#3a4550&quot; stroke-width=&quot;2.5&quot;&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;290&quot; y2=&quot;242&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;290&quot; y2=&quot;358&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;232&quot; y2=&quot;300&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;348&quot; y2=&quot;300&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;249&quot; y2=&quot;259&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;331&quot; y2=&quot;341&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;249&quot; y2=&quot;341&quot;/&gt;
+              &lt;line x1=&quot;290&quot; y1=&quot;300&quot; x2=&quot;331&quot; y2=&quot;259&quot;/&gt;
+            &lt;/g&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Frame --&gt;
+          &lt;g stroke=&quot;url(#frameGrad)&quot; stroke-width=&quot;8&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; fill=&quot;none&quot;&gt;
+            &lt;!-- top tube --&gt;
+            &lt;line x1=&quot;95&quot; y1=&quot;230&quot; x2=&quot;210&quot; y2=&quot;210&quot;/&gt;
+            &lt;!-- down tube --&gt;
+            &lt;line x1=&quot;95&quot; y1=&quot;230&quot; x2=&quot;175&quot; y2=&quot;300&quot;/&gt;
+            &lt;!-- seat tube --&gt;
+            &lt;line x1=&quot;175&quot; y1=&quot;300&quot; x2=&quot;130&quot; y2=&quot;210&quot;/&gt;
+            &lt;!-- chain stays --&gt;
+            &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;175&quot; y2=&quot;300&quot;/&gt;
+            &lt;!-- seat stays --&gt;
+            &lt;line x1=&quot;70&quot; y1=&quot;300&quot; x2=&quot;130&quot; y2=&quot;210&quot;/&gt;
+            &lt;!-- fork --&gt;
+            &lt;line x1=&quot;210&quot; y1=&quot;210&quot; x2=&quot;290&quot; y2=&quot;300&quot;/&gt;
+            &lt;!-- head tube extension --&gt;
+            &lt;line x1=&quot;210&quot; y1=&quot;210&quot; x2=&quot;225&quot; y2=&quot;175&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Seat --&gt;
+          &lt;ellipse cx=&quot;125&quot; cy=&quot;200&quot; rx=&quot;28&quot; ry=&quot;10&quot; fill=&quot;#2a3038&quot; transform=&quot;rotate(-12 125 200)&quot;/&gt;
+          &lt;rect x=&quot;122&quot; y=&quot;200&quot; width=&quot;8&quot; height=&quot;16&quot; rx=&quot;2&quot; fill=&quot;#3a4450&quot;/&gt;
+
+          &lt;!-- Handlebars --&gt;
+          &lt;g stroke=&quot;#2a3038&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot; fill=&quot;none&quot;&gt;
+            &lt;line x1=&quot;225&quot; y1=&quot;175&quot; x2=&quot;245&quot; y2=&quot;155&quot;/&gt;
+            &lt;path d=&quot;M245,155 C255,145 270,148 278,158&quot;/&gt;
+            &lt;path d=&quot;M245,155 C235,145 220,148 212,160&quot;/&gt;
+          &lt;/g&gt;
+          &lt;circle cx=&quot;278&quot; cy=&quot;160&quot; r=&quot;6&quot; fill=&quot;#c85830&quot;/&gt;
+          &lt;circle cx=&quot;212&quot; cy=&quot;162&quot; r=&quot;6&quot; fill=&quot;#c85830&quot;/&gt;
+
+          &lt;!-- Pedal crank + pedals --&gt;
+          &lt;g class=&quot;pedal-crank&quot; style=&quot;transform-origin: 175px 300px&quot;&gt;
+            &lt;line x1=&quot;175&quot; y1=&quot;300&quot; x2=&quot;175&quot; y2=&quot;255&quot; stroke=&quot;#2a3038&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;line x1=&quot;175&quot; y1=&quot;300&quot; x2=&quot;175&quot; y2=&quot;345&quot; stroke=&quot;#2a3038&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;rect x=&quot;160&quot; y=&quot;248&quot; width=&quot;30&quot; height=&quot;10&quot; rx=&quot;3&quot; fill=&quot;#4a5560&quot;/&gt;
+            &lt;rect x=&quot;160&quot; y=&quot;342&quot; width=&quot;30&quot; height=&quot;10&quot; rx=&quot;3&quot; fill=&quot;#4a5560&quot;/&gt;
+            &lt;circle cx=&quot;175&quot; cy=&quot;300&quot; r=&quot;12&quot; fill=&quot;#3a4450&quot; stroke=&quot;#2a3038&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Chain ring hint --&gt;
+          &lt;circle cx=&quot;175&quot; cy=&quot;300&quot; r=&quot;22&quot; fill=&quot;none&quot; stroke=&quot;#4a5560&quot; stroke-width=&quot;3&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- Pelican rider --&gt;
+        &lt;g class=&quot;rider-group&quot; style=&quot;transform-origin: 160px 200px&quot;&gt;
+          &lt;!-- Legs --&gt;
+          &lt;g class=&quot;leg-push&quot; style=&quot;transform-origin: 145px 230px&quot;&gt;
+            &lt;!-- thigh --&gt;
+            &lt;path d=&quot;M140,215 Q155,250 168,285&quot; fill=&quot;none&quot; stroke=&quot;#e8dfd0&quot; stroke-width=&quot;16&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;!-- lower leg to pedal --&gt;
+            &lt;path d=&quot;M168,285 Q175,310 172,340&quot; fill=&quot;none&quot; stroke=&quot;#d8cfc0&quot; stroke-width=&quot;13&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;!-- foot --&gt;
+            &lt;ellipse cx=&quot;175&quot; cy=&quot;348&quot; rx=&quot;16&quot; ry=&quot;8&quot; fill=&quot;#c86828&quot; transform=&quot;rotate(-10 175 348)&quot;/&gt;
+          &lt;/g&gt;
+          &lt;!-- Other leg (more static / opposite phase look via shorter motion via opacity layering) --&gt;
+          &lt;g opacity=&quot;0.95&quot;&gt;
+            &lt;path d=&quot;M150,220 Q140,260 155,295&quot; fill=&quot;none&quot; stroke=&quot;#ddd4c4&quot; stroke-width=&quot;14&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;path d=&quot;M155,295 Q165,320 178,310&quot; fill=&quot;none&quot; stroke=&quot;#cfc6b6&quot; stroke-width=&quot;12&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;ellipse cx=&quot;185&quot; cy=&quot;308&quot; rx=&quot;14&quot; ry=&quot;7&quot; fill=&quot;#b85820&quot; transform=&quot;rotate(15 185 308)&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Body / torso --&gt;
+          &lt;ellipse cx=&quot;155&quot; cy=&quot;175&quot; rx=&quot;48&quot; ry=&quot;58&quot; fill=&quot;url(#bodyGrad)&quot;/&gt;
+          &lt;!-- belly patch --&gt;
+          &lt;ellipse cx=&quot;162&quot; cy=&quot;190&quot; rx=&quot;28&quot; ry=&quot;36&quot; fill=&quot;#faf8f2&quot;/&gt;
+
+          &lt;!-- Wing (flapping) --&gt;
+          &lt;g class=&quot;wing&quot; style=&quot;transform-origin: 120px 160px&quot;&gt;
+            &lt;path d=&quot;M130,155 C90,140 55,155 40,185 C60,175 85,170 105,175 C95,190 85,210 95,230 C115,205 130,185 138,168 Z&quot; fill=&quot;url(#wingGrad)&quot;/&gt;
+            &lt;path d=&quot;M125,160 C100,155 80,165 70,180&quot; fill=&quot;none&quot; stroke=&quot;#1a2228&quot; stroke-width=&quot;1.5&quot; opacity=&quot;0.4&quot;/&gt;
+            &lt;path d=&quot;M120,175 C100,175 85,185 78,200&quot; fill=&quot;none&quot; stroke=&quot;#1a2228&quot; stroke-width=&quot;1.5&quot; opacity=&quot;0.35&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Neck --&gt;
+          &lt;path d=&quot;M175,140 C200,120 225,95 235,75&quot; fill=&quot;none&quot; stroke=&quot;#ebe4d6&quot; stroke-width=&quot;28&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M175,140 C200,120 225,95 235,75&quot; fill=&quot;none&quot; stroke=&quot;#f7f2e8&quot; stroke-width=&quot;20&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+          &lt;!-- Head --&gt;
+          &lt;g class=&quot;beak-bob&quot; style=&quot;transform-origin: 250px 70px&quot;&gt;
+            &lt;ellipse cx=&quot;248&quot; cy=&quot;68&quot; rx=&quot;32&quot; ry=&quot;26&quot; fill=&quot;#f4efe6&quot;/&gt;
+            &lt;!-- Eye --&gt;
+            &lt;circle cx=&quot;258&quot; cy=&quot;60&quot; r=&quot;7&quot; fill=&quot;#1a2030&quot;/&gt;
+            &lt;circle cx=&quot;260&quot; cy=&quot;58&quot; r=&quot;2.5&quot; fill=&quot;#ffffff&quot;/&gt;
+            &lt;!-- Throat pouch --&gt;
+            &lt;path d=&quot;M255,82 C270,105 300,115 330,95 C310,120 275,125 250,100 Z&quot; fill=&quot;url(#pouchGrad)&quot;/&gt;
+            &lt;path d=&quot;M258,88 C275,105 300,110 320,98&quot; fill=&quot;none&quot; stroke=&quot;#c06038&quot; stroke-width=&quot;1.5&quot; opacity=&quot;0.45&quot;/&gt;
+            &lt;!-- Long beak --&gt;
+            &lt;path d=&quot;M270,68 L390,55 Q400,68 388,78 L270,82 Z&quot; fill=&quot;url(#beakGrad)&quot;/&gt;
+            &lt;line x1=&quot;270&quot; y1=&quot;74&quot; x2=&quot;390&quot; y2=&quot;66&quot; stroke=&quot;#a85020&quot; stroke-width=&quot;1.5&quot; opacity=&quot;0.5&quot;/&gt;
+            &lt;!-- Nostril --&gt;
+            &lt;ellipse cx=&quot;280&quot; cy=&quot;68&quot; rx=&quot;3&quot; ry=&quot;2&quot; fill=&quot;#8a4018&quot;/&gt;
+            &lt;!-- Crest / head tuft --&gt;
+            &lt;path d=&quot;M230,55 Q220,35 235,42 Q228,28 245,38&quot; fill=&quot;none&quot; stroke=&quot;#d8cfc0&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;/g&gt;
+
+          &lt;!-- Wing tip resting near handle (near wing) --&gt;
+          &lt;path d=&quot;M185,150 C210,145 230,155 240,165&quot; fill=&quot;none&quot; stroke=&quot;#4a5560&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot; opacity=&quot;0.85&quot;/&gt;
+          &lt;!-- Hand on handlebar --&gt;
+          &lt;circle cx=&quot;245&quot; cy=&quot;162&quot; r=&quot;9&quot; fill=&quot;#e8dfd0&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- Small roadside flowers for charm --&gt;
+      &lt;g opacity=&quot;0.9&quot;&gt;
+        &lt;circle cx=&quot;80&quot; cy=&quot;620&quot; r=&quot;5&quot; fill=&quot;#f080a0&quot;/&gt;
+        &lt;circle cx=&quot;95&quot; cy=&quot;615&quot; r=&quot;4&quot; fill=&quot;#f0a0b8&quot;/&gt;
+        &lt;line x1=&quot;88&quot; y1=&quot;620&quot; x2=&quot;88&quot; y2=&quot;640&quot; stroke=&quot;#3a8040&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;circle cx=&quot;1100&quot; cy=&quot;625&quot; r=&quot;5&quot; fill=&quot;#f0c050&quot;/&gt;
+        &lt;circle cx=&quot;1112&quot; cy=&quot;620&quot; r=&quot;4&quot; fill=&quot;#f8d878&quot;/&gt;
+        &lt;line x1=&quot;1106&quot; y1=&quot;625&quot; x2=&quot;1106&quot; y2=&quot;645&quot; stroke=&quot;#3a8040&quot; stroke-width=&quot;2&quot;/&gt;
+      &lt;/g&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;controls&quot;&gt;
+    &lt;button type=&quot;button&quot; id=&quot;toggleBtn&quot; aria-pressed=&quot;true&quot;&gt;暂停&lt;/button&gt;
+    &lt;span class=&quot;hint&quot;&gt;空格键也可播放 / 暂停&lt;/span&gt;
+  &lt;/div&gt;
+
+&lt;script&gt;
+(function () {
+  const stage = document.getElementById(&#39;stage&#39;);
+  const btn = document.getElementById(&#39;toggleBtn&#39;);
+  const reduceMotion = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+
+  let playing = !reduceMotion.matches;
+
+  function sync() {
+    stage.classList.toggle(&#39;is-playing&#39;, playing);
+    btn.setAttribute(&#39;aria-pressed&#39;, playing ? &#39;true&#39; : &#39;false&#39;);
+    btn.textContent = playing ? &#39;暂停&#39; : &#39;播放&#39;;
+  }
+
+  function toggle() {
+    playing = !playing;
+    sync();
+  }
+
+  btn.addEventListener(&#39;click&#39;, toggle);
+
+  window.addEventListener(&#39;keydown&#39;, function (e) {
+    if (e.code === &#39;Space&#39; || e.key === &#39; &#39;) {
+      const tag = (e.target &amp;&amp; e.target.tagName) || &#39;&#39;;
+      if (tag === &#39;INPUT&#39; || tag === &#39;TEXTAREA&#39; || tag === &#39;SELECT&#39;) return;
+      e.preventDefault();
+      toggle();
+    }
+  });
+
+  reduceMotion.addEventListener(&#39;change&#39;, function (e) {
+    if (e.matches) {
+      playing = false;
+      sync();
+    }
+  });
+
+  sync();
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>
