@@ -1,5 +1,7 @@
 # Reused theme code
 
+Code windows (2026-10-11): `site/assets/code-window.css` copies the current personal-docs `styles/code.css` window rules with only container selectors changed. Copy-button and language-marker styles and clipboard icons are reused from VitePress 1.6.4, Copyright (c) 2019-present, Yuxi (Evan) You, under the MIT license reproduced below.
+
 `site/assets/tokens.css` adapts the palette, typography fallbacks, and design-token structure from [Qrzzzz/Qrzzzz.github.io](https://github.com/Qrzzzz/Qrzzzz.github.io), `docs/.vitepress/theme/styles/tokens.css`, reference commit `cdb7908b8dc8224d975c2f11c909cc1a44863ccc`. Focus, reduced-motion and reading-layout patterns are adapted to native HTML/CSS. No article text, fonts, images, or VitePress runtime are copied.
 
 MIT License
