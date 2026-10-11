@@ -2,6 +2,7 @@ import { galleryReturn, galleryPosition } from "./gallery-state.js";
 import { cascade, groupCatalog, effortOf, identityOf } from "./catalog.js";
 import { runThemeTransition } from "./theme-transition.js";
 import { initDocument } from "./document.js";
+import { initCodeWindows, decorateControls } from "./code-window.js";
 import { initNavigation } from "./navigation.js";
 import { renderGallery } from "./gallery-render.js";
 import { createPreviewCache } from "./preview-cache.js";
@@ -82,12 +83,27 @@ function notify(message) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => (toast.hidden = true), 3500);
 }
-async function copy(text) {
+const copyFeedback = new WeakMap();
+async function copy(text, button) {
+  let message;
   try {
     await navigator.clipboard.writeText(text);
     notify("已复制到剪贴板");
+    message = "已复制";
   } catch {
     notify("浏览器未允许复制，请在文本区域中手动选择并复制");
+    message = "复制失败";
+  }
+  const label = button?.querySelector('.control-label');
+  if (label) {
+    const previous = copyFeedback.get(button);
+    clearTimeout(previous?.timer);
+    const original = previous?.original ?? label.textContent;
+    label.textContent = message;
+    copyFeedback.set(button, { original, timer: setTimeout(() => {
+      label.textContent = original;
+      copyFeedback.delete(button);
+    }, 2200) });
   }
 }
 function saveSelection() {
@@ -154,7 +170,7 @@ $$("[data-prompt]").forEach((button) =>
 );
 $$("[data-copy-prompt]").forEach((button) =>
   button.addEventListener("click", () =>
-    prompt ? copy(prompt.text) : notify("提示词尚未载入，请刷新后重试"),
+    prompt ? copy(prompt.text, button) : notify("提示词尚未载入，请刷新后重试"),
   ),
 );
 function updateTray() {
@@ -685,10 +701,10 @@ async function entry() {
     $("#show-source").textContent = code.hidden ? "展开源码" : "收起源码";
   });
   $("#copy-source").addEventListener("click", () =>
-    source === undefined ? notify("源码未载入，请刷新后重试") : copy(source),
+    source === undefined ? notify("源码未载入，请刷新后重试") : copy(source, $("#copy-source")),
   );
 }
-$("#copy-commands")?.addEventListener("click", () => copy($("#method-commands").textContent));
+$("#copy-commands")?.addEventListener("click", () => copy($("#method-commands").textContent, $("#copy-commands")));
 const page = document.body.dataset.page;
 const promptTask = initialData("initial-prompt", "data/prompt.v2.json").then((value) => {
   if (typeof value.text !== "string" || typeof value.sha256 !== "string") throw new Error("Invalid prompt");
@@ -730,5 +746,10 @@ try {
   if ($("#result-count")) $("#result-count").textContent = "读取失败";
   notify("未能读取站点数据，请刷新后重试");
 }
-if (page === "method" || page === "entry") initDocument($(page === "method" ? "#main" : "#entry-content"));
 await promptTask;
+if (page === "method" || page === "entry") {
+  const root = $(page === "method" ? "#main" : "#entry-content");
+  initCodeWindows(root, copy);
+  initDocument(root);
+}
+decorateControls();

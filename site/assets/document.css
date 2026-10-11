@@ -2,7 +2,7 @@
    The reading column and outline are retained without the decorative rail. */
 body:is([data-page="method"], [data-page="entry"]) main.shell { max-width: 1384px; }
 .document-layout { display: grid; grid-template-columns: 15% 50% 10% 20% 5%; padding-top: 48px; }
-.document-body { grid-column: 2; grid-row: 1; min-width: 0; font: 17px/2 var(--serif); overflow-wrap: break-word; }
+.document-body { grid-column: 2; grid-row: 1; min-width: 0; font: 17px/1.9 var(--serif); overflow-wrap: break-word; }
 .document-body .page-title { margin: 0; padding: 0; }
 .document-body .page-title h1 { margin: 0 0 28px; font: 600 clamp(30px, 3.15vw, 44px)/1.5 var(--serif); letter-spacing: -.6px; }
 .document-body .eyebrow, .document-body .breadcrumbs { margin-bottom: 18px; }
@@ -19,11 +19,30 @@ body:is([data-page="method"], [data-page="entry"]) main.shell { max-width: 1384p
 .document-body .prose section, .document-body :is(.detail-section, .detail-aside) { margin-block: 0; }
 .document-body .actions, .document-body .toolbar, .document-body details, .document-body table { font-family: var(--sans); }
 .document-body .actions a { text-decoration: none; }
+.document-body .actions { gap: 12px 20px; margin-block: 22px 24px; font: 14px/1.5 var(--sans); }
+.document-body .actions .text-link { display: inline-flex; align-items: center; min-height: 44px; }
+.document-body .actions .primary { color: var(--bg); }
+.document-body :not(pre) > code { padding: 2px 5px; border: 1px solid var(--site-inline-code-border); border-radius: 4px; background: var(--site-inline-code-bg); color: var(--site-inline-code-text); font: .85em/1.5 var(--mono); overflow-wrap: anywhere; }
+.document-body p > code { white-space: nowrap; }
+.document-body .note { padding: 14px 18px; border-left: 2px solid var(--line); background: var(--surface); color: var(--muted); font: 14px/1.85 var(--sans); }
+.document-body details:not(.document-outline details) { margin-block: 20px; border-block: 1px solid var(--line); }
+.document-body details > summary { min-height: 44px; padding: 12px 0; font: 14px/1.6 var(--sans); }
+.document-body .spec-list { font-family: var(--sans); }
 .document-body .code { margin-block: 24px; }
 .document-body table { display: block; width: max-content; max-width: 100%; overflow-x: auto; margin: 28px 0; font-size: 14px; line-height: 1.65; }
-.document-body :is(th, td) { padding: 11px 14px; }
+.document-body :is(th, td) { border: 1px solid var(--line); padding: 11px 14px; vertical-align: top; }
 .document-body th { background: var(--soft); color: var(--ink); font-weight: 680; }
 .document-body td { color: var(--ink); }
+/* The personal-docs table rules above remain intact; the scroll region keeps
+   column widths readable and exposes keyboard scrolling on this static site. */
+.document-table { min-width: 0; max-width: 100%; overflow-x: auto; margin: 28px 0; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--site-line-strong) transparent; }
+.document-body .document-table table { display: table; width: 100%; max-width: none; margin: 0; overflow: visible; table-layout: fixed; }
+.document-body .rubric-table { min-width: 540px; }
+.document-body .rubric-table th:first-child { width: 145px; }
+.document-body .rubric-table thead th:nth-child(2) { width: 70px; }
+.document-body .environment-table { min-width: 440px; }
+.document-body .environment-table th { width: 120px; }
+.document-body .weight { white-space: nowrap; }
 .document-outline { grid-column: 4; grid-row: 1; position: sticky; top: calc(var(--site-nav-height) + 48px); align-self: start; max-height: calc(100dvh - var(--site-nav-height) - 80px); overflow-y: auto; scrollbar-width: thin; padding: 0 4px 0 17px; border-left: 1px solid var(--line); font: 12px/1.75 var(--sans); }
 .document-outline__title { margin-bottom: 16px; color: var(--ink); font-size: 12px; font-weight: 400; line-height: 32px; }
 .document-outline summary { display: none; }
