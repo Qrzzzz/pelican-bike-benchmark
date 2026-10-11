@@ -112,6 +112,7 @@
               五个维度分别按 0–10 分记录，总分为各项得分乘权重后相加，再乘
               10，满分 100。缺少任一维度或评审信息时不展示总分。
             </p>
+            <div class="document-table" role="region" tabindex="0" aria-label="评分维度表，可横向滚动">
             <table class="rubric-table">
               <thead>
                 <tr>
@@ -148,10 +149,12 @@
                 </tr>
               </tbody>
             </table>
+            </div>
           </section>
           <section id="environment">
             <h2>04 · 同一个窗口，同一把尺。</h2>
-            <table>
+            <div class="document-table" role="region" tabindex="0" aria-label="测试环境表，可横向滚动">
+            <table class="environment-table">
               <tbody>
                 <tr>
                   <th scope="row">桌面视口</th>
@@ -180,6 +183,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
             <p>
               截图必须来自真实浏览器；缺失截图时显示待补充，不用插画替代证据。
             </p>
@@ -188,10 +192,10 @@
             <h2>05 · 把下一只鹈鹕放进来。</h2>
             <p>
               下载元数据模板，补齐模型版本、生成日期、完整输入和参数。将 AI
-              的原始输出保存为 UTF-8 文本，再在本地仓库执行导入。
+              的原始输出保存为 <code>UTF-8</code> 文本，再在本地仓库执行导入。
             </p>
             <div class="actions">
-              <a class="button" href="data/submission.template.json" download
+              <a class="button primary" href="data/submission.template.json" download
                 >下载元数据模板 ↓</a
               ><a
                 class="text-link"
@@ -210,7 +214,7 @@ npm run dev</pre>
             <p>
               导入工具计算原始输出
               SHA-256，保留完整输入，生成受限预览和静态检查报告。检查未通过的作品仍可登记，运行预览会停用。桌面、手机
-              PNG / WebP 截图可通过 --desktop 和 --mobile
+              PNG / WebP 截图可通过 <code>--desktop</code> 和 <code>--mobile</code>
               导入，并需在元数据中填写环境。
             </p>
             <p>

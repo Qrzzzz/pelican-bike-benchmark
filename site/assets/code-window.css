@@ -1,0 +1,38 @@
+.control-icon { width: 17px; height: 17px; flex-shrink: 0; vertical-align: middle; }
+.icon-button .control-icon { width: 21px; height: 21px; }
+.icon-button .control-label:empty { display: none; }
+.text-link .control-icon { margin-left: 5px; }
+.code-window {
+  min-width: 0; max-width: 100%; margin-block: 24px;
+  overflow: hidden; border: 1px solid var(--site-line-strong); border-radius: 8px;
+  background: var(--site-code-bg); color: var(--site-code-text);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+}
+.code-window__header {
+  display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 5px 12px 5px 18px;
+  border-bottom: 1px solid rgb(240 244 255 / 12%);
+  font: 12px/1.5 var(--sans); color: var(--site-code-text);
+}
+.code-window__dots { position: relative; width: 42px; height: 10px; flex-shrink: 0; }
+.code-window__dots::before { content: ''; position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; box-shadow: 16px 0 #ffbd2e, 32px 0 #27c93f; }
+.code-window__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-window__language { margin-left: auto; opacity: .65; font: 11px/1.5 var(--mono); }
+.code-window .code-window__copy { min-height: 44px; padding: 8px 10px; flex-shrink: 0; border-color: transparent; background: transparent; color: var(--site-code-text); font: 12px/1.5 var(--sans); }
+.code-window .code-window__copy:hover { background: rgb(240 244 255 / 10%); border-color: rgb(240 244 255 / 20%); }
+.code-window .code-window__copy:focus-visible, .code-window .code:focus-visible { outline-color: #a7bcff; outline-offset: -3px; }
+.code-window pre.code {
+  min-width: 0; max-width: 100%; margin: 0; padding: 20px 22px 24px;
+  border: 0; border-radius: 0; box-shadow: none;
+  font: 400 14px/1.7 var(--mono); scrollbar-width: thin;
+  scrollbar-color: #536487 transparent; overscroll-behavior: contain;
+}
+.code-window .code::-webkit-scrollbar { width: 7px; height: 7px; }
+.code-window .code::-webkit-scrollbar-thumb { background: #536487; border: 1px solid var(--site-code-bg); border-radius: 8px; }
+.code-window .code::-webkit-scrollbar-track { background: transparent; }
+#source-code { white-space: pre; overflow-wrap: normal; }
+@media (max-width: 639px) {
+  .code-window__header { gap: 8px; padding-left: 14px; }
+  .code-window__language { display: none; }
+  .code-window__copy { margin-left: auto; }
+  .code-window pre.code { padding: 16px; }
+}
