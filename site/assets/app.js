@@ -100,8 +100,10 @@ async function copy(text, button) {
     clearTimeout(previous?.timer);
     const original = previous?.original ?? label.textContent;
     label.textContent = message;
+    button.classList.toggle('copied', message === '已复制');
     copyFeedback.set(button, { original, timer: setTimeout(() => {
       label.textContent = original;
+      button.classList.remove('copied');
       copyFeedback.delete(button);
     }, 2200) });
   }

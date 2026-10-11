@@ -33,35 +33,26 @@ export function initCodeWindows(root, copy) {
     const heading = pre.previousElementSibling;
     const [title, language, selector] = labels[pre.id] ||
       [pre.getAttribute('aria-label') || (heading?.matches('h3') ? heading.textContent : pre.closest('details')?.querySelector('summary')?.textContent) || '完整记录', pre.textContent.trim().startsWith('{') ? 'JSON' : 'Text'];
-    const header = document.createElement('div');
-    header.className = 'code-window__header';
-    const dots = document.createElement('span');
-    dots.className = 'code-window__dots';
-    dots.setAttribute('aria-hidden', 'true');
-    const caption = document.createElement('span');
-    caption.className = 'code-window__title';
-    caption.textContent = title;
     const lang = document.createElement('span');
-    lang.className = 'code-window__language';
+    lang.className = 'lang';
     lang.textContent = language;
     let button = selector ? root.querySelector(selector) : null;
     if (!button) {
       button = document.createElement('button');
       button.type = 'button';
-      button.className = 'button';
       button.addEventListener('click', () => copy(pre.textContent, button));
     }
     const actions = button.closest('.actions');
-    button.classList.remove('primary');
-    button.innerHTML = `<span class="control-label">复制</span>${controlIcon('copy')}`;
-    button.classList.add('code-window__copy');
+    button.classList.remove('primary', 'button');
+    button.innerHTML = '<span class="control-label sr-only">复制</span>';
+    button.classList.add('code-window__copy', 'copy');
     button.setAttribute('aria-label', `复制${title}`);
     if (!pre.id) pre.id = `code-record-${root.querySelectorAll('.code-window').length + 1}`;
     button.setAttribute('aria-controls', pre.id);
-    header.replaceChildren(dots, caption, lang, button);
+    wrapper.append(button, lang);
     if (actions && !actions.children.length) actions.remove();
     pre.before(wrapper);
-    wrapper.append(header, pre);
+    wrapper.append(pre);
     pre.tabIndex = 0;
     pre.setAttribute('role', 'region');
     if (!pre.hasAttribute('aria-label')) pre.setAttribute('aria-label', title);
