@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { build } from "esbuild";
 import { renderGallery } from "../site/assets/gallery-render.js";
+import { prepareLoadingHtml } from "./loading.mjs";
 
 const inlineJson = (data) => JSON.stringify(data).replace(/</g, "\\u003c");
 export async function buildSite({ source = resolve("site"), output = resolve("dist") } = {}) {
@@ -24,10 +25,15 @@ export async function buildSite({ source = resolve("site"), output = resolve("di
   }
   await build({ entryPoints: [join(source, "assets/app.js")], outfile: join(output, "assets/app.js"), bundle: true, format: "esm", minify: true, target: "es2022" });
   const theme = await readFile(join(source, "assets/theme.js"), "utf8");
+  const loading = {
+    markup: await readFile(join(source, "assets/loading-screen.html"), "utf8"),
+    css: await readFile(join(source, "assets/loading-screen.css"), "utf8"),
+    tokens: await readFile(join(source, "assets/tokens.css"), "utf8"),
+  };
   const formal = gallery.filter((s) => s.kind !== "demo").length;
   for (const page of ["index", "compare", "entry", "method"]) {
     let html = await readFile(join(source, page + ".html"), "utf8");
-    html = html.replace('<script src="assets/theme.js"></script>', `<script>${theme}</script>`);
+    html = html.replace('<script src="assets/theme.js"></script>', `<script id="sync-initial-theme-color">${theme}</script>`);
     const preload = ["compare", "entry"].includes(page) ? '<link rel="preload" href="data/submissions.json" as="fetch" crossorigin="anonymous">' : "";
     html = html.replace('<script type="module" src="assets/app.js"></script>', `${preload}\n    <script type="module" src="assets/app.js"></script>`);
     let data = `<script type="application/json" id="initial-prompt">${inlineJson(prompt)}</script>`;
@@ -39,6 +45,7 @@ export async function buildSite({ source = resolve("site"), output = resolve("di
       data += `<script type="application/json" id="initial-gallery">${inlineJson(gallery)}</script>`;
     }
     html = html.replace("</body>", `${data}\n  </body>`);
+    html = prepareLoadingHtml(html, loading);
     await writeFile(join(output, page + ".html"), html);
   }
   return { entries: gallery.length, output };

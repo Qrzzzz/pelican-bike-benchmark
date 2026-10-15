@@ -34,6 +34,16 @@ test("build provides complete cards without JavaScript and preserves original ev
   assert.equal((await sharp(await readFile(thumbnail)).metadata()).width, 600);
   assert((await stat(thumbnail)).size < original.length);
   for (const page of ["compare", "entry"]) assert((await readFile(join(output, `${page}.html`), "utf8")).includes('rel="preload" href="data/submissions.json"'));
+  for (const page of ['index', 'method', 'compare', 'entry']) {
+    const built = await readFile(join(output, `${page}.html`), 'utf8');
+    assert(built.indexOf('<meta charset=') < built.indexOf('site-loading-critical'), 'charset stays first');
+    assert(built.indexOf('site-loading-bootstrap') < built.indexOf('<link rel="stylesheet"'), 'boot precedes resource loading');
+    assert(built.includes('class="site-loading site-loading--boot"'), `${page} shares the original loader`);
+    assert(built.includes('data-site-boot-style media="print"'), 'main styles do not block the loader');
+    assert(built.includes('<noscript><link rel="stylesheet"'), 'no-JS keeps regular stylesheet loading');
+    assert(built.includes(':root[data-theme="dark"]{--site-canvas: #151d37;'), 'critical loader follows the existing dark theme');
+    assert(!/v-if=|v-for=|:class=|ref="poemRoot"/.test(built), 'Vue bindings are converted to native HTML');
+  }
 });
 
 test("gallery escapes submitted text and keeps return filters", () => {

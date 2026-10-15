@@ -1,5 +1,7 @@
 # Reused theme code
 
+Loading screen adaptation (2026-10-15): `site/assets/loading-screen.html` and `loading-screen.css` reuse the composition and styles of `SiteLoading.vue` at personal-docs commit `1c44854edfcd719a24be83cb321b69cdd4c1762c`. `loadingPoems.mjs` and `loadingPoemRuntime.mjs` are copied unchanged, including original poem text, line breaks and attribution. `scripts/loading.mjs` adapts `loadingBootHtml.mjs` to this site's build and `data-theme` tokens. The loader lifecycle regression tests are adapted from the reference project's `tests/loading-boot.test.mjs`. The MIT notice below applies.
+
 Code windows (2026-10-11): `site/assets/code-window.css` copies the current personal-docs `styles/code.css` window rules with only container selectors changed. Copy-button and language-marker styles and clipboard icons are reused from VitePress 1.6.4, Copyright (c) 2019-present, Yuxi (Evan) You, under the MIT license reproduced below.
 
 `site/assets/tokens.css` adapts the palette, typography fallbacks, and design-token structure from [Qrzzzz/Qrzzzz.github.io](https://github.com/Qrzzzz/Qrzzzz.github.io), `docs/.vitepress/theme/styles/tokens.css`, reference commit `cdb7908b8dc8224d975c2f11c909cc1a44863ccc`. Focus, reduced-motion and reading-layout patterns are adapted to native HTML/CSS. No article text, fonts, images, or VitePress runtime are copied.

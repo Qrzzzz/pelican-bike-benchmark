@@ -755,3 +755,4 @@ if (page === "method" || page === "entry") {
   initDocument(root);
 }
 decorateControls();
+document.dispatchEvent(new Event("site-loading-ready"));
