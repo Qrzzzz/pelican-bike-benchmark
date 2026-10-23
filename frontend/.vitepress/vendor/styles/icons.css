@@ -1,0 +1,67 @@
+/* Official Lucide SVGs, pinned by lucide-static in package-lock.json. No authored icon paths. */
+:root {
+  --site-icon-arrow-up: url("lucide-static/icons/arrow-up.svg");
+  --site-icon-arrow-right: url("lucide-static/icons/arrow-right.svg");
+  --site-icon-arrow-left: url("lucide-static/icons/arrow-left.svg");
+  --site-icon-arrow-up-right: url("lucide-static/icons/arrow-up-right.svg");
+  --site-icon-search: url("lucide-static/icons/search.svg");
+  --site-icon-x: url("lucide-static/icons/x.svg");
+  --site-icon-sun: url("lucide-static/icons/sun.svg");
+  --site-icon-moon: url("lucide-static/icons/moon.svg");
+  --site-icon-external-link: url("lucide-static/icons/external-link.svg");
+  --site-icon-image: url("lucide-static/icons/image.svg");
+  --site-icon-chevron-right: url("lucide-static/icons/chevron-right.svg");
+  --site-icon-menu: url("lucide-static/icons/menu.svg");
+  --site-icon-align-left: url("lucide-static/icons/align-left.svg");
+  --site-icon-square-pen: url("lucide-static/icons/square-pen.svg");
+  --site-icon-plus: url("lucide-static/icons/plus.svg");
+  --site-icon-ellipsis: url("lucide-static/icons/ellipsis.svg");
+  --site-icon-languages: url("lucide-static/icons/languages.svg");
+  --site-icon-heart: url("lucide-static/icons/heart.svg");
+  --site-icon-list: url("lucide-static/icons/list.svg");
+  --site-icon-delete: url("lucide-static/icons/delete.svg");
+  --site-icon-corner-down-left: url("lucide-static/icons/corner-down-left.svg");
+  --site-icon-copy: url("lucide-static/icons/copy.svg");
+  --site-icon-check: url("lucide-static/icons/check.svg");
+}
+.site-icon { display: inline-block; flex: 0 0 auto; width: 1em; height: 1em; vertical-align: -.125em; background-color: currentColor; mask: var(--icon) center / contain no-repeat; }
+.site-icon--arrow-up { --icon: var(--site-icon-arrow-up); }
+.site-icon--arrow-right { --icon: var(--site-icon-arrow-right); }
+.site-icon--arrow-left { --icon: var(--site-icon-arrow-left); }
+.site-icon--arrow-up-right { --icon: var(--site-icon-arrow-up-right); }
+.site-icon--search { --icon: var(--site-icon-search); }
+.site-icon--delete { --icon: var(--site-icon-delete); }
+.site-icon--x { --icon: var(--site-icon-x); }
+.site-icon--sun { --icon: var(--site-icon-sun); }
+.site-icon--moon { --icon: var(--site-icon-moon); }
+.site-icon--external-link { --icon: var(--site-icon-external-link); }
+.site-icon--image { --icon: var(--site-icon-image); }
+/* Unmodified Invertocat from https://brand.github.com/GitHub_Logos.zip. */
+.site-icon--github { --icon: url("../assets/github-invertocat.svg"); color: #24292f; }
+.dark .site-icon--github { color: #fff; }
+.site-layout .vpi-align-left { --icon: var(--site-icon-align-left); }
+.site-layout .vpi-square-pen { --icon: var(--site-icon-square-pen); }
+.site-layout .vpi-plus { --icon: var(--site-icon-plus); }
+.site-layout .vpi-sun { --icon: var(--site-icon-sun); }
+.site-layout .vpi-moon { --icon: var(--site-icon-moon); }
+.site-layout .vpi-more-horizontal { --icon: var(--site-icon-ellipsis); }
+.site-layout .vpi-languages { --icon: var(--site-icon-languages); }
+.site-layout .vpi-heart { --icon: var(--site-icon-heart); }
+.site-layout .vpi-search { --icon: var(--site-icon-search); }
+.site-layout .vpi-layout-list { --icon: var(--site-icon-list); }
+.site-layout .vpi-delete { --icon: var(--site-icon-delete); }
+.site-layout .vpi-corner-down-left { --icon: var(--site-icon-corner-down-left); }
+.site-layout :is(.vpi-arrow-right, .vpi-arrow-down, .vpi-arrow-left, .vpi-arrow-up) { --icon: var(--site-icon-arrow-right); }
+.site-layout :is(.vpi-chevron-right, .vpi-chevron-down, .vpi-chevron-left, .vpi-chevron-up) { --icon: var(--site-icon-chevron-right); }
+
+/* The native hamburger keeps its accessible button and state, with official Menu / X artwork. */
+.site-layout .VPNavBarHamburger .container { width: 22px; height: 22px; background: currentColor; mask: var(--site-icon-menu) center / contain no-repeat; }
+.site-layout .VPNavBarHamburger.active .container { mask-image: var(--site-icon-x); }
+.site-layout .VPNavBarHamburger .container > span { display: none; }
+.site-layout .VPNavScreenMenuLink::after { background: currentColor; mask: var(--site-icon-chevron-right) center / contain no-repeat; }
+.site-layout :is(.vp-external-link-icon, .vp-doc a[href*='://'], .vp-doc a[target='_blank'])::after { --icon: var(--site-icon-arrow-up-right); }
+.site-layout .vp-doc div[class*='language-'] > button.copy,
+.site-layout .vp-doc div[class*='language-'] > button.copy.copied { background-image: none; }
+.site-layout .vp-doc div[class*='language-'] > button.copy::after { content: ""; position: absolute; inset: 11px; background: currentColor; mask: var(--site-icon-copy) center / contain no-repeat; }
+.site-layout .vp-doc div[class*='language-'] > button.copy.copied::after { mask-image: var(--site-icon-check); }
+.site-layout .VPSocialLink > .site-icon { width: 20px; height: 20px; }

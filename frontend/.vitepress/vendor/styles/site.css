@@ -1,0 +1,151 @@
+/* Site chrome and navigation. Home composition lives in home-poetry.css. */
+.site-layout { position: relative; min-height: 100svh; background: var(--site-canvas); isolation: isolate; }
+.site-layout[data-page-kind="home"] > .Layout { position: relative; z-index: 2; background: transparent; }
+.site-layout[data-page-kind="home"] .VPContent,
+.site-layout[data-page-kind="home"] .VPHome { background: transparent; }
+.VPNavBar { background: var(--site-canvas) !important; border: 0; }
+.VPNavBar > .divider { display: none; }
+.VPNavBar .container { max-width: var(--site-max); }
+.VPNavBar .content { min-width: 0; }
+.VPNavBar .content-body { gap: 8px; background: transparent !important; }
+.VPNavBarTitle .title { height: 44px; min-height: 44px; border: 0; font-family: var(--site-font-brand); font-size: 24px; font-weight: 400; line-height: 1.2; letter-spacing: -.02em; word-spacing: .05em; white-space: nowrap; }
+.VPNavBarTitle { display: flex; align-items: center; height: var(--vp-nav-height); }
+.VPNavBarMenu { position: relative; align-items: center; gap: 8px; }
+.VPNavBar .VPNavBarMenuLink { position: relative; z-index: 1; height: 44px; padding: 0 10px; color: var(--site-text-muted); font-family: var(--site-font-reading); font-size: 14px; font-weight: 400; line-height: 44px; transition: color var(--site-motion-short); }
+.VPNavBar .VPNavBarMenuLink.active,
+.VPNavBar .VPNavBarMenuLink:hover { color: var(--site-link); }
+.VPNavBar .top-nav-marker { position: absolute; z-index: 2; top: 0; left: 0; width: 0; height: 1px; background: var(--site-link); opacity: 0; pointer-events: none; transform: translate3d(0, 0, 0); transition: transform 320ms var(--site-ease), width 320ms var(--site-ease), opacity 120ms ease; will-change: transform, width; }
+.VPNavBar .top-nav-marker.is-ready.is-visible { opacity: 1; }
+.VPNavBar .top-nav-marker.is-preparing { transition: none; }
+.VPNavBarSearch, .VPNavBarAppearance, .VPNavBarTranslations, .VPNavBarSocialLinks, .VPNavBarExtra { display: none !important; }
+.site-layout[data-page-kind="home"] .VPNavBarMenuLink:not([href^="/about"]):not([href^="/random"]) { display: none; }
+.site-layout[data-page-kind="home"] .nav-github { display: none; }
+.site-layout .NavActions { border: 0; padding: 0; margin-left: 0; gap: 4px; }
+.site-layout .theme-toggle, .site-layout .nav-github { height: 44px; width: 44px; border-radius: 3px; }
+.VPNavBar :is(.VPNavBarMenu, .NavActions, .VPNavBarHamburger, .VPNavBarTitle) { transition: opacity 180ms ease 220ms, visibility 0s; }
+.VPNavBarHamburger { display: none !important; width: 44px; height: 44px; }
+.VPNavScreen { background: var(--site-canvas); overscroll-behavior: contain; }
+.site-layout .VPNavScreenMenuLink { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 62px; padding: 14px 2px; border-bottom: 1px solid var(--site-line); color: var(--site-text); font-family: var(--site-font-reading); font-size: 26px; font-weight: 400; line-height: 1.2; letter-spacing: -.015em; }
+.site-layout .VPNavScreenMenuLink::after { content: ""; flex: 0 0 18px; width: 18px; height: 18px; margin-right: 4px; color: var(--site-text-faint); transition: transform var(--site-motion-short), color var(--site-motion-short); }
+.site-layout .VPNavScreenMenuLink:hover,
+.site-layout .VPNavScreenMenuLink:focus-visible { color: var(--site-link); }
+.site-layout .VPNavScreenMenuLink:hover::after,
+.site-layout .VPNavScreenMenuLink:focus-visible::after { color: var(--site-link); transform: translateX(3px); }
+.site-layout .VPNavScreen .container { max-width: 440px; padding: 24px 0 40px; }
+.site-layout .VPNavScreenAppearance { display: none; }
+.VPLocalNav { border-bottom: 1px solid var(--site-line); background: var(--site-canvas); }
+.VPLocalNav .container { min-height: 48px; }
+.VPLocalNav .menu, .VPLocalNav .outline { min-height: 48px; }
+.VPDocAsideOutline .outline-link { transition: color var(--site-motion-short); }
+.VPDocAsideOutline .outline-marker { background: var(--site-accent); transition: top 240ms var(--site-ease), height 240ms var(--site-ease), opacity 160ms; }
+.VPDocAsideOutline .outline-title { font-size: 12px; font-weight: 400; margin-bottom: 16px; }
+.VPDocAsideOutline .outline-link { font-size: 12px; line-height: 1.75; padding-block: 6px; }
+.VPDocAsideOutline .outline-link.active { color: var(--site-link); }
+.VPDocAside .content { border-left-color: var(--site-line); }
+.VPDocAside .outline-link:focus-visible, .VPSidebarItem .link:focus-visible { outline-offset: -2px; }
+
+/* Crossfade only the old snapshot: the new theme never disappears behind black. */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 2; }
+::view-transition-new(root) { z-index: 1; }
+html.theme-is-switching, html.theme-is-switching body,
+html.theme-is-switching .site-layout, html.theme-is-switching .VPNavBar,
+html.theme-is-switching .site-layout :where(a, button, p, h1, h2, h3, input, path) {
+  transition: background-color 240ms ease, color 240ms ease, border-color 240ms ease, stroke 240ms ease;
+}
+
+/* Document shell. */
+.site-layout .VPDoc { position: relative; }
+.VPFooter { border-top: 1px solid var(--site-line); background: var(--site-canvas); }
+.VPFooter .message, .VPFooter .copyright { color: var(--site-text-muted); font-family: var(--site-font-sans); font-size: 11px; font-weight: 400; }
+.VPDocFooter .edit-info { gap: 12px; color: var(--site-text-faint); font-family: var(--site-font-sans); font-size: 12px; }
+
+@media (min-width: 960px) {
+  .site-layout .VPSidebar .curtain { top: calc(-1 * var(--vp-nav-height)); }
+  .site-layout .VPNavBar.has-sidebar > .wrapper { padding: 0 32px; }
+  .site-layout .VPNavBar.has-sidebar .container { max-width: var(--site-max); }
+  .site-layout .VPNavBar.has-sidebar .container > .title { position: static; width: auto; height: var(--vp-nav-height); padding: 0; }
+  .site-layout .VPNavBar.has-sidebar .content { position: static; padding: 0; }
+  .site-layout .VPNavBar.has-sidebar .VPNavBarTitle .title { padding: 0; }
+}
+@media (min-width: 1080px) { .VPNavBarMenu { display: flex !important; } }
+/* Move the local-nav box itself off the sidebar, including its background
+   and hit area. Padding alone leaves an opaque layer over the first group. */
+@media (min-width: 960px) and (max-width: 1279.98px) {
+  .site-layout .VPLocalNav.has-sidebar {
+    margin-left: var(--vp-sidebar-width);
+    width: calc(100% - var(--vp-sidebar-width));
+    padding-left: 0;
+  }
+  .site-layout .VPLocalNav.has-sidebar .items { left: 32px; }
+}
+@media (max-width: 1079.98px) {
+  .VPNavBarMenu { display: none !important; }
+  .VPNavBarHamburger { display: flex !important; }
+  .VPNavScreen { display: block !important; }
+}
+@media (max-width: 680px) {
+  :root { --site-nav-height: 72px; }
+  .VPNavBar > .wrapper { padding-inline: 22px; }
+  .VPNavBarTitle .title { font-size: 22px; }
+  .site-layout .VPNavScreen { padding-inline: 22px; }
+  .site-layout .VPNavScreenMenuLink { min-height: 58px; font-size: 24px; }
+  .VPNavBar .content-body { gap: 0; }
+  .site-layout .nav-github { display: none; }
+  .VPLocalNav .container { padding-inline: 22px; }
+}
+@media (max-width: 359px) {
+  .VPNavBar > .wrapper { padding-inline: 16px; }
+  .site-layout .VPNavScreen { padding-inline: 16px; }
+}
+/* Short landscape viewports keep navigation controls reachable. */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --site-nav-height: 56px; }
+  .site-layout .VPLocalNav .container { min-height: 44px; }
+  .site-layout .VPLocalNav .menu { min-height: 44px; padding-block: 10px; }
+  .site-layout .VPLocalNavOutlineDropdown { padding-block: 0; }
+  .site-layout .VPLocalNavOutlineDropdown > button { min-height: 44px; }
+  .site-layout .VPLocalNav .outline { min-height: 0; }
+  .site-layout .VPLocalNav .items {
+    top: 44px;
+    max-height: calc(100svh - var(--vp-nav-height) - 56px);
+  }
+  .site-layout .VPNavScreen .container { padding-top: 8px; padding-bottom: 16px; }
+  .site-layout .VPNavScreenMenuLink { min-height: 44px; font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .VPNavBar :is(.VPNavBarMenu, .NavActions, .VPNavBarHamburger, .VPNavBarTitle) { transition: none; }
+  .site-layout .VPNavScreenMenuLink::after { transition: none; }
+}
+
+/* Empty local navigation only duplicated the floating control. Keep real outlines and sidebar access. */
+.site-layout .VPLocalNav.empty:not(.has-sidebar),
+.site-layout .VPLocalNav.empty .VPLocalNavOutlineDropdown,
+.site-layout .VPLocalNavOutlineDropdown .header { display: none; }
+/* Variable-weight wordmark and a single restrained marker sweep. */
+.VPNavBarTitle .title > span { position: relative; }
+.VPNavBarTitle .title {
+  position: relative;
+  isolation: isolate;
+  width: 6.25em;
+  font-variation-settings: "wght" 400;
+  transition: font-variation-settings 440ms cubic-bezier(.22, 1, .36, 1), opacity 160ms ease;
+}
+.VPNavBarTitle .title > span::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -2px;
+  right: -2px;
+  bottom: .06em;
+  height: .42em;
+  background: color-mix(in srgb, #eed66a 65%, transparent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 440ms cubic-bezier(.22, 1, .36, 1);
+}
+.dark .VPNavBarTitle .title > span::after { background: color-mix(in srgb, var(--site-accent) 30%, transparent); }
+.VPNavBarTitle .title:is(:hover, :focus-visible) { color: var(--site-text); font-variation-settings: "wght" 650; }
+.VPNavBarTitle .title:is(:hover, :focus-visible) > span::after { transform: scaleX(1); }
+.VPNavBarTitle .title:active { opacity: .72; }
+@media (prefers-reduced-motion: reduce) { .VPNavBarTitle .title, .VPNavBarTitle .title > span::after { transition: none; } }

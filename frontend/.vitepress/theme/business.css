@@ -1,0 +1,233 @@
+/* Native HTML adaptation of current site.css, catalog.css and content.css. */
+.pelican-business a { color: inherit; text-decoration: none; }
+.pelican-business a:hover { color: var(--link); }
+.pelican-business button, .pelican-business input, .pelican-business select, .pelican-business textarea { font: inherit; }
+.pelican-business button, .pelican-business input, .pelican-business select { min-height: 44px; }
+.pelican-business button, .pelican-business a, .pelican-business input, .pelican-business select { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.pelican-business button, .pelican-business summary { cursor: pointer; }
+.pelican-business button:disabled { cursor: not-allowed; opacity: .5; }
+.pelican-business :focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.pelican-business ::selection { background: var(--selection); color: var(--ink); }
+.pelican-business [hidden] { display: none !important; }
+.pelican-business .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.pelican-business .eyebrow, .pelican-business .mono { color: var(--muted); font: 12px/1.6 var(--mono); }
+.pelican-business .eyebrow { letter-spacing: .1em; }
+.pelican-business .lede { color: var(--muted); font-size: 16px; line-height: 1.78; }
+.pelican-business .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.pelican-business .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font: 500 14px/1.5 var(--sans); text-decoration: none; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; }
+.pelican-business .button:hover { background: var(--soft); border-color: var(--site-line-strong); color: var(--link); }
+.pelican-business .button:active { background: var(--selection); }
+.pelican-business .button.primary { border-color: var(--accent); background: var(--accent); color: var(--bg); font-weight: 600; }
+.pelican-business .button.primary:hover { background: var(--site-accent-hover); border-color: var(--site-accent-hover); }
+.pelican-business .button:disabled { opacity: .5; background: var(--soft); border-color: var(--line); color: var(--muted); }
+.pelican-business .icon-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; padding: 0; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--ink); font-size: 22px; }
+.pelican-business .icon-button:hover { background: var(--soft); }
+.pelican-business .text-link { color: var(--link); text-decoration: underline; text-underline-offset: 4px; }
+.pelican-business .catalog-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin-top: 12px; font-size: 13px; }
+.pelican-business .catalog-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.pelican-business .section { padding-block: 24px; }
+.pelican-business #gallery { padding-top: 0; }
+.pelican-business .filters { display: grid; grid-template-columns: minmax(200px, 27%) minmax(0, 1fr); grid-template-areas: "search controls" "results results"; align-items: center; gap: 12px; padding-block: 12px; }
+.pelican-business .filters:has(.filter-summary:not([hidden])) { grid-template-areas: "search controls" "summary summary" "results results"; }
+.pelican-business .filter-controls { grid-area: controls; display: flex; flex-wrap: wrap; gap: 12px; min-width: 0; }
+.pelican-business .filter-toggle { display: none; }
+.pelican-business .filter-summary { grid-area: summary; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 13px; }
+.pelican-business .filter-summary span { overflow-wrap: anywhere; }
+.pelican-business .filter-summary button { flex-shrink: 0; }
+.pelican-business .filter-selects { flex: 1; display: flex; gap: 12px; min-width: 0; }
+.pelican-business .filter-selects select { flex: 1 1 0; width: 0; text-overflow: ellipsis; }
+.pelican-business .filters .tabs { grid-area: tabs; }
+.pelican-business .filters :is(button, input, select) { height: 44px; min-height: 44px; padding-block: 0; }
+.pelican-business .tabs { display: flex; flex-wrap: wrap; gap: 3px; max-width: 100%; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--soft); }
+.pelican-business .tab { min-width: 0; padding: 8px 12px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--muted); font: 500 14px/1.5 var(--sans); }
+.pelican-business .tab:hover { background: var(--site-accent-soft); }
+.pelican-business .tab[aria-pressed="true"] { border-color: var(--line); background: var(--surface); color: var(--link); box-shadow: 0 1px 3px rgb(0 0 0 / 6%); }
+.pelican-business .search { grid-area: search; min-width: 0; }
+.pelican-business .search input, .pelican-business select { max-width: 100%; min-width: 0; min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font: 14px/1.5 var(--sans); }
+.pelican-business .search input:hover, .pelican-business select:hover { border-color: var(--site-line-strong); }
+.pelican-business .search input::placeholder { color: var(--muted); }
+.pelican-business .search input { width: 100%; }
+.pelican-business .result-line { grid-area: results; display: flex; flex-direction: row; justify-content: space-between; gap: 8px; min-width: 0; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.pelican-business .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 24px; }
+.pelican-business .provider-section { margin-block: 20px 40px; }
+.pelican-business .provider-title { margin: 0 0 12px; color: var(--muted); font: 500 14px/1.6 var(--sans); }
+.pelican-business .model-section { margin-block: 16px 28px; }
+.pelican-business .model-title { margin: 0 0 12px; font: 600 24px/1.5 var(--sans); }
+.pelican-business .effort-label { margin-bottom: 4px; }
+.pelican-business .card { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 10px; padding: 0; min-width: 0; }
+.pelican-business .card-cover { display: block; overflow: hidden; aspect-ratio: 3/2; border: 1px solid var(--line); border-radius: 3px; background: var(--soft); }
+.pelican-business .card-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pelican-business .card-body { min-width: 0; }
+.pelican-business .card-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 8px; color: var(--muted); font: 11px/1.6 var(--mono); }
+.pelican-business .badge { color: var(--muted); font: 12px/1.6 var(--sans); }
+.pelican-business .badge.failed { color: #a33b29; }
+.pelican-business :root[data-theme="dark"] .badge.failed { color: #f3b297; }
+.pelican-business .card h2 { margin: 0; font: 600 22px/1.5 var(--sans); }
+.pelican-business .card p { max-width: 65ch; margin: 8px 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.pelican-business .card-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; font-size: 12px; color: var(--muted); }
+.pelican-business .check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; color: var(--ink); }
+.pelican-business .check input { width: 16px; height: 16px; min-height: 0; accent-color: var(--link); }
+.pelican-business .card:has(input:checked) .card-cover { outline: 2px solid var(--link); outline-offset: 3px; }
+.pelican-business .empty { grid-column: 1/-1; padding: 48px 16px; text-align: center; }
+.pelican-business .empty p, .pelican-business .note { color: var(--muted); }
+.pelican-business .note { margin: 24px 0; font-size: 13px; line-height: 1.8; }
+.pelican-business .footer { padding: 24px 0 32px; color: var(--muted); font-size: 11px; }
+.pelican-business .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; }
+.pelican-business .footer a { text-decoration: underline; text-underline-offset: 3px; }
+.pelican-business .comparison-tray { position: sticky; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; max-width: 900px; margin: 12px auto; padding: 16px 20px; border-radius: 5px; background: var(--surface); color: var(--ink); box-shadow: var(--site-shadow-float); }
+.pelican-business .selected-items { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+.pelican-business .selection-chip { padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); text-align: left; font: 12px/1.5 var(--sans); }
+.pelican-business .selection-chip:hover { border-color: var(--site-line-strong); background: var(--soft); }
+.pelican-business .selection-chip span { margin-left: 8px; }
+.pelican-business .page-title { padding: 64px 0 32px; }
+.pelican-business .page-title h1 { margin: 18px 0 24px; font: 600 clamp(38px, 4.8vw, 56px)/1.2 var(--serif); }
+.pelican-business .breadcrumbs { display: flex; flex-wrap: wrap; gap: 10px; color: var(--muted); font-size: 12px; }
+.pelican-business .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0 24px; }
+.pelican-business .toolbar .push { margin-left: auto; }
+.pelican-business .compare-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; margin-bottom: 16px; }
+.pelican-business .compare-slot { display: flex; align-items: start; gap: 8px; min-width: 0; }
+.pelican-business .compare-slot label { flex: 1; }
+.pelican-business .compare-slot > button { margin-top: 27px; }
+.pelican-business .slot-identity { overflow-wrap: anywhere; line-height: 1.5; }
+.pelican-business .add-compare { justify-self: start; align-self: start; }
+.pelican-business .preview-note { margin: 12px 0; }
+.pelican-business .preview-block { min-width: 0; }
+.pelican-business .enlarge-preview { margin-bottom: 8px; }
+.pelican-business .compare-picker label { display: grid; gap: 6px; min-width: 0; color: var(--muted); font-size: 12px; }
+.pelican-business .compare-picker select { width: 100%; }
+.pelican-business .compare-grid { display: grid; grid-template-columns: repeat(var(--columns, 2), minmax(0, 1fr)); gap: 24px; }
+.pelican-business .compare-column { min-width: 0; }
+.pelican-business .compare-column h2 { min-height: 2.8em; margin: 12px 0; font: 600 21px/1.4 var(--sans); }
+.pelican-business .preview-surface { position: relative; width: 100%; overflow: hidden; aspect-ratio: 3/2; border: 1px solid var(--line); border-radius: 3px; background: var(--soft); }
+.pelican-business .preview-surface.mobile { aspect-ratio: 390/844; max-width: 390px; margin-inline: auto; }
+.pelican-business .preview-surface iframe { position: absolute; top: 0; left: 0; display: block; border: 0; transform-origin: top left; background: white; }
+.pelican-business .preview-surface img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.pelican-business .preview-placeholder { position: absolute; inset: 0; display: grid; place-content: center; padding: 20px; text-align: center; color: var(--muted); font-size: 13px; }
+.pelican-business .spec-list { margin: 18px 0 0; font-size: 13px; }
+.pelican-business .spec-list div { display: flex; justify-content: space-between; gap: 24px; padding: 10px 0; }
+.pelican-business .spec-list dt { flex-shrink: 0; color: var(--muted); }
+.pelican-business .spec-list dd { min-width: 0; margin: 0; text-align: right; overflow-wrap: anywhere; }
+.pelican-business .detail-layout { display: block; }
+.pelican-business .detail-layout > *, .pelican-business .method-layout > * { min-width: 0; }
+.pelican-business .detail-section, .pelican-business .detail-aside { margin-block: 64px; }
+.pelican-business .detail-aside h3 { margin-top: 40px !important; }
+.pelican-business .code { display: block; max-height: 470px; padding: 22px; border: 1px solid var(--line); border-radius: 5px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--site-code-bg); color: var(--site-code-text); font: 13px/1.8 var(--mono); scrollbar-width: thin; tab-size: 2; }
+.pelican-business .hash { overflow-wrap: anywhere; color: var(--muted); font: 12px/1.8 var(--mono); }
+.pelican-business .weight, .pelican-business .status-dot { color: var(--link); }
+.pelican-business .weight { width: 65px; font-family: var(--mono); }
+.pelican-business .toast { position: fixed; bottom: max(24px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 30; width: max-content; max-width: 90vw; padding: 12px 22px; border-radius: 5px; background: var(--ink); color: var(--bg); font-size: 13px; }
+.pelican-business .dialog { width: calc(100% - 32px); border: 1px solid var(--line); background: var(--bg); color: var(--ink); box-shadow: var(--site-shadow-float); }
+.pelican-business .dialog-head { display: flex; justify-content: space-between; gap: 20px; }
+@media (max-width: 959px) {
+  .pelican-business .compare-grid, .pelican-business .compare-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) {
+  .pelican-business .filters { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "search toggle" "results results"; }
+  .pelican-business .filters:has(.filter-toggle[aria-expanded="true"]) { grid-template-areas: "search toggle" "controls controls" "results results"; }
+  .pelican-business .filters:has(.filter-summary:not([hidden])) { grid-template-areas: "search toggle" "summary summary" "results results"; }
+  .pelican-business .filters:has(.filter-toggle[aria-expanded="true"]):has(.filter-summary:not([hidden])) { grid-template-areas: "search toggle" "controls controls" "summary summary" "results results"; }
+  .pelican-business .filter-toggle { display: inline-flex; grid-area: toggle; }
+  .pelican-business .filter-toggle[aria-expanded="false"] + .filter-controls { display: none; }
+  .pelican-business .filter-selects { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; flex-basis: 100%; }
+  .pelican-business .filter-selects select { width: 100%; }
+  .pelican-business .result-line { flex-wrap: wrap; font-size: 12px; line-height: 1.5; }
+}
+@media (max-width: 639px) {
+  .pelican-business .catalog-links { gap: 8px 16px; }
+  .pelican-business .search input, .pelican-business .filters select { font-size: 16px; }
+  .pelican-business .card { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 0; }
+  .pelican-business .card h2 { font-size: 18px; }
+  .pelican-business .card p { font-size: 13px; }
+  .pelican-business .card-meta { font-size: 10px; gap: 4px 8px; }
+  .pelican-business .card-bottom { align-items: start; flex-direction: column; }
+  .pelican-business .page-title { padding-top: 36px; }
+  .pelican-business .page-title h1 { font-size: clamp(36px, 10.5vw, 48px); line-height: 1.24; }
+  .pelican-business .compare-grid { grid-template-columns: minmax(0, 1fr); }
+  .pelican-business .toolbar .push { margin-left: 0; }
+  .pelican-business .compare-picker { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .pelican-business .compare-picker select { font-size: 16px; }
+  .pelican-business .comparison-tray { padding: 14px; }
+  .pelican-business .selected-items { max-height: 100px; overflow-y: auto; padding: 3px; }
+  .pelican-business .detail-section, .pelican-business .detail-aside { margin-block: 48px; }
+  .pelican-business .code { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+}
+/* Prompt reader: only the text scrolls; actions remain within reach. */
+.pelican-business .dialog { padding: 0; max-width: 800px; max-height: min(88dvh, 860px); overflow: hidden; border-radius: 8px; }
+.pelican-business .dialog[open] { display: flex; flex-direction: column; animation: prompt-enter 180ms ease-out; }
+.pelican-business .dialog::backdrop { background: rgba(20, 24, 23, 0.55); backdrop-filter: blur(5px); }
+.pelican-business .dialog-head { flex: 0 0 auto; padding: 26px 28px 12px; align-items: flex-start; }
+.pelican-business .dialog-head h2 { margin-top: 10px; font: 32px/1.3 var(--serif); }
+.pelican-business .dialog-head .icon-button { flex-shrink: 0; background: var(--surface); }
+.pelican-business #dialog-description { margin: 0; padding: 0 28px 20px; color: var(--muted); font-size: 14px; }
+.pelican-business .dialog-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 24px 28px; border-block: 1px solid var(--line); background: var(--surface); scrollbar-width: thin; }
+.pelican-business .dialog-body:focus-visible { outline-offset: -4px; }
+.pelican-business #dialog-prompt { margin: 0; max-height: none; white-space: pre-wrap; overflow-wrap: anywhere; font: 15px/1.95 var(--sans); }
+.pelican-business .dialog-footer { flex-shrink: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 18px; align-items: center; padding: 16px 28px; }
+.pelican-business .dialog-footer details { min-width: 0; font-size: 12px; }
+.pelican-business .dialog-footer .hash { margin: 0 0 6px; }
+.pelican-business #dialog-status { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--link); }
+.pelican-business #dialog-status:not(:empty) { padding-top: 10px; }
+@keyframes prompt-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 620px) {
+  .pelican-business .dialog { max-height: 90dvh; width: calc(100% - 24px); }
+  .pelican-business .dialog-head { padding: 20px 18px 12px; gap: 8px; }
+  .pelican-business .dialog-head h2 { font-size: 26px; }
+  .pelican-business .dialog-head .eyebrow { font-size: 9px; letter-spacing: 0.07em; }
+  .pelican-business #dialog-description { padding: 0 18px 16px; }
+  .pelican-business .dialog-body { padding: 18px; }
+  .pelican-business #dialog-prompt { font-size: 14px; }
+  .pelican-business .dialog-footer { padding: 12px 18px; gap: 4px; grid-template-columns: 1fr; }
+  .pelican-business .dialog-footer .button { grid-row: 1; }
+}
+
+/* A separate fixed-viewport canvas keeps the underlying observation intact. */
+.pelican-business .preview-dialog { width: calc(100% - 24px); max-width: 1320px; height: 92dvh; max-height: 92dvh; }
+.pelican-business .preview-dialog .dialog-head { padding: 12px 16px 4px; align-items: center; }
+.pelican-business .preview-dialog .dialog-head h2 { margin: 0; font: 600 18px/1.4 var(--sans); }
+.pelican-business .preview-dialog-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 16px; padding: 8px 16px; }
+.pelican-business .preview-dialog-controls label { display: grid; gap: 4px; font-size: 12px; }
+.pelican-business .preview-scale-note { margin: 0; padding: 4px 16px 12px; color: var(--muted); font-size: 13px; }
+.pelican-business .preview-scroll { min-height: 0; flex: 1; overflow: auto; padding: 0 16px 16px; overscroll-behavior: contain; }
+.pelican-business .preview-scroll .preview-surface { max-width: none; margin: 0; flex-shrink: 0; }
+
+/* Keep the observation sequence ahead of optional metadata. */
+.pelican-business .compare-locator { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block: 12px; background: var(--bg); }
+.pelican-business .compare-locator label { display: grid; gap: 4px; min-width: 0; flex: 1; }
+.pelican-business .compare-locator select { width: 100%; min-width: 0; }
+.pelican-business .compare-column h2 { scroll-margin-top: 130px; }
+.pelican-business .compare-column h2 .eyebrow { display: block; margin-bottom: 6px; }
+.pelican-business .compare-column h2 a { overflow-wrap: anywhere; }
+.pelican-business .compare-specs { margin-top: 32px; scroll-margin-top: 130px; }
+.pelican-business .compare-specs section { min-width: 0; }
+.pelican-business .compare-specs h3 { overflow-wrap: anywhere; }
+.pelican-business .compare-specs .text-link { display: inline-block; margin-top: 16px; }
+@supports (grid-template-rows: subgrid) {
+  .pelican-business .compare-column { display: grid; grid-template-rows: subgrid; grid-row: span 2; }
+}
+.pelican-business #selection-toggle { white-space: nowrap; }
+@media (max-width: 639px), (max-height: 500px) {
+  .pelican-business .compare-locator { position: sticky; top: 0; z-index: 4; font-size: 12px; gap: 8px; }
+  .pelican-business .comparison-tray { gap: 6px; padding: 8px; }
+  .pelican-business .comparison-tray .actions { gap: 4px; }
+  .pelican-business .comparison-tray .button { padding: 8px 6px; font-size: 12px; min-height: 44px; }
+  .pelican-business .selected-items { max-height: min(120px, 30dvh); overflow-y: auto; }
+}
+
+/* Keep method text readable and long commands independently scrollable. */
+.pelican-business #method-commands { white-space: pre; overflow-wrap: normal; overscroll-behavior: contain; }
+.pelican-business .card { scroll-margin-top: 24px; }
+/* Short viewports reserve most of the prompt dialog for the text. */
+@media (max-height: 500px) {
+  .pelican-business #prompt-dialog { height: calc(100dvh - 24px); max-height: calc(100dvh - 24px); }
+  .pelican-business #prompt-dialog .dialog-head { padding: 8px 16px 4px; align-items: center; }
+  .pelican-business #prompt-dialog .dialog-head .eyebrow { font-size: 9px; line-height: 1.2; }
+  .pelican-business #prompt-dialog .dialog-head h2 { margin: 2px 0 0; font-size: 20px; line-height: 1.2; }
+  .pelican-business #prompt-dialog #dialog-description { padding: 0 16px 6px; font-size: 12px; }
+  .pelican-business #prompt-dialog .dialog-body { flex: 1; padding: 12px 16px; }
+  .pelican-business #prompt-dialog .dialog-footer { padding: 6px 16px; gap: 0 12px; grid-template-columns: minmax(0, 1fr) auto; max-height: 120px; overflow-y: auto; }
+  .pelican-business #prompt-dialog .dialog-footer .button { grid-row: auto; }
+  .pelican-business #prompt-dialog .dialog-footer summary { padding-block: 4px; }
+  .pelican-business #prompt-dialog #dialog-status:not(:empty) { padding-top: 2px; }
+}

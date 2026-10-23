@@ -1,0 +1,113 @@
+/* macOS-style code windows, restored from the site's earlier implementation. */
+
+.vp-doc div[class*="language-"] {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
+  margin: 24px 0;
+  padding-top: 20px;
+  background: var(--site-code-bg);
+  box-shadow: 0 10px 30px 0 rgb(0 0 0 / 40%);
+}
+
+.vp-doc div[class*="language-"]::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ff5f56;
+  box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+}
+
+.vp-doc div[class*="language-"] pre {
+  padding-block: 24px;
+}
+
+.vp-doc div[class*="language-"] > span.lang {
+  color: var(--site-text-muted);
+}
+
+.vp-doc .line-numbers-wrapper {
+  padding-top: 40px;
+  border-right: none;
+}
+
+.vp-doc .line-numbers-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 40px;
+  right: 0;
+  height: calc(100% - 60px);
+  border-right: 1px solid var(--vp-code-block-divider-color);
+}
+
+.vp-doc div[class*="language-"].line-numbers-mode {
+  margin-bottom: 20px;
+}
+
+.vp-code-group {
+  overflow: hidden;
+  border: 1px solid var(--site-line);
+  border-radius: 8px;
+  background: var(--site-code-bg);
+  color: var(--vp-c-black-soft);
+  box-shadow: 0 10px 30px 0 rgb(0 0 0 / 40%);
+}
+
+.vp-code-group .tabs {
+  position: relative;
+  padding-top: 20px;
+  background: var(--site-surface-subtle);
+  border-bottom: 1px solid var(--site-line);
+}
+
+.vp-code-group .tabs::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fc625d;
+  box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+}
+
+.vp-code-group div[class*="language-"].vp-adaptive-theme,
+.vp-code-group div[class*="language-"].vp-adaptive-theme.line-numbers-mode {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding-top: 0;
+  box-shadow: none;
+}
+
+.vp-code-group div[class*="language-"].vp-adaptive-theme::before,
+.vp-code-group div[class*="language-"].vp-adaptive-theme.line-numbers-mode::before {
+  display: none;
+}
+
+.vp-code-group .line-numbers-mode .line-numbers-wrapper {
+  padding-top: 20px;
+}
+
+.vp-code-group .line-numbers-mode .line-numbers-wrapper::after {
+  top: 24px;
+  height: calc(100% - 45px);
+}
+
+@media (max-width: 680px) {
+  .vp-doc div[class*="language-"] {
+    margin-inline: 0;
+  }
+
+  .vp-doc div[class*="language-"] code {
+    padding-inline: 16px;
+  }
+}

@@ -2,5 +2,9 @@
 # Benchmark byte hashes must survive Windows checkout and Linux CI unchanged.
 site/submissions/**/source.html.txt -text
 site/submissions/**/preview.html -text
+# Upstream theme hashes are recorded byte-for-byte, including original EOLs.
+frontend/.vitepress/vendor/** -text whitespace=cr-at-eol
+frontend/.vitepress/content/search.mjs -text whitespace=cr-at-eol
+frontend/.vitepress/searchAssets.ts -text whitespace=cr-at-eol
 *.png binary
 *.webp binary

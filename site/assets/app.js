@@ -1,12 +1,9 @@
 import { galleryReturn, galleryPosition } from "./gallery-state.js";
 import { cascade, groupCatalog, effortOf, identityOf } from "./catalog.js";
-import { runThemeTransition } from "./theme-transition.js";
-import { initDocument } from "./document.js";
 import { initCodeWindows, decorateControls } from "./code-window.js";
-import { initNavigation } from "./navigation.js";
 import { renderGallery } from "./gallery-render.js";
 import { createPreviewCache } from "./preview-cache.js";
-initNavigation();
+export async function initBusinessPage() {
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const escape = (value) =>
@@ -113,37 +110,6 @@ function saveSelection() {
     sessionStorage.setItem("pelican-selection", JSON.stringify(selected));
   } catch {}
 }
-function setThemeButton() {
-  const dark = document.documentElement.dataset.theme === "dark";
-  $("#theme-toggle").classList.toggle("is-dark", dark);
-  $("#theme-toggle").setAttribute("aria-checked", String(dark));
-  $("#theme-toggle").setAttribute(
-    "aria-label",
-    document.documentElement.dataset.theme === "dark"
-      ? "切换为浅色主题"
-      : "切换为深色主题",
-  );
-  $("#theme-toggle").title = $("#theme-toggle").getAttribute("aria-label");
-}
-setThemeButton();
-document.addEventListener("themechange", setThemeButton);
-let switchingTheme = false;
-$("#theme-toggle").addEventListener("click", async () => {
-  if (switchingTheme) return;
-  switchingTheme = true;
-  $("#theme-toggle").setAttribute("aria-busy", "true");
-  const next =
-    document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  try {
-    await runThemeTransition({ documentObject: document, windowObject: window,
-      origin: $("#theme-toggle"), update: () => window.setPelicanTheme(next) });
-  } finally {
-    setTimeout(() => {
-      switchingTheme = false;
-      $("#theme-toggle").removeAttribute("aria-busy");
-    }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 40 : 380);
-  }
-});
 $("#close-prompt").addEventListener("click", () => $("#prompt-dialog").close());
 $("#prompt-dialog").addEventListener("keydown", (event) => {
   if (event.key !== "Tab") return;
@@ -752,7 +718,9 @@ await promptTask;
 if (page === "method" || page === "entry") {
   const root = $(page === "method" ? "#main" : "#entry-content");
   initCodeWindows(root, copy);
-  initDocument(root);
+
 }
 decorateControls();
 document.dispatchEvent(new Event("site-loading-ready"));
+
+}

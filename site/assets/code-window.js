@@ -1,11 +1,6 @@
-const paths = {
-  copy: '<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/>',
-  download: '<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',
-  external: '<path d="M14 4h6v6m0-6L10 14M10 4H4v16h16v-6"/>',
-  close: '<path d="m6 6 12 12M18 6 6 18"/>',
-};
 export function controlIcon(name) {
-  return `<svg class="control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]}</svg>`;
+  const icon={copy:'copy',download:'arrow-down',external:'external-link',close:'x'}[name];
+  return `<span class="control-icon site-icon site-icon--${icon}" aria-hidden="true"></span>`;
 }
 export function decorateControls(root = document) {
   root.querySelectorAll('.button, .text-link, .icon-button').forEach((control) => {
@@ -24,7 +19,7 @@ export function initCodeWindows(root, copy) {
   root.querySelectorAll('pre.code').forEach((pre) => {
     if (pre.closest('.code-window')) return;
     const wrapper = document.createElement('div');
-    wrapper.className = 'code-window';
+    wrapper.className = 'code-window language-text';
     const labels = {
       'method-commands': ['导入命令', 'Shell', '#copy-commands'],
       'method-prompt': ['固定提示词', 'Text', '[data-copy-prompt]'],

@@ -1,0 +1,52 @@
+/* Markdown and excerpt strong marker
+ *
+ * Markdown strong text gets a dedicated .text-emphasis paint layer. Excerpts
+ * are hand-authored semantic HTML, so only <strong> inside .excerpt-entry
+ * opts into the same marker treatment. Other component <strong> boxes remain
+ * unpainted.
+ */
+:root {
+  --site-marker-fill: rgba(36, 62, 205, 0.14);
+}
+
+.dark {
+  --site-marker-fill: rgba(167, 188, 255, 0.2);
+}
+
+.vp-doc strong {
+  background: none;
+  color: var(--site-text);
+  font-weight: 750;
+}
+
+/* A lower-half blue ink marker with subtly slanted ends, repeated on each line. */
+.vp-doc .text-emphasis,
+.vp-doc .excerpt-entry strong {
+  display: inline;
+  padding-inline: 0.16em;
+  background:
+    linear-gradient(
+      100deg,
+      transparent 0.16em,
+      var(--site-marker-fill) 0.16em,
+      var(--site-marker-fill) calc(100% - 0.16em),
+      transparent calc(100% - 0.16em)
+    );
+  background-size: 100% 50%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+@media (forced-colors: active) {
+  .vp-doc strong {
+    color: CanvasText;
+  }
+
+  .vp-doc .text-emphasis,
+  .vp-doc .excerpt-entry strong {
+    padding-inline: 0;
+    background: none;
+  }
+}
