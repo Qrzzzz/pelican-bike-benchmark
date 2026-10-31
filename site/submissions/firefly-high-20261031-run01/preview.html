@@ -1,0 +1,260 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>Firefly · high · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="Firefly · high" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;Firefly-unknown&lt;/title&gt;
+&lt;style&gt;
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #87CEEB;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    aspect-ratio: 3 / 2;
+    position: relative;
+    background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 60%, #e0f7fa 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  #toggleBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #1d3557;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s, transform 0.1s;
+  }
+  #toggleBtn:hover {
+    background: #457b9d;
+  }
+  #toggleBtn:active {
+    transform: scale(0.95);
+  }
+  #toggleBtn:focus {
+    outline: 3px solid #f4a261;
+    outline-offset: 2px;
+  }
+
+/* Animations */
+.wheel-back { transform-origin: 250px 450px; animation: spin 1s linear infinite; }
+.wheel-front { transform-origin: 450px 450px; animation: spin 1s linear infinite; }
+.crank { transform-origin: 350px 450px; animation: spin 1s linear infinite; }
+.road-lines { animation: roadMove 0.4s linear infinite; }
+.clouds { animation: cloudMove 15s linear infinite; }
+.mountains { animation: mountainMove 25s linear infinite; }
+.pelican { animation: bounce 0.5s ease-in-out infinite alternate; }
+.wing { transform-origin: 320px 280px; animation: flap 0.5s ease-in-out infinite alternate; }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes roadMove { 100% { stroke-dashoffset: -50; } }
+@keyframes cloudMove { 100% { transform: translateX(-800px); } }
+@keyframes mountainMove { 100% { transform: translateX(-800px); } }
+@keyframes bounce { 100% { transform: translateY(-6px); } }
+@keyframes flap { 100% { transform: rotate(-20deg); } }
+
+.paused * { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wheel-back, .wheel-front, .crank, .road-lines, .clouds, .mountains, .pelican, .wing { animation: none !important; }
+}
+
+@media (max-width: 600px) {
+  #toggleBtn { padding: 8px 14px; font-size: 13px; top: 10px; right: 10px; }
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;container&quot;&gt;
+  &lt;button id=&quot;toggleBtn&quot; aria-label=&quot;暂停动画&quot;&gt;暂停&lt;/button&gt;
+  &lt;svg viewBox=&quot;0 0 800 600&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;
+    &lt;defs&gt;
+      &lt;linearGradient id=&quot;skyGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0%&quot; stop-color=&quot;#87CEEB&quot;/&gt;
+        &lt;stop offset=&quot;100%&quot; stop-color=&quot;#E0F6FF&quot;/&gt;
+      &lt;/linearGradient&gt;
+      &lt;linearGradient id=&quot;roadGrad&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+        &lt;stop offset=&quot;0%&quot; stop-color=&quot;#555&quot;/&gt;
+        &lt;stop offset=&quot;100%&quot; stop-color=&quot;#333&quot;/&gt;
+      &lt;/linearGradient&gt;
+    &lt;/defs&gt;
+
+&lt;!-- Sky --&gt;
+&lt;rect width=&quot;800&quot; height=&quot;600&quot; fill=&quot;url(#skyGrad)&quot;/&gt;
+
+&lt;!-- Sun --&gt;
+&lt;circle cx=&quot;680&quot; cy=&quot;120&quot; r=&quot;45&quot; fill=&quot;#FFD166&quot; opacity=&quot;0.9&quot;/&gt;
+&lt;circle cx=&quot;680&quot; cy=&quot;120&quot; r=&quot;60&quot; fill=&quot;#FFD166&quot; opacity=&quot;0.3&quot;/&gt;
+
+&lt;!-- Clouds --&gt;
+&lt;g class=&quot;clouds&quot;&gt;
+  &lt;path d=&quot;M 100 150 Q 120 110 160 140 Q 190 120 220 150 Q 240 170 210 180 L 110 180 Q 80 170 100 150&quot; fill=&quot;#fff&quot; opacity=&quot;0.85&quot;/&gt;
+  &lt;path d=&quot;M 450 100 Q 480 60 520 90 Q 560 70 590 100 Q 610 120 580 130 L 460 130 Q 430 120 450 100&quot; fill=&quot;#fff&quot; opacity=&quot;0.75&quot;/&gt;
+  &lt;!-- Duplicate for seamless loop --&gt;
+  &lt;path d=&quot;M 900 150 Q 920 110 960 140 Q 990 120 1020 150 Q 1040 170 1010 180 L 910 180 Q 880 170 900 150&quot; fill=&quot;#fff&quot; opacity=&quot;0.85&quot;/&gt;
+  &lt;path d=&quot;M 1250 100 Q 1280 60 1320 90 Q 1360 70 1390 100 Q 1410 120 1380 130 L 1260 130 Q 1230 120 1250 100&quot; fill=&quot;#fff&quot; opacity=&quot;0.75&quot;/&gt;
+&lt;/g&gt;
+
+&lt;!-- Mountains --&gt;
+&lt;g class=&quot;mountains&quot;&gt;
+  &lt;path d=&quot;M 0 510 L 150 350 L 300 480 L 450 320 L 600 490 L 800 380 L 800 510 Z&quot; fill=&quot;#A8DADC&quot; opacity=&quot;0.6&quot;/&gt;
+  &lt;path d=&quot;M 800 510 L 950 350 L 1100 480 L 1250 320 L 1400 490 L 1600 380 L 1600 510 Z&quot; fill=&quot;#A8DADC&quot; opacity=&quot;0.6&quot;/&gt;
+&lt;/g&gt;
+
+&lt;!-- Road --&gt;
+&lt;rect x=&quot;0&quot; y=&quot;510&quot; width=&quot;800&quot; height=&quot;90&quot; fill=&quot;url(#roadGrad)&quot;/&gt;
+&lt;line x1=&quot;0&quot; y1=&quot;555&quot; x2=&quot;800&quot; y2=&quot;555&quot; stroke=&quot;#fff&quot; stroke-width=&quot;6&quot; stroke-dasharray=&quot;30 20&quot; class=&quot;road-lines&quot;/&gt;
+&lt;rect x=&quot;0&quot; y=&quot;510&quot; width=&quot;800&quot; height=&quot;4&quot; fill=&quot;#777&quot;/&gt;
+
+&lt;!-- Bicycle --&gt;
+&lt;g id=&quot;bicycle&quot;&gt;
+  &lt;!-- Back Wheel --&gt;
+  &lt;g class=&quot;wheel-back&quot;&gt;
+    &lt;circle cx=&quot;250&quot; cy=&quot;450&quot; r=&quot;60&quot; fill=&quot;none&quot; stroke=&quot;#222&quot; stroke-width=&quot;8&quot;/&gt;
+    &lt;circle cx=&quot;250&quot; cy=&quot;450&quot; r=&quot;52&quot; fill=&quot;none&quot; stroke=&quot;#444&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;250&quot; y1=&quot;390&quot; x2=&quot;250&quot; y2=&quot;510&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;190&quot; y1=&quot;450&quot; x2=&quot;310&quot; y2=&quot;450&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;207&quot; y1=&quot;407&quot; x2=&quot;293&quot; y2=&quot;493&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;293&quot; y1=&quot;407&quot; x2=&quot;207&quot; y2=&quot;493&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;circle cx=&quot;250&quot; cy=&quot;450&quot; r=&quot;8&quot; fill=&quot;#222&quot;/&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Front Wheel --&gt;
+  &lt;g class=&quot;wheel-front&quot;&gt;
+    &lt;circle cx=&quot;450&quot; cy=&quot;450&quot; r=&quot;60&quot; fill=&quot;none&quot; stroke=&quot;#222&quot; stroke-width=&quot;8&quot;/&gt;
+    &lt;circle cx=&quot;450&quot; cy=&quot;450&quot; r=&quot;52&quot; fill=&quot;none&quot; stroke=&quot;#444&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;450&quot; y1=&quot;390&quot; x2=&quot;450&quot; y2=&quot;510&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;390&quot; y1=&quot;450&quot; x2=&quot;510&quot; y2=&quot;450&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;407&quot; y1=&quot;407&quot; x2=&quot;493&quot; y2=&quot;493&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;line x1=&quot;493&quot; y1=&quot;407&quot; x2=&quot;407&quot; y2=&quot;493&quot; stroke=&quot;#888&quot; stroke-width=&quot;2&quot;/&gt;
+    &lt;circle cx=&quot;450&quot; cy=&quot;450&quot; r=&quot;8&quot; fill=&quot;#222&quot;/&gt;
+  &lt;/g&gt;
+
+  &lt;!-- Frame --&gt;
+  &lt;path d=&quot;M 250 450 L 350 450 L 310 340 L 250 450&quot; fill=&quot;none&quot; stroke=&quot;#e63946&quot; stroke-width=&quot;7&quot; stroke-linejoin=&quot;round&quot;/&gt;
+  &lt;path d=&quot;M 350 450 L 410 340 L 310 340&quot; fill=&quot;none&quot; stroke=&quot;#e63946&quot; stroke-width=&quot;7&quot; stroke-linejoin=&quot;round&quot;/&gt;
+  &lt;path d=&quot;M 450 450 L 410 340&quot; fill=&quot;none&quot; stroke=&quot;#e63946&quot; stroke-width=&quot;7&quot; stroke-linejoin=&quot;round&quot;/&gt;
+
+  &lt;!-- Seat --&gt;
+  &lt;path d=&quot;M 290 335 L 330 335&quot; stroke=&quot;#1d3557&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot;/&gt;
+  &lt;path d=&quot;M 310 340 L 310 335&quot; stroke=&quot;#1d3557&quot; stroke-width=&quot;6&quot;/&gt;
+
+  &lt;!-- Handlebars --&gt;
+  &lt;path d=&quot;M 410 340 L 420 300 L 445 300&quot; fill=&quot;none&quot; stroke=&quot;#1d3557&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+  &lt;circle cx=&quot;445&quot; cy=&quot;300&quot; r=&quot;5&quot; fill=&quot;#1d3557&quot;/&gt;
+
+  &lt;!-- Crank &amp; Pedals --&gt;
+  &lt;g class=&quot;crank&quot;&gt;
+    &lt;line x1=&quot;350&quot; y1=&quot;450&quot; x2=&quot;350&quot; y2=&quot;495&quot; stroke=&quot;#333&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;rect x=&quot;335&quot; y=&quot;490&quot; width=&quot;30&quot; height=&quot;10&quot; fill=&quot;#555&quot; rx=&quot;3&quot;/&gt;
+    &lt;line x1=&quot;350&quot; y1=&quot;450&quot; x2=&quot;350&quot; y2=&quot;405&quot; stroke=&quot;#333&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+    &lt;rect x=&quot;335&quot; y=&quot;400&quot; width=&quot;30&quot; height=&quot;10&quot; fill=&quot;#555&quot; rx=&quot;3&quot;/&gt;
+    &lt;circle cx=&quot;350&quot; cy=&quot;450&quot; r=&quot;14&quot; fill=&quot;#333&quot;/&gt;
+    &lt;circle cx=&quot;350&quot; cy=&quot;450&quot; r=&quot;6&quot; fill=&quot;#888&quot;/&gt;
+  &lt;/g&gt;
+&lt;/g&gt;
+
+&lt;!-- Pelican --&gt;
+&lt;g class=&quot;pelican&quot;&gt;
+  &lt;!-- Legs --&gt;
+  &lt;path d=&quot;M 330 320 L 340 380 L 350 400&quot; fill=&quot;none&quot; stroke=&quot;#f4a261&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+  &lt;path d=&quot;M 310 320 L 320 380 L 330 400&quot; fill=&quot;none&quot; stroke=&quot;#f4a261&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;
+
+  &lt;!-- Body --&gt;
+  &lt;ellipse cx=&quot;320&quot; cy=&quot;290&quot; rx=&quot;50&quot; ry=&quot;38&quot; fill=&quot;#f1faee&quot;/&gt;
+  &lt;ellipse cx=&quot;320&quot; cy=&quot;295&quot; rx=&quot;40&quot; ry=&quot;25&quot; fill=&quot;#e0e1dd&quot; opacity=&quot;0.5&quot;/&gt;
+
+  &lt;!-- Wing --&gt;
+  &lt;path d=&quot;M 290 280 Q 320 250 350 290 Q 320 310 290 280&quot; fill=&quot;#a8dadc&quot; class=&quot;wing&quot;/&gt;
+  &lt;path d=&quot;M 300 285 Q 320 265 340 290&quot; fill=&quot;none&quot; stroke=&quot;#457b9d&quot; stroke-width=&quot;2&quot; opacity=&quot;0.5&quot;/&gt;
+
+  &lt;!-- Neck --&gt;
+  &lt;path d=&quot;M 350 270 Q 370 230 385 200&quot; fill=&quot;none&quot; stroke=&quot;#f1faee&quot; stroke-width=&quot;22&quot; stroke-linecap=&quot;round&quot;/&gt;
+
+  &lt;!-- Head --&gt;
+  &lt;circle cx=&quot;390&quot; cy=&quot;190&quot; r=&quot;22&quot; fill=&quot;#f1faee&quot;/&gt;
+
+  &lt;!-- Eye --&gt;
+  &lt;circle cx=&quot;400&quot; cy=&quot;182&quot; r=&quot;5&quot; fill=&quot;#1d3557&quot;/&gt;
+  &lt;circle cx=&quot;402&quot; cy=&quot;180&quot; r=&quot;2&quot; fill=&quot;#fff&quot;/&gt;
+
+  &lt;!-- Beak --&gt;
+  &lt;path d=&quot;M 405 195 L 530 205 L 405 215 Z&quot; fill=&quot;#f4a261&quot;/&gt;
+  &lt;path d=&quot;M 405 195 L 530 205 L 405 205 Z&quot; fill=&quot;#e76f51&quot; opacity=&quot;0.3&quot;/&gt;
+
+  &lt;!-- Pouch --&gt;
+  &lt;path d=&quot;M 405 215 Q 460 250 520 205&quot; fill=&quot;#e9c46a&quot; opacity=&quot;0.85&quot;/&gt;
+  &lt;path d=&quot;M 405 215 Q 460 250 520 205&quot; fill=&quot;none&quot; stroke=&quot;#e76f51&quot; stroke-width=&quot;2.5&quot;/&gt;
+&lt;/g&gt;
+
+  &lt;/svg&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  const svg = document.querySelector(&#39;svg&#39;);
+  const btn = document.getElementById(&#39;toggleBtn&#39;);
+  let isPlaying = true;
+
+  const mediaQuery = window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;);
+  if (mediaQuery.matches) {
+    isPlaying = false;
+    svg.classList.add(&#39;paused&#39;);
+    btn.textContent = &#39;播放&#39;;
+    btn.setAttribute(&#39;aria-label&#39;, &#39;播放动画&#39;);
+  }
+
+  function toggleAnimation() {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      svg.classList.remove(&#39;paused&#39;);
+      btn.textContent = &#39;暂停&#39;;
+      btn.setAttribute(&#39;aria-label&#39;, &#39;暂停动画&#39;);
+    } else {
+      svg.classList.add(&#39;paused&#39;);
+      btn.textContent = &#39;播放&#39;;
+      btn.setAttribute(&#39;aria-label&#39;, &#39;播放动画&#39;);
+    }
+  }
+
+  btn.addEventListener(&#39;click&#39;, toggleAnimation);
+
+  document.addEventListener(&#39;keydown&#39;, (e) =&gt; {
+    if (e.code === &#39;Space&#39; || e.key === &#39; &#39;) {
+      e.preventDefault();
+      toggleAnimation();
+    }
+  });
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>
