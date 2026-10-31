@@ -1,0 +1,299 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml"><title>高德地图 · unknown · 沙盒预览</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;display:block;overflow:hidden}</style></head><body><iframe title="高德地图 · unknown" sandbox="allow-scripts" referrerpolicy="no-referrer" allow="camera 'none'; microphone 'none'; geolocation 'none'; clipboard-read 'none'; clipboard-write 'none'" srcdoc="&lt;!doctype html&gt;&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39;; style-src &#39;unsafe-inline&#39;; img-src data:; connect-src &#39;none&#39;; font-src &#39;none&#39;; media-src &#39;none&#39;; frame-src &#39;none&#39;; worker-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;&quot;&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;鹈鹕骑车&lt;/title&gt;
+  &lt;style&gt;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #1a1a2e; }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .scene-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 3 / 2;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, .45);
+    }
+    svg.scene { display: block; width: 100%; height: 100%; }
+
+    /* 动画 */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pedal { to { transform: rotate(360deg); } }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes cloud { from { transform: translateX(1300px); } to { transform: translateX(-400px); } }
+    @keyframes ground { from { transform: translateX(0); } to { transform: translateX(-200px); } }
+    @keyframes wing { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-8deg); } }
+    @keyframes pouch { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.06); } }
+
+    .wheel { animation: spin 1.2s linear infinite; transform-origin: center; }
+    .pedal-group { animation: pedal 1.2s linear infinite; transform-origin: center; }
+    .pelican-body { animation: bob 1.2s ease-in-out infinite; }
+    .cloud1 { animation: cloud 18s linear infinite; }
+    .cloud2 { animation: cloud 24s linear infinite; animation-delay: -8s; }
+    .cloud3 { animation: cloud 21s linear infinite; animation-delay: -14s; }
+    .ground-marks { animation: ground 1.5s linear infinite; }
+    .wing-anim { animation: wing 1.2s ease-in-out infinite; transform-origin: 540px 310px; }
+    .pouch-anim { animation: pouch 1.2s ease-in-out infinite; transform-origin: center top; }
+
+    .paused .wheel, .paused .pedal-group, .paused .pelican-body,
+    .paused .cloud1, .paused .cloud2, .paused .cloud3,
+    .paused .ground-marks, .paused .wing-anim, .paused .pouch-anim {
+      animation-play-state: paused;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .wheel, .pedal-group, .pelican-body,
+      .cloud1, .cloud2, .cloud3,
+      .ground-marks, .wing-anim, .pouch-anim { animation-play-state: paused; }
+    }
+
+    /* 控件 */
+    .controls { margin-top: 16px; display: flex; align-items: center; gap: 12px; }
+    .btn {
+      appearance: none;
+      border: 2px solid rgba(255, 255, 255, .7);
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      font-size: 15px;
+      padding: 8px 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover, .btn:focus-visible {
+      background: rgba(255, 255, 255, .25);
+      border-color: #fff;
+      outline: none;
+    }
+    .btn:focus-visible { box-shadow: 0 0 0 3px rgba(100, 180, 255, .6); }
+    .btn svg { width: 18px; height: 18px; fill: currentColor; }
+    .hint { color: rgba(255, 255, 255, .5); font-size: 13px; }
+    @media (max-width: 600px) {
+      .scene-wrap { border-radius: 8px; }
+      .btn { font-size: 13px; padding: 6px 16px; }
+      .hint { font-size: 11px; }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;scene-wrap&quot; id=&quot;sceneWrap&quot;&gt;
+    &lt;svg class=&quot;scene&quot; viewBox=&quot;0 0 1200 800&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; role=&quot;img&quot; aria-label=&quot;鹈鹕骑着红色自行车，路面和云朵不断移动的卡通动画&quot;&gt;
+      &lt;defs&gt;
+        &lt;linearGradient id=&quot;sky&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#4a90d9&quot;/&gt;
+          &lt;stop offset=&quot;60%&quot; stop-color=&quot;#87ceeb&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#fce4a8&quot;/&gt;
+        &lt;/linearGradient&gt;
+        &lt;radialGradient id=&quot;sunGlow&quot; cx=&quot;0.5&quot; cy=&quot;0.5&quot; r=&quot;0.5&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#fff7cc&quot; stop-opacity=&quot;1&quot;/&gt;
+          &lt;stop offset=&quot;60%&quot; stop-color=&quot;#ffe066&quot; stop-opacity=&quot;.6&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#ffe066&quot; stop-opacity=&quot;0&quot;/&gt;
+        &lt;/radialGradient&gt;
+        &lt;linearGradient id=&quot;road&quot; x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;0&quot; y2=&quot;1&quot;&gt;
+          &lt;stop offset=&quot;0%&quot; stop-color=&quot;#555&quot;/&gt;
+          &lt;stop offset=&quot;100%&quot; stop-color=&quot;#3a3a3a&quot;/&gt;
+        &lt;/linearGradient&gt;
+      &lt;/defs&gt;
+
+      &lt;!-- 天空与太阳 --&gt;
+      &lt;rect width=&quot;1200&quot; height=&quot;800&quot; fill=&quot;url(#sky)&quot;/&gt;
+      &lt;circle cx=&quot;950&quot; cy=&quot;160&quot; r=&quot;120&quot; fill=&quot;url(#sunGlow)&quot;/&gt;
+      &lt;circle cx=&quot;950&quot; cy=&quot;160&quot; r=&quot;48&quot; fill=&quot;#ffe566&quot;/&gt;
+
+      &lt;!-- 云朵 --&gt;
+      &lt;g class=&quot;cloud1&quot; opacity=&quot;.85&quot;&gt;
+        &lt;ellipse cx=&quot;0&quot; cy=&quot;130&quot; rx=&quot;80&quot; ry=&quot;30&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;ellipse cx=&quot;40&quot; cy=&quot;118&quot; rx=&quot;50&quot; ry=&quot;24&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;ellipse cx=&quot;-30&quot; cy=&quot;122&quot; rx=&quot;45&quot; ry=&quot;20&quot; fill=&quot;#fff&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g class=&quot;cloud2&quot; opacity=&quot;.7&quot;&gt;
+        &lt;ellipse cx=&quot;0&quot; cy=&quot;200&quot; rx=&quot;65&quot; ry=&quot;22&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;ellipse cx=&quot;35&quot; cy=&quot;190&quot; rx=&quot;40&quot; ry=&quot;18&quot; fill=&quot;#fff&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g class=&quot;cloud3&quot; opacity=&quot;.6&quot;&gt;
+        &lt;ellipse cx=&quot;0&quot; cy=&quot;90&quot; rx=&quot;55&quot; ry=&quot;18&quot; fill=&quot;#fff&quot;/&gt;
+        &lt;ellipse cx=&quot;-25&quot; cy=&quot;82&quot; rx=&quot;35&quot; ry=&quot;14&quot; fill=&quot;#fff&quot;/&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 远山 --&gt;
+      &lt;path d=&quot;M0 560 Q150 440 350 520 Q500 460 650 510 Q800 430 1000 500 Q1100 470 1200 520 L1200 600 L0 600Z&quot; fill=&quot;#6aab6a&quot; opacity=&quot;.5&quot;/&gt;
+      &lt;path d=&quot;M0 580 Q200 500 400 560 Q550 510 700 550 Q900 490 1100 540 L1200 560 L1200 620 L0 620Z&quot; fill=&quot;#5a9a5a&quot; opacity=&quot;.6&quot;/&gt;
+
+      &lt;!-- 公路与移动标线 --&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;600&quot; width=&quot;1200&quot; height=&quot;200&quot; fill=&quot;url(#road)&quot;/&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;598&quot; width=&quot;1200&quot; height=&quot;4&quot; fill=&quot;#888&quot; rx=&quot;2&quot;/&gt;
+      &lt;g class=&quot;ground-marks&quot;&gt;
+        &lt;rect x=&quot;-200&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;0&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;200&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;400&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;600&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;800&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;1000&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;1200&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+        &lt;rect x=&quot;1400&quot; y=&quot;680&quot; width=&quot;60&quot; height=&quot;6&quot; rx=&quot;3&quot; fill=&quot;#e8d44d&quot; opacity=&quot;.8&quot;/&gt;
+      &lt;/g&gt;
+      &lt;rect x=&quot;0&quot; y=&quot;595&quot; width=&quot;1200&quot; height=&quot;8&quot; fill=&quot;#4a8c4a&quot; rx=&quot;2&quot;/&gt;
+
+      &lt;!-- 自行车与鹈鹕 --&gt;
+      &lt;g transform=&quot;translate(380, 0)&quot;&gt;
+        &lt;!-- 自行车 --&gt;
+        &lt;g&gt;
+          &lt;g class=&quot;wheel&quot; style=&quot;transform-origin: 200px 640px;&quot;&gt;
+            &lt;circle cx=&quot;200&quot; cy=&quot;640&quot; r=&quot;62&quot; fill=&quot;none&quot; stroke=&quot;#222&quot; stroke-width=&quot;6&quot;/&gt;
+            &lt;circle cx=&quot;200&quot; cy=&quot;640&quot; r=&quot;56&quot; fill=&quot;none&quot; stroke=&quot;#444&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;200&quot; y1=&quot;584&quot; x2=&quot;200&quot; y2=&quot;696&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;line x1=&quot;144&quot; y1=&quot;640&quot; x2=&quot;256&quot; y2=&quot;640&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;line x1=&quot;160&quot; y1=&quot;600&quot; x2=&quot;240&quot; y2=&quot;680&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;line x1=&quot;240&quot; y1=&quot;600&quot; x2=&quot;160&quot; y2=&quot;680&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;circle cx=&quot;200&quot; cy=&quot;640&quot; r=&quot;8&quot; fill=&quot;#666&quot;/&gt;
+          &lt;/g&gt;
+          &lt;g class=&quot;wheel&quot; style=&quot;transform-origin: 460px 640px;&quot;&gt;
+            &lt;circle cx=&quot;460&quot; cy=&quot;640&quot; r=&quot;62&quot; fill=&quot;none&quot; stroke=&quot;#222&quot; stroke-width=&quot;6&quot;/&gt;
+            &lt;circle cx=&quot;460&quot; cy=&quot;640&quot; r=&quot;56&quot; fill=&quot;none&quot; stroke=&quot;#444&quot; stroke-width=&quot;2&quot;/&gt;
+            &lt;line x1=&quot;460&quot; y1=&quot;584&quot; x2=&quot;460&quot; y2=&quot;696&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;line x1=&quot;404&quot; y1=&quot;640&quot; x2=&quot;516&quot; y2=&quot;640&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;line x1=&quot;420&quot; y1=&quot;600&quot; x2=&quot;500&quot; y2=&quot;680&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;line x1=&quot;500&quot; y1=&quot;600&quot; x2=&quot;420&quot; y2=&quot;680&quot; stroke=&quot;#999&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;circle cx=&quot;460&quot; cy=&quot;640&quot; r=&quot;8&quot; fill=&quot;#666&quot;/&gt;
+          &lt;/g&gt;
+          &lt;!-- 车架、车把与车座 --&gt;
+          &lt;line x1=&quot;280&quot; y1=&quot;540&quot; x2=&quot;280&quot; y2=&quot;620&quot; stroke=&quot;#c0392b&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;280&quot; y1=&quot;548&quot; x2=&quot;420&quot; y2=&quot;540&quot; stroke=&quot;#c0392b&quot; stroke-width=&quot;7&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;280&quot; y1=&quot;620&quot; x2=&quot;420&quot; y2=&quot;548&quot; stroke=&quot;#c0392b&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;280&quot; y1=&quot;620&quot; x2=&quot;200&quot; y2=&quot;640&quot; stroke=&quot;#c0392b&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;280&quot; y1=&quot;548&quot; x2=&quot;200&quot; y2=&quot;640&quot; stroke=&quot;#c0392b&quot; stroke-width=&quot;4&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;420&quot; y1=&quot;540&quot; x2=&quot;460&quot; y2=&quot;640&quot; stroke=&quot;#c0392b&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;420&quot; y1=&quot;540&quot; x2=&quot;420&quot; y2=&quot;510&quot; stroke=&quot;#333&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;400&quot; y1=&quot;510&quot; x2=&quot;445&quot; y2=&quot;510&quot; stroke=&quot;#333&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;circle cx=&quot;400&quot; cy=&quot;510&quot; r=&quot;5&quot; fill=&quot;#222&quot;/&gt;
+          &lt;circle cx=&quot;445&quot; cy=&quot;510&quot; r=&quot;5&quot; fill=&quot;#222&quot;/&gt;
+          &lt;ellipse cx=&quot;280&quot; cy=&quot;534&quot; rx=&quot;22&quot; ry=&quot;8&quot; fill=&quot;#2c2c2c&quot;/&gt;
+          &lt;!-- 曲柄与脚踏 --&gt;
+          &lt;g class=&quot;pedal-group&quot; style=&quot;transform-origin: 280px 620px;&quot;&gt;
+            &lt;line x1=&quot;280&quot; y1=&quot;620&quot; x2=&quot;280&quot; y2=&quot;590&quot; stroke=&quot;#555&quot; stroke-width=&quot;4&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;rect x=&quot;270&quot; y=&quot;584&quot; width=&quot;20&quot; height=&quot;8&quot; rx=&quot;3&quot; fill=&quot;#777&quot;/&gt;
+            &lt;line x1=&quot;280&quot; y1=&quot;620&quot; x2=&quot;280&quot; y2=&quot;650&quot; stroke=&quot;#555&quot; stroke-width=&quot;4&quot; stroke-linecap=&quot;round&quot;/&gt;
+            &lt;rect x=&quot;270&quot; y=&quot;648&quot; width=&quot;20&quot; height=&quot;8&quot; rx=&quot;3&quot; fill=&quot;#777&quot;/&gt;
+          &lt;/g&gt;
+          &lt;circle cx=&quot;280&quot; cy=&quot;620&quot; r=&quot;10&quot; fill=&quot;#888&quot; stroke=&quot;#555&quot; stroke-width=&quot;2&quot;/&gt;
+          &lt;circle cx=&quot;280&quot; cy=&quot;620&quot; r=&quot;18&quot; fill=&quot;none&quot; stroke=&quot;#666&quot; stroke-width=&quot;2&quot;/&gt;
+        &lt;/g&gt;
+
+        &lt;!-- 鹈鹕 --&gt;
+        &lt;g class=&quot;pelican-body&quot;&gt;
+          &lt;line x1=&quot;270&quot; y1=&quot;490&quot; x2=&quot;275&quot; y2=&quot;588&quot; stroke=&quot;#e8a030&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;line x1=&quot;295&quot; y1=&quot;490&quot; x2=&quot;285&quot; y2=&quot;588&quot; stroke=&quot;#e8a030&quot; stroke-width=&quot;5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;ellipse cx=&quot;275&quot; cy=&quot;590&quot; rx=&quot;10&quot; ry=&quot;5&quot; fill=&quot;#e89020&quot;/&gt;
+          &lt;ellipse cx=&quot;285&quot; cy=&quot;590&quot; rx=&quot;10&quot; ry=&quot;5&quot; fill=&quot;#e89020&quot;/&gt;
+          &lt;ellipse cx=&quot;300&quot; cy=&quot;420&quot; rx=&quot;80&quot; ry=&quot;85&quot; fill=&quot;#f5f0e8&quot;/&gt;
+          &lt;ellipse cx=&quot;300&quot; cy=&quot;420&quot; rx=&quot;75&quot; ry=&quot;80&quot; fill=&quot;#faf6ef&quot;/&gt;
+          &lt;ellipse cx=&quot;300&quot; cy=&quot;450&quot; rx=&quot;55&quot; ry=&quot;50&quot; fill=&quot;#f0e8d8&quot; opacity=&quot;.5&quot;/&gt;
+          &lt;path d=&quot;M220 430 Q190 410 180 440 Q195 425 210 440Z&quot; fill=&quot;#d4c8b0&quot;/&gt;
+          &lt;path d=&quot;M225 445 Q195 435 188 460 Q200 445 218 455Z&quot; fill=&quot;#c8bca5&quot;/&gt;
+          &lt;!-- 翅膀 --&gt;
+          &lt;g class=&quot;wing-anim&quot;&gt;
+            &lt;path d=&quot;M260 360 Q230 380 220 420 Q240 400 270 390 Q290 380 310 370 Q290 355 260 360Z&quot; fill=&quot;#e0d8c8&quot; stroke=&quot;#c8bfaa&quot; stroke-width=&quot;1&quot;/&gt;
+            &lt;path d=&quot;M240 390 Q225 400 220 420&quot; fill=&quot;none&quot; stroke=&quot;#c0b8a0&quot; stroke-width=&quot;1.5&quot;/&gt;
+            &lt;path d=&quot;M255 380 Q240 395 235 410&quot; fill=&quot;none&quot; stroke=&quot;#c0b8a0&quot; stroke-width=&quot;1.5&quot;/&gt;
+          &lt;/g&gt;
+          &lt;!-- 脖颈与头部 --&gt;
+          &lt;path d=&quot;M340 380 Q370 340 380 290 Q385 260 375 240&quot; fill=&quot;none&quot; stroke=&quot;#faf6ef&quot; stroke-width=&quot;28&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M340 380 Q370 340 380 290 Q385 260 375 240&quot; fill=&quot;none&quot; stroke=&quot;#f0e8d8&quot; stroke-width=&quot;24&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;ellipse cx=&quot;375&quot; cy=&quot;228&quot; rx=&quot;32&quot; ry=&quot;28&quot; fill=&quot;#faf6ef&quot;/&gt;
+          &lt;ellipse cx=&quot;375&quot; cy=&quot;228&quot; rx=&quot;30&quot; ry=&quot;26&quot; fill=&quot;#f8f4ec&quot;/&gt;
+          &lt;circle cx=&quot;388&quot; cy=&quot;220&quot; r=&quot;8&quot; fill=&quot;#fff&quot;/&gt;
+          &lt;circle cx=&quot;390&quot; cy=&quot;219&quot; r=&quot;5&quot; fill=&quot;#1a1a1a&quot;/&gt;
+          &lt;circle cx=&quot;392&quot; cy=&quot;217&quot; r=&quot;2&quot; fill=&quot;#fff&quot;/&gt;
+          &lt;!-- 鸟喙与喉囊 --&gt;
+          &lt;path d=&quot;M400 228 L490 222 Q495 228 490 234 L400 238Z&quot; fill=&quot;#e8943a&quot; stroke=&quot;#d07820&quot; stroke-width=&quot;1&quot;/&gt;
+          &lt;line x1=&quot;400&quot; y1=&quot;230&quot; x2=&quot;485&quot; y2=&quot;226&quot; stroke=&quot;#d08030&quot; stroke-width=&quot;1.5&quot;/&gt;
+          &lt;path d=&quot;M488 222 Q496 228 488 234&quot; fill=&quot;#d07820&quot;/&gt;
+          &lt;g class=&quot;pouch-anim&quot;&gt;
+            &lt;path d=&quot;M400 238 Q430 260 460 255 Q440 270 410 265 Q395 260 400 238Z&quot; fill=&quot;#f0a840&quot; opacity=&quot;.7&quot;/&gt;
+            &lt;path d=&quot;M400 238 Q420 252 445 250&quot; fill=&quot;none&quot; stroke=&quot;#d89030&quot; stroke-width=&quot;1&quot; opacity=&quot;.6&quot;/&gt;
+          &lt;/g&gt;
+          &lt;path d=&quot;M358 205 Q350 185 360 178&quot; fill=&quot;none&quot; stroke=&quot;#d8d0c0&quot; stroke-width=&quot;2.5&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M365 202 Q360 180 370 172&quot; fill=&quot;none&quot; stroke=&quot;#d8d0c0&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;!-- 握住车把的翅膀 --&gt;
+          &lt;path d=&quot;M340 390 Q380 430 410 500 Q415 510 420 510&quot; fill=&quot;none&quot; stroke=&quot;#e8e0d0&quot; stroke-width=&quot;10&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;path d=&quot;M340 390 Q380 430 410 500 Q415 510 420 510&quot; fill=&quot;none&quot; stroke=&quot;#d8d0c0&quot; stroke-width=&quot;6&quot; stroke-linecap=&quot;round&quot;/&gt;
+          &lt;ellipse cx=&quot;420&quot; cy=&quot;510&quot; rx=&quot;10&quot; ry=&quot;7&quot; fill=&quot;#e8a030&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/g&gt;
+
+      &lt;!-- 远处飞鸟与速度线 --&gt;
+      &lt;g opacity=&quot;.4&quot;&gt;
+        &lt;path d=&quot;M150 180 Q155 174 160 180 Q165 174 170 180&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;1.5&quot;/&gt;
+        &lt;path d=&quot;M820 120 Q825 114 830 120 Q835 114 840 120&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;1.5&quot;/&gt;
+        &lt;path d=&quot;M780 150 Q784 145 788 150 Q792 145 796 150&quot; fill=&quot;none&quot; stroke=&quot;#333&quot; stroke-width=&quot;1.2&quot;/&gt;
+      &lt;/g&gt;
+      &lt;g opacity=&quot;.25&quot;&gt;
+        &lt;line x1=&quot;100&quot; y1=&quot;500&quot; x2=&quot;250&quot; y2=&quot;500&quot; stroke=&quot;#fff&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;12 8&quot;/&gt;
+        &lt;line x1=&quot;50&quot; y1=&quot;540&quot; x2=&quot;200&quot; y2=&quot;540&quot; stroke=&quot;#fff&quot; stroke-width=&quot;1.5&quot; stroke-dasharray=&quot;10 10&quot;/&gt;
+        &lt;line x1=&quot;120&quot; y1=&quot;570&quot; x2=&quot;300&quot; y2=&quot;570&quot; stroke=&quot;#fff&quot; stroke-width=&quot;1.5&quot; stroke-dasharray=&quot;8 12&quot;/&gt;
+      &lt;/g&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;controls&quot;&gt;
+    &lt;button class=&quot;btn&quot; id=&quot;toggleBtn&quot; aria-label=&quot;暂停动画&quot; type=&quot;button&quot;&gt;
+      &lt;svg id=&quot;iconPause&quot; viewBox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;&lt;rect x=&quot;6&quot; y=&quot;4&quot; width=&quot;4&quot; height=&quot;16&quot; rx=&quot;1&quot;/&gt;&lt;rect x=&quot;14&quot; y=&quot;4&quot; width=&quot;4&quot; height=&quot;16&quot; rx=&quot;1&quot;/&gt;&lt;/svg&gt;
+      &lt;svg id=&quot;iconPlay&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;display:none&quot; aria-hidden=&quot;true&quot;&gt;&lt;polygon points=&quot;6,4 20,12 6,20&quot;/&gt;&lt;/svg&gt;
+      &lt;span id=&quot;btnLabel&quot;&gt;暂停&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;span class=&quot;hint&quot;&gt;空格键切换&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    (function () {
+      const wrap = document.getElementById(&#39;sceneWrap&#39;);
+      const btn = document.getElementById(&#39;toggleBtn&#39;);
+      const label = document.getElementById(&#39;btnLabel&#39;);
+      const iconPause = document.getElementById(&#39;iconPause&#39;);
+      const iconPlay = document.getElementById(&#39;iconPlay&#39;);
+      let playing = true;
+
+      function pause() {
+        playing = false;
+        wrap.classList.add(&#39;paused&#39;);
+        label.textContent = &#39;播放&#39;;
+        btn.setAttribute(&#39;aria-label&#39;, &#39;播放动画&#39;);
+        iconPause.style.display = &#39;none&#39;;
+        iconPlay.style.display = &#39;block&#39;;
+      }
+      function play() {
+        playing = true;
+        wrap.classList.remove(&#39;paused&#39;);
+        label.textContent = &#39;暂停&#39;;
+        btn.setAttribute(&#39;aria-label&#39;, &#39;暂停动画&#39;);
+        iconPause.style.display = &#39;block&#39;;
+        iconPlay.style.display = &#39;none&#39;;
+      }
+      function toggle() { playing ? pause() : play(); }
+
+      // 遵循系统“减少动态效果”设置
+      if (window.matchMedia(&#39;(prefers-reduced-motion: reduce)&#39;).matches) pause();
+      btn.addEventListener(&#39;click&#39;, toggle);
+      document.addEventListener(&#39;keydown&#39;, function (e) {
+        if (e.code === &#39;Space&#39; || e.key === &#39; &#39;) {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    })();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></body></html>
