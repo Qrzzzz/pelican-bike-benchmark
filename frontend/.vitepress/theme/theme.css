@@ -1,0 +1,144 @@
+@import "./business.css";
+@import "../vendor/styles/fonts.css";
+@import "../vendor/styles/tokens.css";
+@import "../vendor/styles/site.css";
+@import "../vendor/styles/content.css";
+@import "../vendor/styles/code.css";
+@import "../vendor/styles/emphasis.css";
+@import "../vendor/styles/catalog.css";
+@import "../vendor/styles/document-layout.css";
+@import "../vendor/styles/icons.css";
+.control-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+.site-icon--copy {
+  --icon: var(--site-icon-copy);
+}
+.site-icon--arrow-down {
+  --icon: var(--site-icon-arrow-right);
+  transform: rotate(90deg);
+}
+.pelican-business .code-window pre.code {
+  padding: 24px;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  font: 400 13px/1.72 var(--site-font-mono);
+  max-height: 470px;
+  overflow: auto;
+}
+.pelican-business .code-window .control-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.pelican-business .code-window button.copy {
+  min-height: 40px;
+}
+:root {
+  --bg: var(--site-canvas);
+  --surface: var(--site-surface);
+  --soft: var(--site-surface-subtle);
+  --ink: var(--site-text);
+  --muted: var(--site-text-muted);
+  --line: var(--site-line);
+  --accent: var(--site-accent);
+  --link: var(--site-link);
+  --selection: var(--site-selection);
+  --serif: var(--site-font-reading);
+  --sans: var(--site-font-sans);
+  --mono: var(--site-font-mono);
+}
+.pelican-business {
+  min-width: 0;
+}
+.pelican-business .page-title h1 {
+  font: 600 var(--site-heading-size) / 1.5 var(--site-font-reading);
+  margin: 0 0 28px;
+  letter-spacing: -0.6px;
+}
+.pelican-business .prose {
+  display: contents;
+}
+.pelican-business .actions {
+  margin-block: 24px;
+}
+.pelican-business .actions a {
+  text-decoration: none;
+}
+.pelican-business .button {
+  font: 14px/1.5 var(--site-font-sans);
+}
+.pelican-business .button.primary {
+  color: var(--site-canvas);
+}
+.pelican-business .tabs {
+  border: 0;
+  padding: 0;
+  gap: 16px;
+  background: transparent;
+}
+.pelican-business .tab {
+  border: 0;
+  border-radius: 0;
+  padding-inline: 0;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+.pelican-business .tab[aria-pressed="true"] {
+  box-shadow: none;
+  border-color: var(--site-link);
+  color: var(--site-link);
+  background: transparent;
+}
+.pelican-business .document-table {
+  overflow: auto;
+  margin-block: 28px;
+}
+.pelican-business .document-table table {
+  min-width: 480px;
+}
+.pelican-business .gallery {
+  margin-top: 24px;
+}
+.pelican-business .model-title {
+  font: 500 24px/1.5 var(--site-font-reading);
+}
+.pelican-business .card-cover img {
+  margin: 0;
+}
+.pelican-business .card p {
+  font: 14px/1.8 var(--site-font-sans);
+}
+.pelican-business .card a {
+  text-decoration: none;
+}
+.pelican-business .code-window pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.pelican-business #method-commands,
+.pelican-business #source-code {
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.pelican-business .code-window .lang {
+  font-size: 12px;
+}
+.pelican-business .code-window .copy {
+  opacity: 0;
+}
+.pelican-business .code-window:hover .copy,
+.pelican-business .code-window .copy:focus {
+  opacity: 1;
+}
+.site-layout[data-page-kind="entry"] .VPContent .VPDoc > .container {
+  max-width: var(--site-reading);
+}
+.site-layout[data-page-kind="index"] .VPContent .VPDoc > .container {
+  max-width: var(--site-index);
+}

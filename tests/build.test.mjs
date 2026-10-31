@@ -13,6 +13,9 @@ test("build provides complete cards without JavaScript and preserves original ev
   t.after(() => rm(output, { recursive: true, force: true }));
   const entries = JSON.parse(await readFile("site/data/submissions.json", "utf8"));
   await buildSite({ output });
+  const searchIndex=JSON.parse(await readFile(join(output,'search-index/root.json'),'utf8'));
+  const searchTitles=Object.values(searchIndex.storedFields).map(field=>field.title);
+  assert(searchTitles.includes('测试方法') && searchTitles.includes('作品陈列室'),'shared search indexes actual business page titles');
   const html = await readFile(join(output, "index.html"), "utf8");
   const nodes = [];
   function walk(node) { nodes.push(node); for (const child of node.childNodes || []) walk(child); }
@@ -25,7 +28,7 @@ test("build provides complete cards without JavaScript and preserves original ev
   assert.equal(gallery.length, entries.length);
   assert(!html.includes("正在读取作品"));
   assert(!html.includes('src="assets/theme.js"'));
-  assert(!/\bimport\s.*from\s/.test(await readFile(join(output, "assets/app.js"), "utf8")));
+  assert(html.includes('VPNav') && html.includes('site-layout'), 'shared Vue/VitePress shell is SSR rendered');
   const first = entries.find(e => /\.(png|webp)$/.test(e.cover || ""));
   const original = await readFile(`site/submissions/${first.id}/${first.cover}`);
   assert.deepEqual(await readFile(join(output, "submissions", first.id, first.cover)), original);
@@ -33,7 +36,16 @@ test("build provides complete cards without JavaScript and preserves original ev
   const thumbnail = join(output, "submissions", first.id, "thumbnail.webp");
   assert.equal((await sharp(await readFile(thumbnail)).metadata()).width, 600);
   assert((await stat(thumbnail)).size < original.length);
-  for (const page of ["compare", "entry"]) assert((await readFile(join(output, `${page}.html`), "utf8")).includes('rel="preload" href="data/submissions.json"'));
+  for (const page of ['index', 'method', 'compare', 'entry']) {
+    const built = await readFile(join(output, `${page}.html`), 'utf8');
+    assert(built.indexOf('<meta charset=') < built.indexOf('site-loading-critical'), 'charset stays first');
+    assert(built.indexOf('site-loading-bootstrap') < built.search(/<link[^>]*rel="[^"]*stylesheet/), 'boot precedes resource loading');
+    assert(built.includes('site-loading--boot'), `${page} shares the original loader`);
+    assert(built.includes('data-site-boot-style media="print"'), 'main styles do not block the loader');
+    assert(/<noscript><link[^>]*rel="[^"]*stylesheet/.test(built), 'no-JS keeps regular stylesheet loading');
+    assert(built.includes(':root[data-theme="dark"]{--site-canvas: #151d37;'), 'critical loader follows the existing dark theme');
+    assert(built.includes('pelican-business'), 'business data mounts inside the shared theme');
+  }
 });
 
 test("gallery escapes submitted text and keeps return filters", () => {

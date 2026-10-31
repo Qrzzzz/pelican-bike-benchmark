@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/Qrzzzz/Qrzzzz.github.io",
+  "commit": "90f0ed99ebcc0481e426ef37b8737434fb8696ac",
+  "files": {
+    "SiteIcon.vue": "a29a19a9261493d5c4cd441cbeff4961516b310a23c837efa330d42407cc08a1",
+    "NavActions.vue": "88a98abd8f964cfb2620462b82355b88d8848f14e215bd06d8e2c84483d9b40c",
+    "BackToTop.vue": "0378ed18be68ea63d631d82d29f872af3ce26b3ca65e9270941d1498094e9dcf",
+    "SiteLoading.vue": "1de10081d0c1b041f9918e0ea409eeabf30ff6bc92615411564b85848766775b",
+    "InlineSearch.vue": "10e21720589095482f123ccc1710fe86cd2342e8dddf678a57718f6391a1ce77",
+    "inlineSearchRuntime.mjs": "b9136fe49e80f6503f272276c157ed90f780f9a80950c497f30fb1c161ad7e91",
+    "themeTransitionRuntime.mjs": "b2932590f584f20f619bdeade4fb218c2979d7f4f680a6fa6a3c0395045b1f9a",
+    "loadingPoems.mjs": "7d6dafd171554f1470b0708333120135d602c299e841ded450c41cfd9cf684ea",
+    "loadingPoemRuntime.mjs": "6ca9a2716f5362bbc00a1f9c238de1a229ba45a858295cee9bf548c6f6c6f43f",
+    "navigationAccessibility.ts": "c6a7c9124b0da562d0caac0f8dcb9950810c9dc7affcb3e509d10b686a9e8165",
+    "topNavigationMarker.ts": "9906e4983b829f90af630ca3b42912339649d74c79b4e9aff78354d471c0ff8d",
+    "components/CatalogHeader.vue": "8bd0df1a6f2a010c5ed6a4970448a448eae2f168247208e4b8360e9ce427168b",
+    "styles/fonts.css": "cbeac2b10a703d5dcfc920102d903f7acaaaebcc2f9905f5ad01939a68d10838",
+    "styles/tokens.css": "15b313171890a19f540c4782b65609e4f428e06769bde339f55c87054a27a154",
+    "styles/site.css": "167983dae33fcb2f8174633a1fcfca94b156f8cfc3a629efdb133d04b47e2131",
+    "styles/content.css": "4fc3704d4dc9233e9581f686bf2fd2d3ed4794182b7b3ed1d7bcca9d2dc2e787",
+    "styles/code.css": "352f589576ec8507149270314320ffe85b5ca59ecc3035f875bcc5af12820711",
+    "styles/emphasis.css": "9bb508cfc59ffb76ead8bdcbc5a19ed3533eff8c276d03ef6b6eb8e408ac0d45",
+    "styles/catalog.css": "406c3aeafc2ef88d525bf72b6b28d615a70836be03329fa3c6cca7992fca80b0",
+    "styles/document-layout.css": "60a00471d891ba39b450bfb4d78a83ceee79701caa52da4eb00ea3e73a78cfc2",
+    "styles/icons.css": "74022ec64a76a566a578fe92757cdb0368e673dd411c15e4634b2cdc9b4717be",
+    "../content/search.mjs": "1bd4eeaecdd568068a31b68c8ea10f8fadf6edfff39e6deab5f3daa5b4647260",
+    "../searchAssets.ts": "39b90af8bef8cf0753bc57ea3a69dc9b464280b816cde12486b7020ccfb31953",
+    "assets/github-invertocat.svg": "0e694cac2bb558ce7ca41d734da70ccbe62762ef3810ae0c7c7fce68747219f3"
+  }
+}

@@ -7,4 +7,14 @@ node_modules/
 dist/
 coverage/
 output/
+frontend/generated/
+frontend/public/data/
+frontend/public/submissions/
+frontend/index.md
+frontend/method.md
+frontend/entry.md
+frontend/compare.md
+frontend/.vitepress/cache/
+frontend/.vitepress/.temp/
+frontend/.vitepress/dist/
 .playwright-cli/

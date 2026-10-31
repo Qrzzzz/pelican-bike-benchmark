@@ -1,0 +1,236 @@
+/* Shared layout for collection, project, and documentation entry pages. */
+.site-layout[data-page-kind="index"] .vp-doc,
+.site-layout[data-page-kind="index"] .vp-doc :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--site-font-sans);
+}
+.site-layout[data-page-kind="index"] .VPDoc {
+  padding-top: 48px;
+}
+
+.site-layout[data-page-kind="index"] .VPDoc .container,
+.site-layout[data-page-kind="index"] .VPDoc .content,
+.site-layout[data-page-kind="index"] .VPDoc .content-container {
+  width: 100%;
+  max-width: var(--site-index) !important;
+}
+
+.site-layout[data-page-kind="index"] .VPDoc .content {
+  padding: 0;
+}
+
+.catalog-header {
+  margin-bottom: 44px;
+}
+
+.site-layout[data-page-kind="index"] .vp-doc .catalog-header h1 {
+  max-width: none;
+  margin: 0;
+  background: none;
+  color: var(--site-text);
+  font-family: var(--site-font-reading);
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  -webkit-text-fill-color: currentColor;
+}
+
+.vp-doc .catalog-header__description {
+  max-width: 58ch;
+  margin: 18px 0 0;
+  color: var(--site-text-muted);
+  font-family: var(--site-font-reading);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.vp-doc .catalog-header__parent {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 12px;
+  color: var(--site-text-muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.vp-doc .library-stats {
+  margin: 0 !important;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.site-layout[data-page-kind="index"] .library-toolbar {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 18px 32px;
+  align-items: center;
+}
+
+.library-search {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.library-search > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.library-toolbar__filters {
+  grid-column: 1;
+  grid-row: 1;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.library-filter {
+  border-color: transparent;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.library-filter--active {
+  border-color: var(--site-line);
+  background: var(--site-surface);
+  color: var(--site-text);
+}
+
+.site-layout[data-page-kind="index"] .library-result {
+  grid-template-columns: 90px minmax(0, 1fr) 112px;
+  padding: 24px 0 24px 16px;
+}
+
+.site-layout[data-page-kind="index"] .library-result__title {
+  font-family: var(--site-font-reading);
+  font-size: 20px;
+}
+
+.site-layout[data-page-kind="index"] .library-result__summary {
+  font-family: var(--site-font-reading);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.project-catalog .content-index-row {
+  grid-template-columns: minmax(0, 1fr) 180px 24px;
+  gap: 28px;
+  padding: 30px 12px;
+}
+
+.project-catalog__body {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.project-catalog .content-index-title {
+  font-size: 22px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.project-catalog .content-index-summary {
+  display: block;
+  max-width: 65ch;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+.site-layout[data-page-kind="index"] :is(.hub-entry__body h3, .hub-entry__body p, .project-catalog .content-index-summary) {
+  font-family: var(--site-font-reading);
+}
+
+.site-layout[data-page-kind="index"] .hub-entry__body p {
+  font-size: 15px;
+}
+
+.project-catalog .content-index-meta {
+  text-align: right;
+}
+
+.catalog-collections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  margin-top: 32px;
+  font-size: 13px;
+}
+
+.catalog-collections > span {
+  color: var(--site-text-muted);
+}
+
+.catalog-collections a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.site-layout[data-page-kind="index"] .hub-entry {
+  padding: 28px 12px;
+}
+
+@media (max-width: 639px) {
+  .site-layout[data-page-kind="index"] .VPDoc {
+    padding-top: 36px;
+  }
+
+  .catalog-header { margin-bottom: 32px; }
+  .vp-doc .catalog-header h1 { font-size: 36px; }
+
+  .site-layout[data-page-kind="index"] .library-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .library-search {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .library-toolbar__filters {
+    display: flex;
+    grid-row: 2;
+  }
+
+  .library-filter {
+    width: auto;
+    padding-inline: 12px;
+  }
+
+  .site-layout[data-page-kind="index"] .library-result__title { font-size: 18px; }
+
+  .site-layout[data-page-kind="index"] .library-result {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 18px 0;
+  }
+
+  .project-catalog .content-index-row {
+    grid-template-columns: minmax(0, 1fr) 20px;
+    gap: 12px;
+    padding: 24px 4px;
+  }
+
+  .project-catalog .content-index-title {
+    font-size: 20px;
+  }
+
+  .project-catalog .content-index-meta {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+  }
+
+  .project-catalog .content-index-row::after {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
